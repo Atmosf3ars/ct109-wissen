@@ -1,0 +1,71 @@
+# CT109 – 02 ENTSCHEIDUNGEN UND GO
+
+**Zweck:** Wer darf was entscheiden, welche GOs existieren wirklich, wie sieht ein gültiges GO aus. Hier steht nichts als erteilt, was nicht belegt ist.
+
+## 1. Entscheidungsregime – ENTSCHIEDEN (Andi, 22.10.2026 21:37 Berlin, Chat)
+**Gilt: „Entscheiden, nicht fragen“**, außer es ist wirklich kritisch. Wirklich kritisch = Orders/Echtgeld/Broker, Löschung von Rohdaten, Siegel/Entsiegelung/Registry-Schreiben, Schlüssel, Abo-Klicks (laufende Kosten), Produktiv-Merge/-Deploy/-Dienststart/-Änderung am Host, alles Irreversible. Dafür gilt weiter das GO-Verfahren (§3).
+Der Einsatzleiter entscheidet selbstständig und dokumentiert: Read-only-Aufträge, Offline-/Sandbox-Code, Analysen auf öffentlichen Daten, Doku, Lab-Entwürfe (Entwurf = Draft, nicht aktiv). Ein Merge in Lab-main oder das Setzen von `enabled`/`CT109_AGENTS_ENABLED` gilt als kritisch (Kosten, Automation) und bleibt beim Owner.
+Frühere Delegationen (SOL-Kategorien 21.10.) bleiben Delegation, nicht authentischer Owner-GO.
+
+## 2. Wirklich erteilte GOs (aus V166/V167, Stufe L1 – kein kryptografischer Beleg)
+| GO | Reichweite | Verbraucht? |
+|---|---|---|
+| `GO V142 OFFLINE-COMMIT ONLY` | lokaler Commit des Verifiers (`889b52c`) | ausgeführt |
+| `GO STATUS-APP STOP ONLY` | Status-App Port 8000 stoppen/deaktivieren | ausgeführt (V166) |
+| `GO E-KANAL B SIGNATUR + CONSUMED BEIDE OFFLINE` | nur Offline-Code | Offline-Teil gebaut; kein Live |
+| `GO CODE-SICHERUNG SCHRITT 1` (Andi im Chat 22.10. 21:50 Berlin: „schritt 1 los“) | Nur neue Dateien in `/root/backup-code/` auf CT109 (Bundle, 2 Tars, Prüfsummen, Test-Clone in `/tmp`) | ausgeführt 19:52 UTC (L3), Ausgabe in `01` §1 |
+| `GO CODE-SICHERUNG SCHRITT 2A` (Andi im Chat 22.10. 22:02 Berlin) | Push von 16 Branches nach `offhost-backup/*` im privaten Repo, `main` unberührt | ausgeführt 20:03 UTC (L3), per Fetch verifiziert (L5); 2B (Kopie nach `D:`) ohne Remote-Wirkung, nicht GO-pflichtig; **2B ausgeführt, Hash vollständig gleich (L3)** |
+| **`GO REGISTRY-SICHERUNG – R1`** (Andi im Chat 22.10. 22:37 Berlin / 20:37 UTC) | Eine konsistente Kopie der `meta.sqlite` per SQLite-Backup-API als `signalsvc` (`mode=ro`) nach `/var/backups/ct109-meta/` (neues Verzeichnis 0700), `integrity_check`, SHA-256; Wortlaut und Befehl in `04` §5c | ausgeführt 20:37 UTC (L3, Screenshot): `integrity_check` ok, SHA-256 `069f6a1d…f2bdeb`, Original unverändert; Kopie nach `D:` mit Hashvergleich (Owner-Angabe „passt“, L1). Verbraucht; ein täglicher Timer (R2) wäre ein neues GO |
+| Strategie 10-Tage-Plan | Arbeitsplanung | **kein technisches GO** |
+| SOL-Kategorienentscheid 21.10. | Delegation „Du entscheidest nach der Doktrin“ (Chat) | strategischer Scope; **kein Freeze, kein Datenzugriff** |
+
+Seit R1 (22.10. 20:37 UTC) wurden **keine** weiteren schreibenden GOs erteilt. Frühere Grundentscheidungen (Auszug, Details in PROJEKTSTAND/ARCHITECTURE): 23.09. Umbau auf Spool→Parquet/SQLite (Blueprint verbindlich); 26.09. **keine Rohdaten löschen**, frühe Löschung erst nach SHA-256-Abgleich gegen `data_catalog`; 11.10. Retention zweistufig (E-118 ff.); 11.10. E-128–E-131 (SOL sofort, SOL-Collector, Fenster, Scouting-Regel „beide Fenster bestehen“).
+
+## 3. GO-Schablone für jede schreibende Aktion
+Ein GO ist nur gültig, wenn **vor** der Ausführung dokumentiert und von Andi ausdrücklich so erteilt:
+1. **Exakter Befehl** (wörtlich, Host, Nutzer, Arbeitsverzeichnis; als Block **mit Zeilenumbrüchen**, Hinweis bei Einfügen aus dem Chat prüfen)
+2. **Zweck** und was ausdrücklich *nicht* Zweck ist
+3. **Risiken** (Daten, Siegel, Last, Kosten)
+4. **Sicherung/Rollback** (konkret, getestet oder als ungetestet markiert)
+5. **Abbruchkriterien** (messbar)
+6. **Nachweis nach Ausführung** (welche Ausgabe beweist Erfolg)
+7. Satz von Andi: `GO <Kurzname> – <Befehl-Hash/Nummer>`; gilt nur für diese Aktion.
+
+## 4. Incident 114 (Stand und Regeln)
+- **Sachverhalt:** Registerzeile 114, `seal_emergency`, 2026-10-18 21:15:08 UTC, Inhalt `{"days":["kraken 2026-10-12"],"reason":"test teardown"}`, geschrieben durch einen synthetischen Root-Test; das `runuser`-Kind kannte `SIGNAL_DATA_DIR` nicht und nutzte die Produktions-DB (V166 §77.1, L1). Code bestätigt: `rollback()` schreibt die Zeile über `add_as_db_user` und passt danach Rechte im aufrufenden Prozess an (C).
+- **Bewertung:** Die Zeile kann logisch nichts entsiegeln (Siegel entsteht aus `data_window`, Freigabe nur aus `seal_release` + Schlüssel – C). Hinweise auf unveränderte Verzeichnisse: Kraken-12.10.-Verzeichnis `0700 uid 996`, ctime-Muster, kein Relock (L3/L1). **Aber:** keine Positivkontrolle, keine bewiesene Isolation der QA-Tests, ACL UNKNOWN.
+- **Offen bis:** (a) Positivkontrolle über Rohmetadaten + Compactor-Journal 19.10. 00:05–00:10 UTC, (b) Isolation der Tests nachgewiesen, (c) förmliche Korrektur/Annotation im Register – braucht ein eigenes GO und einen Entscheid, **wie** korrigiert wird (append-only, kein Löschen der Zeile).
+- **Verboten:** `seal_fs rollback`, Registry-Schreiben, Entsiegeln, Löschen der Zeile 114.
+- **Hinweis (22.10. nach R1):** Die Kopie in `/var/backups/ct109-meta/` enthält die Zeile 114 unverändert mit; sie ist weder Korrektur noch Beleg der Wirkung.
+
+## 5. Reservierte Entscheidungen (bleiben immer bei Andi)
+Orders/Echtgeld/Broker; Siegel-Schlüssel und Entsiegelung; Löschung von Rohdaten; Abo-Klicks (Bezahlfeeds); Schlüsselprovisionierung; Produktiv-Merge/-Deploy; neue Feeds mit Kosten.
+
+## 6. Entscheidungen D1–D8
+| # | Frage | Entscheidung / Empfehlung | Frist |
+|---|---|---|---|
+| D1 | Regime (§1) | **ENTSCHIEDEN 22.10.: Entscheiden, nicht fragen** | erledigt |
+| D2 | E-129: Frist 23.10. durch Kapazitäts-Trigger ersetzen (`04` §2) | **Andi „ja“ (22.10.)** – Einsatzleiter setzt um; Stage-2-Ausführung bleibt kritisch/GO | erledigt |
+| D3 | Wie werden versiegelte Rohdaten gesichert (Einzelkopie auf Root-LV)? | **ENTSCHIEDEN 22.10. 22:20 Berlin (Einsatzleiter; Befund A2 steht aus):** Sicherung **nur auf Blockebene** (Proxmox-Backup/Snapshot der CT109-Root-LV auf ein Medium außerhalb des Thin-Pools), **nie** über `archive.py --release-key` oder sonstige Entsiegelung; die Siegel-Semantik bleibt unberührt, solange niemand die Daten liest. Zeigt A2 ein bestehendes, wiederherstellbares Backup: keine zweite Kopie, aber ein Stichproben-Restore (L8). Ausführung = Host-GO nach §3 (Last: `nice`/`ionice`, außerhalb :05–:10, Pfadwahl und Größe im GO-Text). Priorität P1 nach E2/A1, kein Zeitdruck. | nach A2 |
+| D4 | „Kein Feed ohne registrierte Hypothese“ als Regel für Neuaufzeichnung (`03` §6) | **Andi „ja“ (22.10.)**. Folge: IBKR-Depth-Abo (≈ 40 USD/Monat, 3 Aktien) braucht bis ≈ 30.10. eine Hypothese oder wird zum Monatswechsel gekündigt (Kündigung = Abo-Klick, Andi; Abrechnungsregeln prüfen) | Entscheid bis 30.10. |
+| D5 | Lab-Bots weiterlaufen lassen? (Kosten/Nutzen unbekannt) | erst Auftrag C | nach C |
+| D6 | **Code-Freigabe (Andi „ja“, 22.10.):** Projektregel „kein fertiger Code ohne ausdrückliche Anforderung“ – darf für Gate-Tools, Backtest, Paper-Runner (Offline) Code geschrieben werden? | ja, nur Offline/Sandbox, Host-Deploy bleibt Einzel-GO | 23.10. |
+| D7 (Andi „ja“) | Kraken-OHLCVT-Download auf Windows-PC (öffentlich, kostenlos, mehrere GB) und Analyse dort bzw. in der Cloud-Sandbox | ja | 23.10. |
+| D8 | Rolle des Lernbots: Engine als Basis des Paper-Runners nutzen oder neuer eigener Runner? | **ENTSCHIEDEN 22.10. 22:20 Berlin (Einsatzleiter, Stufe C, Repo `13d58ad`, `docs/LERNBOT_DESIGN.md` Gliederung + `src/lernbot/engine.py`, `ledger.py`, `signals.py` gelesen): neuer eigener Runner, Lernbot-Engine nicht als Basis.** Gründe: `engine.py` ist eine reine Funktion eines Buch-/Tick-Nachrichtenstroms (SpotBook/FuturesBook, 100-ms-Buckets, Haltedauer in Sekunden, Latenz 1 s, Instrumente fest BTC/ETH); der LF-1-Runner arbeitet auf Stundenbars ohne Orderbuch. `ledger.py` importiert `lernbot.engine.Config` und `lernbot.fill` – nicht entkoppelt. Würde die Engine Basis, kehrten Guard/Autostopp (Unit: `Restart=always`, unbegrenzte Laufzeit) in den kritischen Pfad zurück. **Wiederverwendet werden nur Muster, keine Module:** Ledger-Schema mit `run`/`config_hash`/Decimal-Text, Placebo-RNG-Regel v2 (`seed ^ crc32(account_id) ^ run_index`), Determinismus „Live = Replay“ (Entscheidung als reine Funktion), Mutationstest-Vorgehen. Slot 0 bleibt aus, Guard bleibt P2. **Grenze:** `LERNBOT_DESIGN.md` (1 620 Zeilen) wurde nur nach Gliederung und Modulköpfen gesichtet, nicht vollständig gelesen. **Nachtrag 22.10. 22:45:** Der host-only Paper-Harness (`src/paper`, `04` §4 Prinzip 6) ist eine andere Baustelle (IBKR-Order-Zustandsmaschine für Track S) und berührt D8 nicht; über seine Wiederverwendung wird nach Sicherung und Review entschieden (E4: nie committet). | erledigt |
+
+## 7. Risiko-Notiz: Schreibrecht des Host-Schlüssels auf GitHub (22.10., Update nach Owner-Abgleich)
+**Befund:**
+- (L3, E2) Der Push von CT109 nach GitHub (Schritt 2A, 20:03 UTC) war erfolgreich; der Host hält **schreibfähige** Zugangsdaten für das private Repo `new-signal-system`. Remote ist **SSH** (`git@github.com:Atmosf3ars/new-signal-system.git`), der Schlüssel liegt als `/root/.ssh/id_ed25519_new_signal_system` (privat, 0600) mit `.pub`. `/root/.git-credentials` und `/root/.config/gh` existieren nicht → Personal-Access-Token als Push-Pfad **ausgeschlossen**.
+- (L3, E4) Öffentlicher Fingerprint: `SHA256:D12zzo5vfg+jyi9srviqEIn3qscmwJ8cR9P7SvELPDg`, Kommentar „deploy-key new-signal-system CT109“.
+- **(L1, Owner, 22.10. 22:46 Berlin, Textangabe, kein Screenshot):** Der Schlüssel steht unter **Repo → Settings → Deploy keys**, Fingerprint beginnt mit `SHA256:D12zzo5v…`, Eintrag „Added on Sep 23, 2026 by @Atmosf3ars“, „Last used within the last week“, **Read/write**. → **Er ist ein auf dieses Repo begrenzter Deploy-Key mit Schreibrecht, kein Konto-Schlüssel.** Damit entfällt die schlimmere Variante (Zugriff auf alle Repos, z. B. `ct109-agentic-lab`). Der vollständige Fingerprint wurde von mir nicht Zeichen für Zeichen mit dem GitHub-Eintrag verglichen; die Angabe „beginnt mit … / `…SvELPDg`“ ist die Bestätigung des Owners.
+- **UNKNOWN:** ob `main` geschützt ist (aus der Cloud-Sandbox nicht lesbar); ob ein Ruleset existiert; ob der private Schlüssel eine Passphrase hat.
+
+**Risiken (unverändert, jetzt auf dieses Repo begrenzt):** (R1) Host kompromittiert oder Fehlbedienung → Push, Force-Push oder Löschen auf `main` und auf `offhost-backup/*`; das GitHub-Backup ist dann nicht unabhängig von dem System, das es schützt (unabhängig ist nur die Kopie auf `D:`). (R2) Prod ist GitHub-Code (`01` §3.1): schreibfähiger Host-Schlüssel plus späterer Pull = Umgehung des Einzel-GO-Prinzips. (R3) Das Repo ist Sync-Quelle dieses Projekts: ein unbemerkter Push fließt als Fremdtext in das Projektwissen (Daten, aber ein Injektionskanal). (R4) Secrets im Repo: E3 heuristisch sauber, kein Beweis. (R5) Der private Schlüssel liegt im Klartext auf einem Host, auf dem `/root` ein ungeschütztes Sammelverzeichnis ist.
+
+**Entscheidung:**
+1. Das Schreibrecht wird nicht ausgeweitet; vom Host gibt es **nie** Push oder Merge auf `main`.
+2. Weitere Host-Pushes nur mit Einzel-GO (§3).
+3. **Härtung durch Andi in GitHub (reversibel, kein Host-Eingriff, kein GO):** (a) **Ruleset** „Schutz main + Backup“ wurde von Andi angelegt (Screenshot 22.10. ≈ 22:49 Berlin, L3: Active, Targets `main` und `offhost-backup/*`, Restrict deletions + Block force pushes, Bypass Repository admin). **Es ist wirkungslos:** der GitHub-Hinweis im selben Screenshot lautet „Your rulesets won't be enforced on this private repository until you move to GitHub Team organization account.“ (b) **Wirksame Maßnahme: Deploy-Key auf Read-only umstellen** (Eintrag löschen, ohne „Allow write access“ neu anlegen mit dem Inhalt der `.pub`), danach Host-Test (`git ls-remote origin`, `git push --dry-run` mit erwarteter Ablehnung). Ein weiterer Backup-Push vom Host ist nicht mehr geplant: der Paper-Harness aus `/root/run` wird per Tar nach `D:` gesichert (kein GitHub-Push); Schreibrecht nur noch für ein einzelnes GO-Fenster. Status: **empfohlen, Umsetzung offen.**
+4. Der Fall „Konto-Schlüssel“ ist durch den Owner-Abgleich ausgeschlossen (Punkt entfällt).
+5. Bis zur Umstellung gilt der Zustand als **akzeptiertes, befristetes Risiko bis Sa 24.10.** Das Ruleset bleibt stehen (wirksam erst bei einem Upgrade, kein Upgrade nur dafür).
+6. **Dokumentation (22.10. ≈ 23:00 Berlin):** Die Projektdokumente `00`–`04` liegen zusätzlich im eigenen privaten Repo `ct109-wissen`, auf das der Host keinen Schlüssel hat; damit entfallen R1–R3 für die Doku (`00` §8).
