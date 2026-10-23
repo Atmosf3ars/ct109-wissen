@@ -300,6 +300,28 @@ ls -la /var/backups/ct109-meta /var/lib/new-signal-system | head -30
 9. **Grenzen:** Kein Restore (Öffnen auf anderer Maschine) und kein Zeilenabgleich gegen das Original erbracht. Keine tägliche Sicherung; Registry wächst weiter.
 10. **Folge (nicht erteilt):** **GO R2** = täglicher Timer (nach Archivlauf, nicht in :05–:10) mit derselben Methode, Rotation (z. B. 14 Stück), Kopie nach `D:` weiterhin manuell. Entwurf folgt als eigene Host-Schreibaktion mit vollständiger Schablone.
 
+### 5g. Auftrag B2 – IBKR-tbt-Ausfall 23.10. (lesend, als Claude-Code-Prompt auf CT109; ausgegeben 23.10. ≈ 15:40 Berlin, Ausgabe **offen**)
+Anlass: HA-Alarme 15:31/15:33 Berlin (`01`, 13:36 UTC). Ersetzt den kurzen Bash-Block aus der Chat-Antwort 15:36 Berlin. Datenzugriff nur Metadaten (IBKR-Tage ab 12.10. versiegelt, `RUNBOOK.md` Datensiegel).
+```
+AUFTRAG B2 – IBKR-tbt-Ausfall 23.10.2026 (nur lesen, danach STOPP)
+
+REGELN (gelten für alles unten):
+- Nur lesen. Kein Neustart, kein start/stop/reload/enable von Units, kein sed/Schreiben in /etc oder /opt, kein git commit/merge/checkout, keine Datei anlegen außer einer Notizdatei unter /tmp, keine Orders, keine neuen API-Abos, kein Gateway-Login.
+- Keine Dateiinhalte von Spool, Parquet oder SQLite lesen (Preise, Ticks, Bücher). Von Datendateien nur Name, Größe, mtime (ls -l --time-style=full-iso, stat). IBKR-Tage ab 12.10. sind versiegelt; kein Analysepfad, kein scripts/analysis-run, kein collector.measure.
+- Kein IBC-Log, kein secrets.env, keine ibkr.env außer den Zeilen IBKR_DEPTH= und IBKR_TICKS=. Keine Kontonummern, URLs oder Zugangsdaten ausgeben.
+- Nicht in den Minuten :05 bis :10 jeder Stunde (UTC) laufen lassen.
+
+AUFGABE:
+1. date -u, systemctl show signal-ibkr ibgateway (ActiveState, MainPID, NRestarts, ActiveEnterTimestamp). scripts/status-report --since "60 min ago" (Aufruf aus /opt/new-signal-system).
+2. Zeitlinie aus journalctl -u signal-ibkr ab 2026-10-23 13:00 UTC: Sessionstarts/-enden, tbt-Abos (reqId, Symbol, Uhrzeit), fresh/re-subscribed (Zeiten, Zähler), jeder Error-/Warning-Code (insbesondere 2103–2108, 2119, 2157, 2158, 1100–1102, 321, 322, 10089, 10167, 10189, 10190, 10197, tbt_limit, tbt_deferred), disconnect. Zeilen auf 220 Zeichen kürzen.
+3. Spool-Aktivität nur per mtime/Größe: für NVDA, INTC, TSLA (Kanäle tbt und depth, soweit aus dem Dateinamen erkennbar) letzte Änderung der heutigen Dateien. Ergebnis in Worten: fließen Depth bzw. tbt-Zeilen seit 13:30 UTC ja/nein/unklar?
+4. Dasselbe Muster am 16.10. (ca. 12:30–15:00 UTC), falls im Journal noch vorhanden: gleiche Codes und Reihenfolge ja/nein.
+5. Code lesen (src/collector/ibkr.py: check_fresh, stale, resubscribe, on_error, Fehlerfilter, reqId-Vergabe, Cancel vor Neu-Abo): Welche Fehler werden nicht protokolliert? Wird vor jedem Neu-Abo gecancelt? Können reqIds doppelt vergeben werden?
+6. Matrix je Hypothese: (a) Error-Handler verschluckt Ablehnungen, (b) Zombie-Abos/Limit (tbt_limit, 10190), (c) doppelte reqId (322), (d) Sitzungskonflikt (10197), (e) Verlust der tbt-Abos nach Farm-Reconnect, (f) Gateway-interner tbt-Zustand hängt, (g) serverseitig kein tbt. Je Hypothese: Beleg dafür, Beleg dagegen, Kennzeichnung [gemessen] / [Code] / [Annahme] / [unklar].
+
+AUSGABE: Fakten zuerst, dann Matrix, dann „welche eine lesende Messung trennt die verbleibenden Hypothesen am besten“. Keine Änderungsvorschläge ohne Begründung, keine Umsetzung. Danach STOPP.
+```
+
 ### 5f. GO H1 – Sicherung der Host-only-Arbeit (ENTWURF 23.10. ≈ 15:20 Berlin, **erteilt 15:22 Berlin laut Andi, Satz `GO H1 – 8aa8844`**; Schablone `02` §3)
 **Grundlage E4b (Andi, 23.10. 13:17 UTC, L3, Screenshots):** `/root/run` ohne `tmp-ro`/`fv`: **134 549 504 B (≈ 128 MiB), 7 504 Dateien** (ohne `.git`, `__pycache__`). Secret-Muster-Zähler: **369 Dateien**; die Namensliste fehlt, weil `tee /dev/stderr` in Andis Terminal „Permission denied“ meldete (Fehler meines Auftrags). Der Zähler zeigt nur Kandidaten (breites Muster, u. a. „secret“, „password“), kein Beweis. Sensible Dateinamen: nur `config.ini` und `secrets.env.example` (in Repo-Kopien unter `deploy/ibc/`, `deploy/`), dazu sehr viele `opt/ibc/config.ini` in Test-Verzeichnissen `tmp-paper/test_*` (Test-Artefakte); keine `*.env`, `*.pem`, `*.key` unter `/root/run`. Ledger: `shadow-live.sqlite` 4 096 B (2×, 17.10.), `shadow-run2-copy.sqlite` 1 765 376 B (19.10., `/root/run`), **Original `/var/lib/private/lernbot/shadow.sqlite` 1 765 376 B (19.10.)**. Gleiche Größe wie die Kopie, Inhaltsgleichheit nicht geprüft.
 1. **Befehl (CT109, root, Arbeitsverzeichnis egal; nicht in den Minuten :05–:10; beim Einfügen aus dem Chat auf Zeilenumbrüche achten, `PYEOF` steht auf eigener Zeile):** SHA-256 des Blocks (Datei mit LF-Zeilenenden und einem Zeilenumbruch am Ende) `8aa8844a020a3d67babea82216e3529e1b462125949771b0eae22644c7fafcb2`.
