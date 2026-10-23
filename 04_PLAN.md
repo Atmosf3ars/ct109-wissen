@@ -638,6 +638,29 @@ AUSGABE: Tabelle, danach vier Sätze: (i) Treten Farm-Abbrüche vor Open auch an
 
 **B3-Ergebnis (23.10.):** siehe `01` (Zeile ≈ 14:20 UTC). Hypothesen: Freitagsprozess nicht gestützt, Laufzeit geschwächt, „Abo hängt nach US-Abbruch“ offen. **Nächste Messung B4 (nur lesend, Entwurf, noch nicht ausgegeben):** nur Metadaten (Name/Größe/mtime) der tbt- und depth-Spooldateien für NVDA/INTC/TSLA an 16.10., 21.10., 23.10.: letzte Änderung der tbt-Datei vor dem Ausfall relativ zum US-Abbruch (12:46/11:09/16:01) und zu 13:30 UTC. Trennt „tbt starb beim Farm-Abbruch“ von „tbt starb erst bei Open/16:01“. Inhalte der Dateien nicht lesen. **Offene Punkte aus B3:** Claude-Code-Erlaubnisregeln mit `*` (Warnung), Scratch-Dumps im `/tmp` des Hosts, Grund der Gateway-Neustarts 14.10./19.10. Nächster Datenpunkt Fr 30.10. Maßnahmenentwurf (Watchdog: bei tbt-Stale nach N wirkungslosen Neu-Abos geplanter Gateway-Neustart, da nur das half) gehört in Runde 2, nicht vor den Freeze; betrifft den IBKR-Collector, nicht H1/H2.
 
+### 5k. Freeze-Block für So 25.10. (Entwurf, Stand Fr 23.10. ≈ 14:40 UTC; **nicht ausführen vor meinem Signal am Sonntag**)
+**Geprüft (C/L6, Sandbox):** beide Hypothesen bestehen `validate_hypothesis` (Regeltyp, Parameternamen, Wertebereiche, Rückblick ≤ Grenze, Asset BTC, H = 24); `hypotheses.json` als einzeilige ASCII-Datei ohne Zeilenumbruch am Ende, SHA-256 `4822cf7f1ffc7341a993d83b1262d7b2637edb2ed5ab9c5c8272727c3e590cff`; `BAU_SPEC_S1S3_v2.md` liegt **im ZIP v0.5.0** (SHA-256 `34d6add4f7c4dbbf0dbcab5311c29f3981382d0885da32d8e8c11354c720e068`, auch nach CRLF-Normalisierung gleich). **Nicht geprüft:** Zulässigkeit der Zellen (BTC, 24 h) gegen `out\gate_result_A.json` auf dem PC; das prüft `freeze` selbst und lehnt sonst ab (Exit 4). **Abweichung:** `README_RUN.md` §2b nennt noch `BAU_SPEC_S1S3_v1.md`; maßgeblich ist v2 (Plan, Spec v2). Die README bleibt unverändert, weil sie im ZIP-Hash steckt; der Befehl unten ersetzt sie.
+Block 1 (PowerShell, schreibt die Liste und zeigt Hashes; **erwartet** die zwei Hashes oben):
+```
+cd D:\CT109-Bau\lf1
+$j = '[{"id":"H1","rule":"TS_MOM","params":{"L":24,"side":"both"},"asset":"BTC","H":24},{"id":"H2","rule":"SHOCK_FADE","params":{"w":4,"k":1.5,"N":168},"asset":"BTC","H":24}]'
+[IO.File]::WriteAllText("$PWD\hypotheses.json", $j, (New-Object Text.UTF8Encoding($false)))
+(Get-FileHash .\hypotheses.json -Algorithm SHA256).Hash.ToLower()
+(Get-FileHash .\BAU_SPEC_S1S3_v2.md -Algorithm SHA256).Hash.ToLower()
+Test-Path .\out\regime_selection.json, .\out\gate_result_A.json, .\out\freeze.json
+```
+Erwartet: Hashes gleich den obigen, `True`, `True`, **`False`** (`freeze.json` darf noch nicht existieren).
+Block 2 (nur bei Block 1 = erwartet; einmalig; Zeile `FREEZE_HASH` zuerst an den Chat, **vor** Block 3):
+```
+$Z = "D:\CT109-Data\kraken-ohlcvt\Kraken_OHLCVT_Full.zip"
+python -m lf1 freeze --zip $Z --regime out\regime_selection.json --gate out\gate_result_A.json --hyps hypotheses.json --bau-spec BAU_SPEC_S1S3_v2.md --out out
+```
+Block 3 (erst nach meiner Bestätigung des Freeze-Hashs; Stufe D, einmalig, beschreibend):
+```
+python -m lf1 backtest --zip $Z --regime out\regime_selection.json --freeze out\freeze.json --stage discovery_A --out out
+```
+**Abbruch:** jede Abweichung in Block 1; `FREEZE ABGELEHNT` (Meldung unverändert an den Chat, nichts löschen, nichts wiederholen); Python-Fehler. **Nach dem Freeze keine Änderung an `lf1/*.py`** (Code-Hash steckt im Freeze).
+
 ## 6. Erfolgskriterien Schutzteil, Stand 29.10. (ersetzen E1–E6 des Owner-Plans, Owner-OK nötig)
 - **E1 Code-Schutz:** V142 + Dirty-Arbeit nachweislich offhost und wiederherstellbar – oder präziser Blocker. (**Stand: GitHub PASS L5, Host-Hash PASS L3, Windows-Hash PASS L3**; offen nur optional Windows-Restore.)
 - **E2 Daten-Schutz:** Sicherungsstatus der versiegelten Rohdaten geklärt (JA/NEIN) und Entscheid D3; **Registry-Kopie außerhalb des Containers (R1 + Kopie nach `D:`: erledigt 22.10., L3/L1) und tägliche Sicherung (R2) offen**; Host-only-Arbeit (`/root/run`) gesichert oder bewusst verworfen (E4b → GO offen).
