@@ -687,6 +687,7 @@ AUSGABE: Fakten zuerst (Abschnitte 1–4), dann drei Sätze: (i) Reicht Platz/La
 ```
 
 ### 5m. GO-Textentwurf DEPLOY + SCHATTENBETRIEB (v0.6.0, Stand Fr 23.10. ≈ 18:50 UTC; **GO-Text vollständig, wartet auf Andis Satz**; frühester Termin: sofort, sonst Sa 24.10. abends)
+**AUSGEFÜHRT 23.10. 19:02 UTC, Ergebnis siehe `01` (Zeile 19:02–19:05 UTC): alle Nachweise erfüllt; Schattenbetrieb läuft.**
 **Voraussetzungen (alle belegt):** (1) QA2 ohne offenen BLOCKER, Windows-Test v0.6.0 bestanden (201 Tests, `code_hash 901f6e0a…daa6`) – `01`; (2) Freeze vorhanden, `FREEZE_HASH 93146882…359c` unabhängig nachgerechnet – `01`; (3) B4/B6 ausgewertet (72 G frei, Python 3.11.2/numpy 1.24.2, Alarmweg geklärt, `04` §5o); (4) `feed-check` läuft **im Befehlsblock selbst** auf CT109 und bricht bei Abweichung ab (in der Sandbox nicht prüfbar: Netzsperre); (5) GO R2 (Registry-Backup) ist **keine** Voraussetzung (Runner berührt Registry/Parquet nicht); bleibt separat angeboten.
 **Paket:** `CT109_PAPER_DEPLOY_v0.6.0_2026-10-23.zip`, 51 453 Byte, **SHA-256 `45e1eeb3f1e6cf3508009f3febf19de3db4e1d697a14966218fad038e708356d`**; enthält `lf1/*.py` (unverändert, `code_hash` nachgerechnet = `901f6e0a…daa6`), `freeze.json` (SHA-256 `902a0f90…ffcd`), `runner_config.json` (alle 9 Felder gesetzt, `shadow: true`, `expected_freeze_hash`/`expected_code_hash` gefüllt), fünf Units/Timer, `DEPLOY.md`. Liegt auf Andis PC unter `D:\CT109-Bau\`. Lokal geprüft (Sandbox, Python 3.11.17/numpy 1.24.2): Entpacken + beide Hashprüfungen OK, `selfcheck`-Grep OK, `paper-run` mit dieser Konfiguration startet (keine Verweigerung; ohne Netz in der Sandbox nach 60 s abgebrochen), `paper-status --max-age-s` meldet bei leerer DB `PAPER-STATUS ALARM: keine Kerze fuer BTC`, `systemd-analyze verify` aller 5 Dateien ohne Meldung. **Nicht geprüft:** Gesamtblock auf CT109, `scp` PC→CT109, Live-Kraken-Antworten, `DynamicUser` mit gleichem `User=` in drei Units, `RestrictAddressFamilies`/leeres `CapabilityBoundingSet` im LXC, `systemd-run` im LXC.
 1. **Exakter Befehl.** Teil A (Andis PowerShell, schreibt nur `/root/ct109-in` auf CT109; `‹CT109-ADRESSE›` trägt Andi ein; erwarteter Hash der ersten Zeile = Paket-SHA-256):
@@ -737,6 +738,7 @@ Befehlsblock-Hash (SHA-256 über Teil A + Teil B, 8 Hex): `db15d060`.
 7. **Satz:** `GO DEPLOY – db15d060`
 
 ### 5n. GO-Textentwurf PAPER-START (v0.6.0; **ENTWURF**; frühestens 24 h nach dem Schattenstart, bei Deploy Fr 23.10. also Sa 24.10. abends)
+**Nächster Schritt:** Schattenauswertung Sa 24.10. ab ≈ 19:05 UTC (nur lesende Befehle, Andi fügt ein), danach GO-Text mit Block-Hash.
 **Voraussetzung (Beleg im Chat vor dem GO-Text):** Auswertung des Schattenbetriebs (`paper-status`, `journalctl`, `errors_24h`, `gap_events`, Last): keine `fetch_error`-Serie, Lücken 0 oder erklärt, jede Stunde eine Kerze, Statusseite aktuell, kein unerklärter Alarm; sonst kein GO-Text.
 1. **Befehl (CT109, root, bash, nicht zwischen :20 und :30 starten, wegen des Watch bei :25):**
 ```
