@@ -178,7 +178,7 @@ curl -sS -m 10 -o /dev/null -w "futures_tickers_http=%{http_code}\n" https://fut
 ```
 Zweck: Läuft der Runner (Python ≥ 3.11, numpy, sqlite) ohne Zusatzinstallation auf CT109, und erreicht CT109 die beiden öffentlichen Endpunkte (je ein GET, kein Schlüssel)? **Auswertungsregeln (vorab):** `ModuleNotFoundError numpy` heißt: Installation nötig, das wäre ein eigener Owner-GO (Host-Schreibaktion); HTTP-Code 200 je Endpunkt = erreichbar, alles andere = Datenpfad BLOCKED bis zur Klärung. Originalausgabe zurückgeben.
 
-**Auftrag A5 – CT109-Shell als root (nur lesen, nicht in den Minuten :05–:10):**
+**Auftrag A5 (ausgeführt 23.10. 09:40 UTC, Ergebnis `01` Changelog) – CT109-Shell als root (nur lesen, nicht in den Minuten :05–:10):**
 ```
 date -u
 apt-cache policy python3-numpy | head -6
@@ -186,6 +186,22 @@ apt-get -s install --no-install-recommends --no-upgrade python3-numpy | grep -E 
 df -B1 --output=source,avail /
 ```
 Zweck: Welche Paketversion und welche Zusatzpakete würde `apt` für numpy ziehen, ohne dass etwas installiert, aktualisiert oder entfernt wird (`-s` = Simulation, schreibt nichts)? **Auswertungsregeln (vorab):** Voraussetzung für einen GO-Entwurf: Simulation zeigt **0 `Remv`**, **0 aktualisierte** Bestandspakete, nur neue Pakete (erwartet ≈ 5–10, ≈ 30–40 MB), numpy-Kandidat ≥ 1.24. Zeigt `apt-cache policy` keinen Kandidaten oder ist der Index veraltet, ist `apt-get update` ein zusätzlicher Schritt im GO. Originalausgabe zurückgeben.
+
+**GO-ENTWURF `GO NUMPY` (Schablone `02` §3; Stand 23.10. 09:45 UTC; noch nicht erteilt):**
+1. **Befehl** (CT109, root, Arbeitsverzeichnis egal, nicht in den Minuten :05–:10; Block mit Zeilenumbrüchen):
+```
+date -u
+nice -n19 ionice -c3 apt-get install -y --no-install-recommends --no-upgrade python3-numpy
+python3 -c "import numpy; print('numpy', numpy.__version__)"
+dpkg -l python3-numpy libblas3 liblapack3 libgfortran5 | tail -4
+```
+   Befehl-Hash (SHA-256 des Blocks, Zeilenende LF): `017acd18babb0b454aa47cafd507a3576a99f1d81067547b2a8e1325fb3d25d0`.
+2. **Zweck:** `numpy` 1.24.2 aus dem Debian-Hauptarchiv für den Paper-Runner (Auftrag A5, Simulation: 4 neue Pakete `libblas3`, `libgfortran5`, `liblapack3`, `python3-numpy`, 0 Updates, 0 Entfernungen). **Nicht Zweck:** kein `pip`, keine Aktualisierung der 74 offenen Bestandspakete, kein Dienstneustart, kein Zugriff auf Registry, Siegel, Parquet oder Spool, kein Runner-Deploy.
+3. **Risiken:** Last gering (≈ 30–40 MB Download, `nice`/`ionice`). Datenrisiko: keins erkennbar, die Pakete sind neu, bestehende Dateien werden nicht überschrieben (Simulation: 0 `Remv`, 0 upgraded). Restrisiko: ein anderes Programm hängt von den neuen Bibliotheken nicht ab, die Dienste laufen unberührt weiter (nicht gemessen). Kosten: keine.
+4. **Rollback (ungetestet):** `apt-get remove -y python3-numpy` (die drei Bibliotheken bleiben harmlos liegen; `apt-get autoremove` wird **nicht** ausgeführt).
+5. **Abbruch:** jede Fehlermeldung von `apt-get`, jede Aufforderung zur Bestätigung außer `-y`, jede Zeile `Remv` oder `upgraded` > 0 in der Ausgabe: nichts weiter ausführen, Originalausgabe zurückgeben.
+6. **Nachweis:** `numpy 1.24.2` in der Ausgabe von `python3 -c …` und `dpkg -l` zeigt `ii` für alle vier Pakete.
+7. **Satz von Andi:** `GO NUMPY – 017acd18`. Gilt nur für diesen Block, einmalig.
 
 **Auftrag A2 – Proxmox-Host (nur falls Andi Zugang hat):** `pct config 109 | grep -E "rootfs|mp0|backup"`; `cat /etc/pve/jobs.cfg 2>/dev/null`; `pvesm status`; `ls -la <Backup-Storage>/dump | tail`; `lvs -o lv_name,lv_size,data_percent,lv_time pve`. Zweck: Existiert irgendeine Sicherung der CT109-Root-LV (also der versiegelten Rohdaten **und** der Registry)? Ergebnis `JA/NEIN/UNKNOWN`.
 
