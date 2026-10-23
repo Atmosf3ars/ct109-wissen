@@ -686,61 +686,83 @@ AUFGABE:
 AUSGABE: Fakten zuerst (Abschnitte 1–4), dann drei Sätze: (i) Reicht Platz/Last/Version für den Runner (nur Aussage, ob Werte der Annahmen in DEPLOY.md §3 widersprechen)? (ii) Gibt es einen Alarmweg bei Dienstausfall, und wie wird er ausgelöst (nur Unit-Ebene)? (iii) Was sagen die Spool-mtimes zu „tbt starb beim Farm-Abbruch“ vs. „bei Open“? Keine Änderungsvorschläge. Danach STOPP.
 ```
 
-### 5m. GO-Textentwurf DEPLOY + SCHATTENBETRIEB (Stand Fr 23.10. ≈ 14:50 UTC; **ENTWURF, nicht erteilbar**: Paketversion, Hashes und Freeze stehen erst nach QA, Freeze und Windows-Test fest; Stelle `‹…›` sind offen; geplant Mi 28.10. nach `DEPLOY.md` §4 B)
-**Voraussetzungen vor dem GO (alle als Beleg im Chat, sonst kein GO-Text):** (1) QA-Bericht ohne offenen BLOCKER und Windows-Test des endgültigen Pakets (Tests OK, `code_hash` = Freeze); (2) Freeze-Datei vorhanden, `FREEZE_HASH` bestätigt; (3) B4 ausgewertet (Platz, Last, Python/numpy `1.24.2`, Alarmweg bei Ausfall geklärt); (4) `feed-check ok` am Tag des GO (Formate der Live-Antworten); (5) `GO R2` entschieden (Registry-Backup), da CT109 im selben Zug Neues bekommt.
-1. **Exakter Befehl.** Teil A, Andis PC (PowerShell, schreibt nur auf CT109 in `/root/ct109-in`): `scp D:\CT109-Bau\‹PAKET›.zip D:\CT109-Bau\lf1\out\freeze.json root@‹CT109-ADRESSE›:/root/ct109-in/` [Annahme: SSH/scp vom PC nach CT109 funktioniert; nicht gemessen; Verzeichnis `/root/ct109-in` vorher mit `mkdir -p` anlegen]. Teil B, CT109, root, `cd /root/ct109-in`, bash:
+### 5m. GO-Textentwurf DEPLOY + SCHATTENBETRIEB (v0.6.0, Stand Fr 23.10. ≈ 18:50 UTC; **GO-Text vollständig, wartet auf Andis Satz**; frühester Termin: sofort, sonst Sa 24.10. abends)
+**Voraussetzungen (alle belegt):** (1) QA2 ohne offenen BLOCKER, Windows-Test v0.6.0 bestanden (201 Tests, `code_hash 901f6e0a…daa6`) – `01`; (2) Freeze vorhanden, `FREEZE_HASH 93146882…359c` unabhängig nachgerechnet – `01`; (3) B4/B6 ausgewertet (72 G frei, Python 3.11.2/numpy 1.24.2, Alarmweg geklärt, `04` §5o); (4) `feed-check` läuft **im Befehlsblock selbst** auf CT109 und bricht bei Abweichung ab (in der Sandbox nicht prüfbar: Netzsperre); (5) GO R2 (Registry-Backup) ist **keine** Voraussetzung (Runner berührt Registry/Parquet nicht); bleibt separat angeboten.
+**Paket:** `CT109_PAPER_DEPLOY_v0.6.0_2026-10-23.zip`, 51 453 Byte, **SHA-256 `45e1eeb3f1e6cf3508009f3febf19de3db4e1d697a14966218fad038e708356d`**; enthält `lf1/*.py` (unverändert, `code_hash` nachgerechnet = `901f6e0a…daa6`), `freeze.json` (SHA-256 `902a0f90…ffcd`), `runner_config.json` (alle 9 Felder gesetzt, `shadow: true`, `expected_freeze_hash`/`expected_code_hash` gefüllt), fünf Units/Timer, `DEPLOY.md`. Liegt auf Andis PC unter `D:\CT109-Bau\`. Lokal geprüft (Sandbox, Python 3.11.17/numpy 1.24.2): Entpacken + beide Hashprüfungen OK, `selfcheck`-Grep OK, `paper-run` mit dieser Konfiguration startet (keine Verweigerung; ohne Netz in der Sandbox nach 60 s abgebrochen), `paper-status --max-age-s` meldet bei leerer DB `PAPER-STATUS ALARM: keine Kerze fuer BTC`, `systemd-analyze verify` aller 5 Dateien ohne Meldung. **Nicht geprüft:** Gesamtblock auf CT109, `scp` PC→CT109, Live-Kraken-Antworten, `DynamicUser` mit gleichem `User=` in drei Units, `RestrictAddressFamilies`/leeres `CapabilityBoundingSet` im LXC, `systemd-run` im LXC.
+1. **Exakter Befehl.** Teil A (Andis PowerShell, schreibt nur `/root/ct109-in` auf CT109; `‹CT109-ADRESSE›` trägt Andi ein; erwarteter Hash der ersten Zeile = Paket-SHA-256):
 ```
-set -eu
-echo "‹PAKET-SHA256›  ‹PAKET›.zip" | sha256sum -c -
-echo "‹FREEZE-DATEI-SHA256›  freeze.json" | sha256sum -c -
+$Z = "D:\CT109-Bau\CT109_PAPER_DEPLOY_v0.6.0_2026-10-23.zip"
+(Get-FileHash $Z -Algorithm SHA256).Hash.ToLower()
+ssh root@‹CT109-ADRESSE› "mkdir -p /root/ct109-in"
+scp $Z root@‹CT109-ADRESSE›:/root/ct109-in/
+```
+Teil B (CT109, root, bash, als **ein** Block einfügen):
+```
+set -euo pipefail
+export PYTHONDONTWRITEBYTECODE=1
+cd /root/ct109-in
+echo "45e1eeb3f1e6cf3508009f3febf19de3db4e1d697a14966218fad038e708356d  CT109_PAPER_DEPLOY_v0.6.0_2026-10-23.zip" | sha256sum -c -
 test ! -e /opt/ct109-paper
+test ! -e /var/lib/ct109-paper
+rm -rf /root/ct109-in/pkg
+python3 -m zipfile -e CT109_PAPER_DEPLOY_v0.6.0_2026-10-23.zip pkg
+echo "902a0f908f97cc7739d92383d121ecc3a8069d01dd13b663004faa1a42f8ffcd  pkg/freeze.json" | sha256sum -c -
 install -d -m 0755 /opt/ct109-paper
-python3 -m zipfile -e ‹PAKET›.zip /root/ct109-in/pkg
-cp -r /root/ct109-in/pkg/lf1 /opt/ct109-paper/lf1
-install -m 0644 freeze.json /opt/ct109-paper/freeze.json
-install -m 0644 /root/ct109-in/pkg/deploy/runner_config.example.json /opt/ct109-paper/runner_config.json
-install -m 0644 /root/ct109-in/pkg/deploy/ct109-paper-runner.service /root/ct109-in/pkg/deploy/ct109-paper-status.service /root/ct109-in/pkg/deploy/ct109-paper-status.timer /etc/systemd/system/
+cp -r pkg/lf1 /opt/ct109-paper/lf1
+install -m 0644 pkg/freeze.json pkg/runner_config.json /opt/ct109-paper/
 grep -n '"shadow"' /opt/ct109-paper/runner_config.json
-systemd-analyze verify /etc/systemd/system/ct109-paper-runner.service /etc/systemd/system/ct109-paper-status.service
-cd /opt/ct109-paper && python3 -m lf1 selfcheck | grep -E 'code_hash|lf1_version'
+cd /opt/ct109-paper
+python3 -m lf1 selfcheck > /root/ct109-in/selfcheck.json
+grep -q '"code_hash": "901f6e0a3086184cb55952dbdcda195f03aa0fba2fd8588b14de3be01edbdaa6"' /root/ct109-in/selfcheck.json
+python3 -m lf1 feed-check > /root/ct109-in/feed-check.json
+grep -E '"ok"|utc_now' /root/ct109-in/feed-check.json
+install -m 0644 /root/ct109-in/pkg/deploy/ct109-paper-runner.service /root/ct109-in/pkg/deploy/ct109-paper-status.service /root/ct109-in/pkg/deploy/ct109-paper-status.timer /root/ct109-in/pkg/deploy/ct109-paper-watch.service /root/ct109-in/pkg/deploy/ct109-paper-watch.timer /etc/systemd/system/
+systemd-analyze verify /etc/systemd/system/ct109-paper-runner.service /etc/systemd/system/ct109-paper-status.service /etc/systemd/system/ct109-paper-watch.service
 systemctl daemon-reload
-systemctl enable --now ct109-paper-runner.service ct109-paper-status.timer
+systemd-run --unit=ct109-alarmtest --property=OnFailure=signal-unit-failed@ct109-alarmtest.service --collect --wait /bin/false || true
+sleep 20
+journalctl -u signal-unit-failed@ct109-alarmtest.service -n 10 --no-pager
+systemctl enable --now ct109-paper-runner.service ct109-paper-status.timer ct109-paper-watch.timer
 sleep 90
-systemctl is-active ct109-paper-runner.service ct109-paper-status.timer
+systemctl is-active ct109-paper-runner.service ct109-paper-status.timer ct109-paper-watch.timer
 journalctl -u ct109-paper-runner.service -n 20 --no-pager
 python3 -m lf1 paper-status --config /opt/ct109-paper/runner_config.json
 ```
-Befehlsblock-Hash: `‹8 Hex›` (nach Fertigstellung, wie bei GO G2 mit `sha256sum`).
-2. **Zweck:** Runner installieren und im **Schattenmodus** (`"shadow": true`, nie ein Einstieg) 24 h laufen lassen: Feed, Latenz, Lücken, Last, Statusseite. **Nicht Zweck:** Paper-Wertung (Schatten-DB zählt nicht), Änderung bestehender Dienste, Parquet/Registry/IBKR, Orders, Schlüssel, `apt`, offene Ports.
-3. **Risiken:** neue Prozesse auf dem Host mit Netzzugriff auf zwei öffentliche Kraken-Ziele; Last (Annahme `DEPLOY.md` §3, B4 prüft); `DynamicUser=yes` mit gleichem `User=` in zwei Units ungetestet (Fehler = Dienst startet nicht, kein Schaden; Ersatz `User=root` bräuchte neuen GO-Text); Ausfall bliebe still, solange der Alarmweg nicht verdrahtet ist (`OnFailure=` auskommentiert, B4 klärt, **vor dem GO entscheiden**).
-4. **Rollback (ungetestet):** der Block in `DEPLOY.md` §6 (disable/stop, Unit-Dateien löschen, `/opt/ct109-paper` umbenennen); `/var/lib/ct109-paper` bleibt als Beweismaterial.
-5. **Abbruch (messbar):** `sha256sum -c` meldet nicht `OK`; `/opt/ct109-paper` existiert schon; `systemd-analyze verify` gibt Fehler aus; `code_hash` im `selfcheck` ≠ Freeze; Dienst nicht `active` nach 90 s; Ausgabe `RUNNER START VERWEIGERT`; weitere Kriterien `DEPLOY.md` §5.
-6. **Nachweis:** `is-active` zweimal `active`; Journalzeile `RUNNER START freeze=‹Hash› code=‹Hash› assets=BTC`; `paper-status`: `age_s` < 3700 nach dem ersten Stundenwechsel, `gap_events` 0, `kill_flag` false.
-7. **Satz:** `GO DEPLOY – ‹8 Hex›`.
+Befehlsblock-Hash (SHA-256 über Teil A + Teil B, 8 Hex): `db15d060`.
+2. **Zweck:** Runner installieren und **24 h im Schattenmodus** (`shadow: true`, nie ein Einstieg) laufen lassen: Feed, Latenz, Lücken, Last, Statusseite, Alarmweg. Enthält einen **absichtlichen Testalarm** (`ct109-alarmtest`, `/bin/false`, `OnFailure` → bestehende Vorlage): **Andi bekommt dafür einen kritischen HA-Alarm „ct109-alarmtest.service failed“ – das ist der Nachweis, kein Notfall.** **Nicht Zweck:** Paper-Wertung (Schatten-DB zählt nicht), Änderung bestehender Dienste/Units/Alerting, Parquet/Registry/IBKR, Orders, Schlüssel, `apt`, offene Ports.
+3. **Risiken:** neue Prozesse mit Netzzugriff auf zwei öffentliche Kraken-Ziele (GET, keine Schlüssel); Last (Annahme `DEPLOY.md` §3: < 80 MB, CPUQuota 25 %); `DynamicUser=yes` mit gleichem Namen in drei Units ungetestet (Fehlermodus: Dienst startet nicht, kein Schaden); Testalarm erzeugt eine echte Meldung; ein hängender Runner ohne `failed` wird erst vom stündlichen Watch (Minute 25, Schwelle 7800 s) erkannt, also bis ≈ 2 h 10 min später; ein fehlschlagender Watch alarmiert stündlich neu (kein „wieder OK“).
+4. **Rollback (ungetestet):** `DEPLOY.md` §6 (`systemctl disable --now ct109-paper-watch.timer ct109-paper-status.timer ct109-paper-runner.service`, fünf Unit-Dateien löschen, `daemon-reload`, `/opt/ct109-paper` umbenennen); `/var/lib/ct109-paper` bleibt als Beweismaterial; bestehende Dienste werden nicht berührt.
+5. **Abbruch (messbar):** jede Zeile des Blocks, die `set -e` auslöst (Hash ≠, `/opt/ct109-paper` oder `/var/lib/ct109-paper` existiert, `selfcheck` ohne den Code-Hash, `feed-check` Exit 7); `systemd-analyze verify` mit Ausgabe; `is-active` ≠ dreimal `active`; Journal zeigt `RUNNER START VERWEIGERT`; **kein HA-Alarm für `ct109-alarmtest` innerhalb von 3 min** (dann Alarmweg nicht belegt → Runner stoppen, Rollback, Meldung an den Chat). Immer: Originalausgabe unverändert an den Chat, nichts wiederholen, nichts löschen.
+6. **Nachweis:** `sha256sum -c` zweimal `OK`; `"ok": true` im `feed-check`; `journalctl` des Testalarms (Vorlage lief); HA-Alarm sichtbar; `is-active` dreimal `active`; Journalzeile `RUNNER START … freeze=93146882… code=901f6e0a…`; `paper-status`: `mode shadow`, `errors_24h` 0, Kerze für BTC aus der aktuellen Stunde (der Freeze nutzt nur BTC).
+7. **Satz:** `GO DEPLOY – db15d060`
 
-### 5n. GO-Textentwurf PAPER-START (Stand Fr 23.10.; **ENTWURF**; geplant Do 29.10. nach bestandener Schatten-Auswertung)
-**Voraussetzung (Beleg):** Auswertung des 24-h-Schattenbetriebs: keine `fetch_error`-Serie, Latenz und Last innerhalb der Annahmen, `gap_events` 0 oder erklärt, Statusseite aktuell; sonst kein GO-Text.
-1. **Befehl (CT109, root, bash):**
+### 5n. GO-Textentwurf PAPER-START (v0.6.0; **ENTWURF**; frühestens 24 h nach dem Schattenstart, bei Deploy Fr 23.10. also Sa 24.10. abends)
+**Voraussetzung (Beleg im Chat vor dem GO-Text):** Auswertung des Schattenbetriebs (`paper-status`, `journalctl`, `errors_24h`, `gap_events`, Last): keine `fetch_error`-Serie, Lücken 0 oder erklärt, jede Stunde eine Kerze, Statusseite aktuell, kein unerklärter Alarm; sonst kein GO-Text.
+1. **Befehl (CT109, root, bash, nicht zwischen :20 und :30 starten, wegen des Watch bei :25):**
 ```
-set -eu
-systemctl stop ct109-paper-runner.service
+set -euo pipefail
+export PYTHONDONTWRITEBYTECODE=1
+systemctl stop ct109-paper-watch.timer ct109-paper-status.timer ct109-paper-runner.service
 D=/var/lib/ct109-paper/archiv/schatten-$(date -u +%Y%m%dT%H%M%SZ)
 install -d -m 0755 "$D"
 mv /var/lib/ct109-paper/runner.sqlite* "$D"/
 sed -i 's/"shadow": true/"shadow": false/' /opt/ct109-paper/runner_config.json
-grep -n '"shadow"' /opt/ct109-paper/runner_config.json
+grep -n '"shadow": false' /opt/ct109-paper/runner_config.json
 systemctl start ct109-paper-runner.service
 sleep 60
-systemctl is-active ct109-paper-runner.service
+systemctl start ct109-paper-status.timer ct109-paper-watch.timer
+systemctl is-active ct109-paper-runner.service ct109-paper-status.timer ct109-paper-watch.timer
 journalctl -u ct109-paper-runner.service -n 10 --no-pager
 ls -l "$D"
+cd /opt/ct109-paper && python3 -m lf1 paper-status --config /opt/ct109-paper/runner_config.json
 ```
-2. **Zweck:** Wechsel von Schatten auf **Paper** (Einstiege werden simuliert, kein Echtgeld) mit frischer Datenbank; Schatten-DB archiviert. **Nicht Zweck:** neue Hypothesen, Parameteränderung, Löschen, Eingriff in laufende Signale.
-3. **Risiken:** Datenlücke ≈ 1–2 min beim Neustart (eine Stundenkerze wird per Idempotenz nachgeholt; Annahme, Lückenverhalten im QA-Bericht prüfen); ab Start gilt **kein manuelles Eingreifen** (nur Kill-Schalter, Abweichung wird in `01` protokolliert).
-4. **Rollback (ungetestet):** `systemctl stop`, `shadow` zurück auf `true`, archivierte DB zurück; Paper-Wertung wäre dann ungültig und beginnt neu.
-5. **Abbruch:** Dienst nicht `active` nach 60 s; `RUNNER START VERWEIGERT`; `grep` zeigt nicht `false`; `mv` meldet Fehler.
-6. **Nachweis:** `active`, Journalzeile `RUNNER START …`, `ls -l "$D"` zeigt die archivierte DB, `paper-status` nach der nächsten vollen Stunde mit neuer Kerze und `shadow` false.
-7. **Satz:** `GO PAPER-START – ‹8 Hex›`.
+Befehlsblock-Hash: `‹8 Hex, nach Freigabe des Textes›`.
+2. **Zweck:** Wechsel von Schatten auf **Paper** (Einstiege werden simuliert, kein Echtgeld) mit **frischer Datenbank**; Schatten-DB archiviert (`runner.sqlite*` inkl. Sperrdatei). Der Modus steht fest in der DB (Umschalten wird vom Runner verweigert). **Nicht Zweck:** neue Hypothesen, Parameteränderung, Löschen, Eingriff in laufende Signale.
+3. **Risiken:** Datenlücke ≈ 1–2 min beim Neustart (eine Stundenkerze wird per Idempotenz nachgeholt; Annahme); Timer sind während des Wechsels gestoppt, damit Watch/Status nicht gegen die leere DB alarmieren; ab Start gilt **kein manuelles Eingreifen** (nur Kill-Schalter, jede Abweichung wird in `01` protokolliert); Spec V2.1: Ergebnis ist Betriebstest, kein Edge-Beleg (beide Hypothesen `NULLBEFUND`).
+4. **Rollback (ungetestet):** Runner stoppen, `shadow` zurück auf `true`, archivierte DB zurückkopieren; Paper-Wertung wäre ungültig und beginnt neu.
+5. **Abbruch:** `set -e`-Abbruch (Archivierung, `grep` zeigt nicht `"shadow": false`); Runner nicht `active`; `RUNNER START VERWEIGERT`; `ls` zeigt die archivierte DB nicht.
+6. **Nachweis:** dreimal `active`, Journalzeile `RUNNER START … mode=paper` (sinngemäß), archivierte DB im `ls`, `paper-status` mit `mode paper`, nach der nächsten vollen Stunde neue Kerze.
+7. **Satz:** `GO PAPER-START – ‹8 Hex›`
 
 ### 5o. B4-Ergebnis und Auftrag B5 (23.10. ≈ 15:10 UTC)
 **B4 ausgewertet (Andis Screenshots, Host 14:37:30 UTC, L3):** `/`, `/opt`, `/var/lib` ein Volume, 122 G, 45 G belegt, **72 G frei**; RAM 8192 MB, 6867 MB verfügbar, Swap 1 MB genutzt; 4 Kerne, Load ≈ 0,85; Uptime 4 d 4:54; systemd 252 (252.30-1~deb12u2); Python 3.11.2, numpy 1.24.2, SQLite 3.40.1; **keine Reste** von `/opt/ct109-paper`, `/var/lib/ct109-paper`, `ct109-paper-*`-Units, Benutzer `ct109-paper`; 6 TCP-Listener. **Alarmweg:** `OnFailure=signal-unit-failed@%n.service` bei clock, ibkr, ingestion, kraken, kraken-x, kraken-futures-x, kraken-funding, netprobe, compactor, lernbot, lernbot-watch (Typ oneshot, ruft `.venv/bin/python -m alerting.unit_failed %i`, Skript 33 Zeilen, Inhalt nicht gelesen); er greift erst, wenn die Unit nach StartLimit (5 Starts in 5 min) `failed` ist; `signal-alerting`, `signal-heartbeat`, `signal-ibkr-watch`, `signal-status` ohne OnFailure. **Spool:** je Symbol nur die laufende Stunde als JSONL (NVDA 1,70 GB, INTC 1,76 GB, TSLA 0,39 GB nach 38 min, ≈ 3,9 GB, wächst bis ≈ 6 GB/h); Kompaktierung zu `parquet/…/hour=HH/part-0.parquet`, mtime = Kompaktierzeit, **tbt und depth nicht getrennt** → die Frage „tbt starb beim Farm-Abbruch oder bei Open“ ist aus Metadaten **[unklar]** (nur: Stunde 12 klein, ab Stunde 13 groß). **Nicht ausgeführt/Abweichung:** `DEPLOY.md` liegt nicht auf dem Host (steht im Paket), daher kein Abgleich von §3 am Host; mein Auftrag war hier ungenau. Claude Code fragte nach `/root/ergebnis.md`: Antwort **Nein** (Auftragsregel „keine Datei“ geht vor).
