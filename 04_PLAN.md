@@ -166,7 +166,7 @@ nice -n19 ionice -c3 du -xB1 --max-depth=1 /var/lib/new-signal-system/parquet
 ```
 Zweck: Aufteilung Parquet/Spool und Größe je Venue (nur Größen, keine Inhalte). **Auswertungsregeln (vorab):** Summe der Ebene-1-Zeilen muss auf ±1 % zur Gesamtzahl 32 471 126 016 B (23.10. 08:53 UTC) passen, sonst Lesart UNKNOWN; Messpunkt zählt für die Rate nur bei ≥ 20 h Abstand zu einem früheren Punkt. Originalausgabe zurückgeben.
 
-**Auftrag A4 – CT109-Shell als root (nur lesen, nicht in den Minuten :05–:10):**
+**Auftrag A4 (ausgeführt 23.10. 09:38 UTC, Ergebnis `01` Changelog) – CT109-Shell als root (nur lesen, nicht in den Minuten :05–:10):**
 ```
 date -u
 python3 --version
@@ -177,6 +177,15 @@ curl -sS -m 10 -o /dev/null -w "kraken_time_http=%{http_code}\n" https://api.kra
 curl -sS -m 10 -o /dev/null -w "futures_tickers_http=%{http_code}\n" https://futures.kraken.com/derivatives/api/v3/tickers
 ```
 Zweck: Läuft der Runner (Python ≥ 3.11, numpy, sqlite) ohne Zusatzinstallation auf CT109, und erreicht CT109 die beiden öffentlichen Endpunkte (je ein GET, kein Schlüssel)? **Auswertungsregeln (vorab):** `ModuleNotFoundError numpy` heißt: Installation nötig, das wäre ein eigener Owner-GO (Host-Schreibaktion); HTTP-Code 200 je Endpunkt = erreichbar, alles andere = Datenpfad BLOCKED bis zur Klärung. Originalausgabe zurückgeben.
+
+**Auftrag A5 – CT109-Shell als root (nur lesen, nicht in den Minuten :05–:10):**
+```
+date -u
+apt-cache policy python3-numpy | head -6
+apt-get -s install --no-install-recommends --no-upgrade python3-numpy | grep -E "^(Inst|Remv|Conf)|upgraded|newly installed"
+df -B1 --output=source,avail /
+```
+Zweck: Welche Paketversion und welche Zusatzpakete würde `apt` für numpy ziehen, ohne dass etwas installiert, aktualisiert oder entfernt wird (`-s` = Simulation, schreibt nichts)? **Auswertungsregeln (vorab):** Voraussetzung für einen GO-Entwurf: Simulation zeigt **0 `Remv`**, **0 aktualisierte** Bestandspakete, nur neue Pakete (erwartet ≈ 5–10, ≈ 30–40 MB), numpy-Kandidat ≥ 1.24. Zeigt `apt-cache policy` keinen Kandidaten oder ist der Index veraltet, ist `apt-get update` ein zusätzlicher Schritt im GO. Originalausgabe zurückgeben.
 
 **Auftrag A2 – Proxmox-Host (nur falls Andi Zugang hat):** `pct config 109 | grep -E "rootfs|mp0|backup"`; `cat /etc/pve/jobs.cfg 2>/dev/null`; `pvesm status`; `ls -la <Backup-Storage>/dump | tail`; `lvs -o lv_name,lv_size,data_percent,lv_time pve`. Zweck: Existiert irgendeine Sicherung der CT109-Root-LV (also der versiegelten Rohdaten **und** der Registry)? Ergebnis `JA/NEIN/UNKNOWN`.
 
