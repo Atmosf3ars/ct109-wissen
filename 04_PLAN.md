@@ -414,5 +414,5 @@ $z = Get-FileHash .\Kraken_OHLCVT_Full.zip -Algorithm SHA256
 - **E3 Kapazität:** Messreihe ≥ 5 Punkte; 30-Tage-Aussage oder BLOCKED; Thin-Pool-Alarm entworfen.
 - **E4 Forschung:** Bewegungsbudget-Gate vorregistrierbar beschrieben (`GATE_SPEC_v1.md`, erledigt); sicherer Reader entworfen und synthetisch getestet; SOL = registrierte Hypothesen **oder** dokumentierter Nullbefund/BLOCKED; LF-1-Entwurf.
 - **E5 Betrieb:** Lernbot bleibt aus; BTC/ETH-L2 bleibt aus.
-- **E6 Doku:** 5 Dateien aktuell (+ Gate-Spec), Tagesabschluss = Änderungslog; **Wissensspeicher `ct109-wissen` als Wahrheit, Sicherungspaket auf `D:`** (`00` §8).
+- **E6 Doku:** 5 Dateien aktuell (+ Gate-Spec), Tagesabschluss = Änderungslog; erstes Sicherungspaket 23.10. auf `D:` abgelegt und per Hash geprüft (01, 13:14 UTC); **Wissensspeicher `ct109-wissen` als Wahrheit, Sicherungspaket auf `D:`** (`00` §8).
 Stop-Regel bleibt: scheitert ein hartes Gate, keine Scope-Ausweitung, sondern Ursache und sichere Alternative.
