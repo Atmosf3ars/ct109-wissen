@@ -612,6 +612,30 @@ $z = Get-FileHash .\Kraken_OHLCVT_Full.zip -Algorithm SHA256
 **Messung (nur lesend, Journal seit 14.10., keine Inhalte/Secrets):** je Tag (UTC) Anzahl US-Farm-Abbrüche (2103/2104/2119) vor 13:30 UTC, Zeitpunkte; Anzahl „ohne Daten“-Alarme/stale-Lücken je Titel; Startzeiten von `ibgateway`/`signal-ibkr`.
 **Auswertung vorab:** Freitagsprozess gestützt nur, wenn Mo–Do keine tbt-Lücke bei vergleichbaren Farm-Abbrüchen vor Open und beide Freitage gleich beginnen; Laufzeit-Hypothese gestützt nur, wenn Ausfälle mit Laufzeit >4 Tage zusammenfallen (am 16.10. Gateway-Startzeit prüfen); sonst UNKNOWN. Weiterer Datenpunkt: Fr 30.10.
 
+**Prompt B3 (Stand 23.10. 16:05 Berlin, Claude Code auf CT109, nur lesend):**
+```
+AUFTRAG B3 – Periodizität der IBKR-tbt-Ausfälle seit 14.10.2026 (nur lesen, danach STOPP)
+
+REGELN (wie B2):
+- Nur lesen. Kein start/stop/restart/reload/enable von Units, kein Schreiben in /etc oder /opt, kein git commit/checkout, nur eine Notizdatei unter /tmp, keine Orders, keine neuen API-Abos, kein Gateway-Login.
+- Keine Inhalte von Spool/Parquet/SQLite lesen; von Datendateien nur Name, Größe, mtime. IBKR-Tage ab 12.10. sind versiegelt; kein Analysepfad, kein scripts/analysis-run, kein collector.measure.
+- Kein IBC-Log, kein secrets.env, keine ibkr.env. Keine Konten, URLs, Zugangsdaten ausgeben.
+- Nicht in den Minuten :05 bis :10 jeder Stunde (UTC) laufen lassen.
+
+AUFGABE (Zeitraum 2026-10-14 00:00 UTC bis jetzt; falls das Journal kürzer reicht: sagen, ab wann es reicht):
+1. date -u; journalctl --disk-usage; ältester Journal-Eintrag von signal-ibkr und ibgateway.
+2. Tabelle je Handelstag (UTC, Mo–Fr; Wochenende nur als Zeile "keine Handelstage"): 
+   a) Startzeit(en) von ibgateway und signal-ibkr (journalctl-Startmeldungen, ActiveEnter) und daraus die Gateway-Laufzeit um 13:30 UTC in Stunden;
+   b) Zahl und Uhrzeiten der Meldungen 2103/2104/2119 (US-Farm) zwischen 00:00 und 13:30 UTC, getrennt nach "US-Farm" und anderen Farmen;
+   c) Zahl der Meldungen "ohne Daten"/stale/Neu-Abo je Kanal (tbt, depth) und Titel, mit erster und letzter Uhrzeit;
+   d) ob am Tag ein Gateway-/Collector-Neustart nötig war (ja/nein, Uhrzeit).
+3. Für jeden Tag mit tbt-"ohne Daten": Beginnzeit relativ zu 13:30 UTC und Zeit seit dem letzten US-Farm-Abbruch davor; für jeden Tag OHNE tbt-Ausfall: gab es davor ebenfalls einen US-Farm-Abbruch (ja/nein, wann)?
+4. Gleiche Frage für die Zeit nach dem Neustart 23.10. ~13:52 UTC bis jetzt (nur Befund, nicht werten).
+5. Kennzeichne jede Zeile [gemessen] / [unklar]. Keine Hypothese als belegt ausgeben.
+
+AUSGABE: Tabelle, danach vier Sätze: (i) Treten Farm-Abbrüche vor Open auch an Tagen ohne Ausfall auf? (ii) Fallen Ausfälle mit Gateway-Laufzeit >4 Tage zusammen? (iii) Beginnen alle Ausfälle exakt bei 13:30 UTC? (iv) Welche Hypothese (Freitagsprozess / Laufzeit / hängender Abo-Zustand nach Farm-Abbruch) wird dadurch gestützt, welche geschwächt, welche bleibt offen. Keine Änderungsvorschläge. Danach STOPP.
+```
+
 ## 6. Erfolgskriterien Schutzteil, Stand 29.10. (ersetzen E1–E6 des Owner-Plans, Owner-OK nötig)
 - **E1 Code-Schutz:** V142 + Dirty-Arbeit nachweislich offhost und wiederherstellbar – oder präziser Blocker. (**Stand: GitHub PASS L5, Host-Hash PASS L3, Windows-Hash PASS L3**; offen nur optional Windows-Restore.)
 - **E2 Daten-Schutz:** Sicherungsstatus der versiegelten Rohdaten geklärt (JA/NEIN) und Entscheid D3; **Registry-Kopie außerhalb des Containers (R1 + Kopie nach `D:`: erledigt 22.10., L3/L1) und tägliche Sicherung (R2) offen**; Host-only-Arbeit (`/root/run`) gesichert oder bewusst verworfen (E4b → GO offen).
