@@ -1,6 +1,6 @@
 # CT109 – 00 START HIER
 
-**Stand:** 22.10.2026, Konsolidierung nach Modellwechsel (Quellen: Übergabe-ZIP, Hostbelege bis 22.10. ≈ 20:45 UTC, Repo-Check 22.10. abends). §8 „Dokumentationssicherung und Übergabe“ am 22.10. 22:55 Berlin ergänzt.
+**Stand:** 22.10.2026, Konsolidierung nach Modellwechsel (fortgeschrieben 23.10.2026: siebte Datei, Übergabeprüfung) (Quellen: Übergabe-ZIP, Hostbelege bis 22.10. ≈ 20:45 UTC, Repo-Check 22.10. abends). §8 „Dokumentationssicherung und Übergabe“ am 22.10. 22:55 Berlin ergänzt.
 **Zweck:** Einziger Einstieg. Wer nur diese Datei und `01_STATUS.md` liest, kann morgen sicher weiterarbeiten.
 **Doktrin:** Discovery offensiv. Validierung ohne Gnade. Gemessen bleibt gemessen, Annahmen bleiben Annahmen. Niemals PASS ohne Beleg.
 
@@ -16,6 +16,8 @@
 | `ARCHIV/INDEX.md` | Zuordnung alt → neu mit SHA-256; Originale bleiben unverändert im ZIP | nie |
 
 **Sechste Datei, mit Begründung (22.10.2026):** `GATE_SPEC_v1.md` – die Gate-Spezifikation. Sie muss **unveränderlich** sein, weil ihr SHA-256-Hash (eingetragen in `01` §1/§6) vor jedem Datenblick den Beweis liefert, dass Schwellen und Regeln nicht nachträglich angepasst wurden; in einer täglich geänderten Datei wäre das nicht möglich. Änderungen nur als v2 vor Datenzugriff. Zugleich Ausnahme von der Regel „keine V-Nummern“: die Versionsnummer gehört hier zur Hash-Kette.
+
+**Siebte Datei, mit Begründung (23.10.2026):** `BAU_SPEC_S1S3_v1.md` – die Bau-Spezifikation (S1 Gate-Tool, S2 Kern/Backtest mit Entscheidungsregeln, S3 Paper-Runner). Gleiche Begründung wie bei der Gate-Spec: die Entscheidungsregeln (Power, BH-FDR, Placebo, Stress, Konzentration, Bestätigung) müssen **vor** der Auswertung festliegen, und ihr SHA-256-Hash (`01` §1/§6) beweist das. Sie ersetzt den Lab-Entwurf `lab_draft/docs/SPRINT_LF1_SPEC.md`, dessen §1 von der Gate-Spec abwich (`01` §5.15). Änderungen nur als `BAU_SPEC_S1S3_v2.md`.
 
 Nicht angefasst und weiter maßgeblich: `PROJECT.md`, `PROJECT_PROMPT.md` (Gründungsdokumente), im Repo `BLUEPRINT.md`, `ARCHITECTURE.md`, `RUNBOOK.md`, `PREREGISTRATION.md`, `docs/CT109_SOL_PREREG_DRAFT_2026-10-21.md`.
 
@@ -64,7 +66,7 @@ Du bist leitender Systemarchitekt und Quant-Researcher von CT109 („Neues Signa
 
 DOKTRIN: Discovery offensiv, Validierung ohne Gnade. Gemessen bleibt gemessen, Annahmen bleiben Annahmen. Niemals PASS ohne Beleg. Wir sind mutig und revolutionär, wir suchen Lösungen und zerlegen das Problem bis zum Mechanismus. Wir lassen uns von Daten widerlegen, nicht von Konventionen.
 
-QUELLEN: Die Wahrheit liegt im privaten GitHub-Repo Atmosf3ars/ct109-wissen (als Projektquelle eingebunden; Kopien der Dateien liegen im Projekt unter ct109/). Lies zuerst 00_START_HIER, 01_STATUS, 02_ENTSCHEIDUNGEN_GO, 03_FORSCHUNG, 04_PLAN und GATE_SPEC_v1. Prüfe Aussagen mit Evidenzstufen.
+QUELLEN: Die Wahrheit liegt im privaten GitHub-Repo Atmosf3ars/ct109-wissen (als Projektquelle eingebunden; Kopien der Dateien liegen im Projekt unter ct109/). Lies zuerst 00_START_HIER, 01_STATUS, 02_ENTSCHEIDUNGEN_GO, 03_FORSCHUNG, 04_PLAN, GATE_SPEC_v1 und BAU_SPEC_S1S3_v1. Prüfe Aussagen mit Evidenzstufen.
 
 ZIEL: Bis Mo 02.11.2026 läuft ein vollautomatischer Paper-Betrieb (eingefrorene LF-1-Hypothesenliste + Placebo-Kontrolle). Davor liegen das Gate-Ergebnis und Discovery/Bestätigung auf Historie in zwei Regimen vor (04 §4, Version 2 „parallel“). KRITISCHER PFAD ist die Bauspur: Der Runner muss bis Di 27.10. QA-PASS haben. Am Tag 0 (22.10.) war sie noch bei null. Sicherungsarbeit darf sie nicht verdrängen.
 

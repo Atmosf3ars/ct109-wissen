@@ -1,6 +1,6 @@
 # CT109 – 04 PLAN
 
-**Stand:** 22.10.2026 spätabends (nach E2, E4, Windows-Hashvergleich und R1). Der Plan des Owners (`10_TAGE_PLAN`, beschlossen 19.10., Original im ARCHIV) ist **Arbeitsplanung, kein GO**. Dieses Dokument enthält das Review des Einsatzleiters, den daraus folgenden Kurs und die nächsten Read-only-Aufträge.
+**Stand:** 23.10.2026 ≈ 09:45 Berlin (nach Übergabeprüfung und Bauspur-Start; Hostbelege weiter vom 22.10.). Der Plan des Owners (`10_TAGE_PLAN`, beschlossen 19.10., Original im ARCHIV) ist **Arbeitsplanung, kein GO**. Dieses Dokument enthält das Review des Einsatzleiters, den daraus folgenden Kurs und die nächsten Read-only-Aufträge.
 
 ## 1. Warum der 10-Tage-Plan gemacht wurde – und wie kritisch er wirklich ist
 Auslöser (aus den Dokumenten, L1): Hostausfall 19.10. (Datenlücke ≈ 09:10–09:43 UTC), Incident 114 am 18.10., E-129-Frist 23.10., SOL-Siegelübergang 26.10. ohne eine einzige registrierte Hypothese, neuer Code (V142, 23 Dateien) nur auf CT109. Der Plan ist damit **ein Schutz- und Integritätsplan mit einem Forschungsanteil**, kein Forschungsplan.
@@ -59,7 +59,7 @@ Auslöser (aus den Dokumenten, L1): Hostausfall 19.10. (Datenlücke ≈ 09:10–
 
 | Tag | Parallelspur 1: Forschung (seriell) | Parallelspur 2: Bau (Claude Code interaktiv; Lab-Bots + QA ergänzend) | Andi / GO |
 |---|---|---|---|
-| **Fr 23.10.** | Gate-Spec v1 festschreiben (Hash) – **erledigt 22.10.**; Regimen-Definition ex ante (in der Spec §3); Aufträge A1/B, E-129-Fristmeldung | Aufträge C (Lab prüfen), Spezifikationen S1–S3 an Bots; Bot A: Loader + Bibliothek; Bot B: Runner-Skelett | D1–D8 (erledigt bis auf Befunde); Download Kraken-Historie starten; Lab-Auftrag C ausführen; erstes Sicherungspaket (`00` §8) auf `D:` |
+| **Fr 23.10.** | Gate-Spec v1 festschreiben (Hash) – **erledigt 22.10.**; Regimen-Definition ex ante (in der Spec §3); Aufträge A1/B, E-129-Fristmeldung | **Spezifikationen S1–S3 festgeschrieben** (`BAU_SPEC_S1S3_v1.md`, ersetzt den Lab-Entwurf); Gate-Tool + Kern (`lf1` v0.1.0, offline, 47 Tests, 17 Mutationen) gebaut; Backtest und Runner folgen; Auftrag C in der nächsten Runde (Bots nur Zusatz) | D1–D8 (erledigt bis auf Befunde); Download Kraken-Historie starten (Anleitung §5d); Lab-Auftrag C ausführen; erstes Sicherungspaket (`00` §8) auf `D:` |
 | **Sa 24.10.** | Datenqualität der Historie (keine Signale); **Gate-Lauf** → Horizont-Entscheid am Abend | Bot A: Gate-Tool + Backtest-Engine; Bot B: Zustandsspeicher, Kill-Switch; QA: erste Mutationstests der Bibliothek | Gate-Tool lokal ausführen lassen (nur Aggregate zurück); (Deploy-Key auf Read-only: erledigt 22.10. 23:14 Berlin, `02` §7) |
 | **So 25.10.** | **Vormittags Freeze** der Liste (≤ 8; nur bestandene Horizonte) → Hash. **Nachmittags Discovery Regime A**, einmalig | Bot B: Regeltypen + Placebo-Kontrolle; QA: Lookahead-Audit der Engine. EU-Zeitumstellung: alles UTC | Freeze-Hash bestätigen |
 | **Mo 26.10.** | **Bestätigung Regime B** (unberührt), BH-FDR → ≤ 1 Kandidat oder Nullbefund | Runner feature-complete; QA: Mutationstests Runner (Doppel-Fill, Kosten=0, Lücken, Reboot) | – |
@@ -74,6 +74,7 @@ Auslöser (aus den Dokumenten, L1): Hostausfall 19.10. (Datenlücke ≈ 09:10–
 **Track S (Aktien):** erst ab Fr 30.10.; nativer IBKR-Paper-Account, kein Order-Pfad ohne eigenes GO.
 
 ## 5. Claude-Code-Aufträge (Read-only, eine Runde = ein Auftrag)
+**Stand der Aufträge (23.10.):** A1 ausgegeben (Ergebnis offen) · C nächste Runde · E4b danach · A2/A3/B/D offen · D7-Anleitung §5d.
 Jeweils: Host und UTC-Zeit in die Ausgabe, Originalausgabe/Screenshot an mich zurück. Alle Befehle lesen nur; `du` mit `nice/ionice`, damit die Aufzeichnung nicht gestört wird.
 
 **Auftrag E1 – Inventur lokaler, ungepushter Git-Arbeit (CT109, root, read-only; ausgeführt 22.10. 19:41 UTC):**
@@ -152,10 +153,10 @@ Zweck: Größe und Dateizahl der echten Arbeit ohne Venv-Ballast, Secret-Kandida
 ```
 date -u
 df -B1 --output=source,size,used,avail,pcent / /mnt/archiv
-journalctl -u signal-archive.service --since "2026-10-23 03:15" --until "2026-10-23 03:40" --no-pager | tail -25
+journalctl -u signal-archive.service --since "2026-10-23 03:15:00 UTC" --until "2026-10-23 03:40:00 UTC" --no-pager | tail -25
 nice -n19 ionice -c3 du -sxB1 /var/lib/new-signal-system /var/lib/new-signal-system/parquet /var/lib/new-signal-system/spool
 ```
-Zweck: dritter Kapazitätspunkt, Archivlauf 23.10. (Kandidaten/kopiert/Fehler/`sealed`-Zahl), Aufteilung Parquet/Spool. Kein Registry-, kein Seal-Zugriff. **Auswertungsregeln (vorab):** Archivlauf = PASS (Job) nur bei `copied` = Kandidatenzahl und 0 Fehlern; Wachstumsrate nur aus Messpunkten ≥ 20 h Abstand, Parquet und Spool getrennt; Stage-2-Design-Trigger nur bei ≥ 5 Messpunkten und Restlaufzeit bis 85 % < 30 Tage oder Luft < 30 GiB (D2).
+Zweck: dritter Kapazitätspunkt, Archivlauf 23.10. (Kandidaten/kopiert/Fehler/`sealed`-Zahl), Aufteilung Parquet/Spool. Kein Registry-, kein Seal-Zugriff. **Korrektur 23.10.:** `--since/--until` jetzt mit Suffix `UTC` (Zeitzone von CT109 UNKNOWN, `01` §5.19). **Auswertungsregeln (vorab):** Archivlauf = PASS (Job) nur bei `copied` = Kandidatenzahl und 0 Fehlern; Wachstumsrate nur aus Messpunkten ≥ 20 h Abstand, Parquet und Spool getrennt; Stage-2-Design-Trigger nur bei ≥ 5 Messpunkten und Restlaufzeit bis 85 % < 30 Tage oder Luft < 30 GiB (D2).
 
 **Auftrag A2 – Proxmox-Host (nur falls Andi Zugang hat):** `pct config 109 | grep -E "rootfs|mp0|backup"`; `cat /etc/pve/jobs.cfg 2>/dev/null`; `pvesm status`; `ls -la <Backup-Storage>/dump | tail`; `lvs -o lv_name,lv_size,data_percent,lv_time pve`. Zweck: Existiert irgendeine Sicherung der CT109-Root-LV (also der versiegelten Rohdaten **und** der Registry)? Ergebnis `JA/NEIN/UNKNOWN`.
 
@@ -246,6 +247,41 @@ ls -la /var/backups/ct109-meta /var/lib/new-signal-system | head -30
 8. **Kopie nach `D:` (Owner-Angabe, 22.10. ≈ 22:39 Berlin, L1):** SHA-256-Vergleich Windows ↔ Host: „passt“. Originalausgabe der Windows-Hashprüfung liegt dem Einsatzleiter nicht vor (daher L1, nicht L3).
 9. **Grenzen:** Kein Restore (Öffnen auf anderer Maschine) und kein Zeilenabgleich gegen das Original erbracht. Keine tägliche Sicherung; Registry wächst weiter.
 10. **Folge (nicht erteilt):** **GO R2** = täglicher Timer (nach Archivlauf, nicht in :05–:10) mit derselben Methode, Rotation (z. B. 14 Stück), Kopie nach `D:` weiterhin manuell. Entwurf folgt als eigene Host-Schreibaktion mit vollständiger Schablone.
+
+### 5d. D7 – Kraken-OHLCVT-Download (Andi, Windows PowerShell; Stand 23.10.)
+**Quelle (L1, Support-Artikel 360047124832, WebFetch 23.10.):** fünf Teile `Kraken_OHLCVT_Full.zip.part00` bis `part04` (je ≈ 2 GB) unter `https://assets.kraken.com/marketing/institutions/`, Prüfsummen der Teile in `OHLCVT_Full_PARTS_SHA256SUMS.txt` (selber Ordner), erwarteter SHA-256 des zusammengesetzten ZIPs `bc273e9027470b07d790a7fa4df9bb43f0dfc527c20c6ecae48402e123e7b1c7`. Daten bis 30.06.2026. **Die Links nicht im Browser öffnen** (Hinweis der Seite), sondern mit `curl.exe` laden. Platzbedarf: Teile plus zusammengesetztes ZIP, also etwa das Doppelte der Gesamtgröße (mindestens 25 GB frei auf `D:`; sonst anderes Laufwerk und Pfad ersetzen).
+**Regeln:** Datei **nicht entpacken, nicht öffnen, nicht in Excel laden**, keine Teile löschen. Rückmeldung an den Chat: nur die Ausgabe der Schritte 3 und 5 (Dateinamen, Bytes, OK/ABWEICHUNG, ZIP-Hash und ZIP-Größe). Fehler 416 von `curl` bei einem bereits vollständigen Teil ist harmlos.
+Block 1 (als Block einfügen, die Zeilenumbrüche sind wichtig):
+```
+Get-PSDrive D | Select-Object Used, Free
+New-Item -ItemType Directory -Force -Path D:\CT109-Data\kraken-ohlcvt | Out-Null
+Set-Location D:\CT109-Data\kraken-ohlcvt
+$base = "https://assets.kraken.com/marketing/institutions"
+foreach ($n in "00","01","02","03","04") {
+  curl.exe -L --fail -C - -o "Kraken_OHLCVT_Full.zip.part$n" "$base/Kraken_OHLCVT_Full.zip.part$n"
+}
+curl.exe -L --fail -o OHLCVT_Full_PARTS_SHA256SUMS.txt "$base/OHLCVT_Full_PARTS_SHA256SUMS.txt"
+```
+Block 2 (Schritt 3: Teile gegen die Kraken-Prüfsummen; erwartet fünfmal OK):
+```
+Set-Location D:\CT109-Data\kraken-ohlcvt
+$sums = Get-Content .\OHLCVT_Full_PARTS_SHA256SUMS.txt
+foreach ($f in Get-ChildItem .\Kraken_OHLCVT_Full.zip.part0*) {
+  $h = (Get-FileHash $f.FullName -Algorithm SHA256).Hash.ToLower()
+  $ok = [bool]($sums | Where-Object { $_.ToLower().Contains($h) -and $_.Contains($f.Name) })
+  "{0}  {1} B  {2}" -f $f.Name, $f.Length, $(if ($ok) { "OK" } else { "ABWEICHUNG" })
+}
+```
+Block 3 (nur wenn alle fünf OK; Schritt 4 Zusammenfügen, Schritt 5 Hash und Größe, dauert einige Minuten):
+```
+Set-Location D:\CT109-Data\kraken-ohlcvt
+cmd /c copy /b Kraken_OHLCVT_Full.zip.part00+Kraken_OHLCVT_Full.zip.part01+Kraken_OHLCVT_Full.zip.part02+Kraken_OHLCVT_Full.zip.part03+Kraken_OHLCVT_Full.zip.part04 Kraken_OHLCVT_Full.zip
+$z = Get-FileHash .\Kraken_OHLCVT_Full.zip -Algorithm SHA256
+"{0}  {1} B" -f $z.Hash.ToLower(), (Get-Item .\Kraken_OHLCVT_Full.zip).Length
+"gleich Kraken-Wert: " + ($z.Hash.ToLower() -eq "bc273e9027470b07d790a7fa4df9bb43f0dfc527c20c6ecae48402e123e7b1c7")
+```
+**Auswertung (vorab):** PASS nur bei fünfmal OK **und** `gleich Kraken-Wert: True`; sonst BLOCKED und Fallback nach `02` D10 (Trigger Sa 24.10. 10:00 UTC). Der Hash vergleicht nur mit dem Herstellerwert (L1 der Seite); er belegt Unversehrtheit des Downloads, nicht die Datenqualität (die prüft die Q-Prüfung am Sa).
+**Danach:** das Paket `CT109_BAU_lf1_v0.1.0_2026-10-23.zip` (SHA-256 `4a17655fa112b9a5c57f812de803be01ffeaee89c62da38ed1ede8c0ef23e154`) nach `D:\CT109-Bau\` legen, Hash prüfen, `README_RUN.md` im Paket Abschnitt 0–1 ausführen (Tests, Selbstprüfung). Gate-Ablauf erst nach meinem Signal am Sa 24.10.
 
 ## 6. Erfolgskriterien Schutzteil, Stand 29.10. (ersetzen E1–E6 des Owner-Plans, Owner-OK nötig)
 - **E1 Code-Schutz:** V142 + Dirty-Arbeit nachweislich offhost und wiederherstellbar – oder präziser Blocker. (**Stand: GitHub PASS L5, Host-Hash PASS L3, Windows-Hash PASS L3**; offen nur optional Windows-Restore.)
