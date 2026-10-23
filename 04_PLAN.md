@@ -300,6 +300,49 @@ ls -la /var/backups/ct109-meta /var/lib/new-signal-system | head -30
 9. **Grenzen:** Kein Restore (Öffnen auf anderer Maschine) und kein Zeilenabgleich gegen das Original erbracht. Keine tägliche Sicherung; Registry wächst weiter.
 10. **Folge (nicht erteilt):** **GO R2** = täglicher Timer (nach Archivlauf, nicht in :05–:10) mit derselben Methode, Rotation (z. B. 14 Stück), Kopie nach `D:` weiterhin manuell. Entwurf folgt als eigene Host-Schreibaktion mit vollständiger Schablone.
 
+### 5i. GO G2 – Gateway wieder starten und Collector anschließen (ENTWURF 23.10. ≈ 15:52 Berlin; Schablone `02` §3; Anlass: G1 endete mit gestopptem Gateway)
+**Befund G1 (Andis Screenshots 13:43–13:49 UTC, L3):** Schritt 1 lief 13:43:05, Schritt 2 wurde versehentlich im selben Einfügen ausgeführt und startete `signal-ibkr` deshalb korrekt **nicht** (Log noch ohne „Ergebnis“). **IBC-Log: `Login dialog … LOGGED_OUT` 13:43:09, `Login has completed` 13:43:12; `ibgateway` active, Port 4002 `LISTEN` (13:47:52).** `first-login.sh` meldete trotzdem **`Ergebnis: TIMEOUT`**, **stoppte das Gateway** (`GESTOPPT`, Exit 1) und beendete sich vor meinem `kill` (13:48:51); danach `ibgateway` und `signal-ibkr` `inactive`. **Ursache der Fehlerkennung UNKNOWN** (Skript prüft `tail -n +<Zeilenzahl vor dem Start>` der Tagesdatei; warum „Login has completed“ nicht gefunden wurde, nicht geklärt). IBKR-Kollektoren stehen seit 13:43 UTC (geplante Lücke, Marker 10 min). Der Login selbst war erfolgreich (kein Lockout-Risiko durch den ersten Versuch).
+1. **Befehl (CT109, root; nicht in den Minuten :05–:10):** SHA-256 (LF, ein Zeilenumbruch am Ende) `f59286537a3cac130a3a38ff84ad84cea3af22ab9ee98431048865afb8a3da73`.
+```
+date -u; hostname
+echo "vorher:"; systemctl is-active ibgateway signal-ibkr
+if systemctl is-active --quiet ibgateway; then
+  echo "ABBRUCH: ibgateway laeuft bereits, nichts getan"
+else
+  touch /var/lib/new-signal-system/planned
+  L=/var/log/ibgateway/ibc-$(cat /opt/ibc/version)_GATEWAY-1050_$(LC_ALL=C date +%A).txt
+  T0=$(date -u '+%Y-%m-%d %H:%M:%S')
+  systemctl start ibgateway.service
+  R=TIMEOUT
+  for i in $(seq 24); do
+    sleep 5
+    F=$(grep -aE 'Cold restart after|Login Error dialog encountered|Too many failed login' "$L" 2>/dev/null | tail -1 | cut -c1-19)
+    if [ -n "$F" ] && [[ "$F" > "$T0" ]]; then R=FEHLER; break; fi
+    X=$(grep -a 'Login has completed' "$L" 2>/dev/null | tail -1 | cut -c1-19)
+    if [ -n "$X" ] && [[ "$X" > "$T0" ]] && ss -ltn | grep -q ':4002'; then R=OK; break; fi
+  done
+  echo "Ergebnis: $R"
+  if [ "$R" = OK ]; then
+    systemctl start signal-ibkr
+    sleep 75
+    date -u; systemctl is-active ibgateway signal-ibkr
+    cd /opt/new-signal-system && nice -n19 scripts/status-report --since "5 min ago"
+  elif [ "$R" = FEHLER ]; then
+    systemctl stop ibgateway.service; systemctl reset-failed ibgateway.service
+    echo "GESTOPPT wegen Login-Fehler, signal-ibkr NICHT gestartet"
+  else
+    echo "TIMEOUT: Gateway bleibt UNVERAENDERT laufen, signal-ibkr NICHT gestartet, bitte Ausgabe an Claude"
+    systemctl is-active ibgateway; ss -ltn | grep 4002
+  fi
+fi
+```
+2. **Zweck:** Gateway wie vor G1 wieder betriebsbereit machen und `signal-ibkr` anschließen. Die Erfolgsprüfung läuft **nicht** über `first-login.sh`, sondern über `Login has completed` mit Zeitstempel nach dem Start **und** Port 4002. **Nicht Zweck:** Config, Code, Abos, Löschen; Ursache des Skriptfehlers beheben.
+3. **Risiken:** Zweiter Login binnen Minuten (der erste war erfolgreich; bei `FEHLER` stoppt der Block das Gateway sofort, kein weiterer Versuch). Bei `TIMEOUT` (120 s) bleibt das Gateway **unverändert laufen**, `signal-ibkr` wird nicht gestartet, Mensch entscheidet. Depth/tbt bleiben bis zum Start des Collectors aus; Datenlücke seit 13:43 UTC (geplant/markiert, Marker 10 min, danach `own:process` bzw. ungeplant möglich). Keine Wirkung auf den kritischen Pfad.
+4. **Sicherung/Rollback:** Nichts zu sichern; Rollback = `systemctl stop signal-ibkr ibgateway`. **Getestet:** nur Shell-Logik mit Attrappen (OK, Login-Fehler, Timeout, Gateway läuft bereits); nicht auf CT109.
+5. **Abbruchkriterien:** `ABBRUCH`, `Ergebnis: FEHLER`, `Ergebnis: TIMEOUT`, `ibgateway` nicht `active` nach dem Start, tbt-Lücken nach dem Start länger als 3 min offen.
+6. **Nachweis:** `Ergebnis: OK`, `active active`, Status-Report ohne offene `*:tbt`-Lücke (oder mit frischen, geschlossenen Lücken).
+7. **Satz von Andi:** `GO G2 – f5928653` (oder „GO“ als Antwort auf diesen einzigen offenen GO-Text).
+
 ### 5h. GO G1 – Gateway-Neustart wegen tbt-Ausfall (ENTWURF 23.10. ≈ 15:45 Berlin, **nicht erteilt**; Schablone `02` §3)
 **Grundlage:** Auftrag B2 (§5g), Bericht von Claude Code 13:39 UTC (L2, Screenshot): `ibgateway` und `signal-ibkr` laufen seit 19.10. 09:43:17, `NRestarts=0`; offene Lücken 1685–1687 (`NVDA/INTC/TSLA:tbt`, `stale`, Beginn 13:30:00); Depth läuft (Spool wächst sekundengenau, keine Depth-Lücken); **kein einziger Fehlercode seit 13:00**; Neu-Abos #1–#3 um 13:31, 13:33, 13:37 (reqId 19–27) ohne Wirkung. **16.10. identisches Bild** (Alarm 13:31:00, sieben Neu-Abos bis 14:15, keine tbt-Fehlercodes); dort stoppte Andi `signal-ibkr` 14:18 (**ohne Wirkung**), der **Gateway-Neustart ≈ 14:50 stellte tbt wieder her** (Quelle: Memory-Eintrag laut Claude Code, L1; Andi 23.10.: „nur Neustart vom Gateway half, glaube ich“). Ursache beider Fälle UNKNOWN. Beide Tage hatten vor dem Handelsbeginn einen US-Farm-Break (16.10. 12:46/12:52, heute 04:17 und 11:09:28) mit proaktiven Neu-Abos; ob tbt danach vor 13:30 lief, ist **nicht gemessen** (`check_fresh` prüft erst ab Handelsbeginn).
 1. **Befehl (CT109, root, nicht in den Minuten :05–:10; zwei Schritte, Schritt 2 erst nach „Ergebnis: OK“ im Log; Block als Ganzes gehasht):** SHA-256 (LF, ein Zeilenumbruch am Ende) `b36516ff40a0b91810d2750ad0131c1fe3a77f0eaa742b887fa37facb62a8f41`.
