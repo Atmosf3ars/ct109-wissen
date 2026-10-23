@@ -187,7 +187,7 @@ df -B1 --output=source,avail /
 ```
 Zweck: Welche Paketversion und welche Zusatzpakete würde `apt` für numpy ziehen, ohne dass etwas installiert, aktualisiert oder entfernt wird (`-s` = Simulation, schreibt nichts)? **Auswertungsregeln (vorab):** Voraussetzung für einen GO-Entwurf: Simulation zeigt **0 `Remv`**, **0 aktualisierte** Bestandspakete, nur neue Pakete (erwartet ≈ 5–10, ≈ 30–40 MB), numpy-Kandidat ≥ 1.24. Zeigt `apt-cache policy` keinen Kandidaten oder ist der Index veraltet, ist `apt-get update` ein zusätzlicher Schritt im GO. Originalausgabe zurückgeben.
 
-**GO-ENTWURF `GO NUMPY` (Schablone `02` §3; Stand 23.10. 09:45 UTC; noch nicht erteilt):**
+**`GO NUMPY` (Schablone `02` §3; erteilt und ausgeführt 23.10. 09:42 UTC, Ergebnis `01` Changelog, Verbrauch `02` §2):**
 1. **Befehl** (CT109, root, Arbeitsverzeichnis egal, nicht in den Minuten :05–:10; Block mit Zeilenumbrüchen):
 ```
 date -u
