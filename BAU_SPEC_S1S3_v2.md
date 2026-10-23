@@ -1,8 +1,8 @@
 # CT109 – BAU-SPEZIFIKATION S1–S3 v2 (Änderungen gegenüber v1)
 
-**Status:** ENTWURF, nicht gehasht. **Erstellt:** Fr 23.10.2026 ≈ 10:00 UTC, vor jeder Signalauswertung auf realen Daten. Gemessen wurden bisher nur Gate-Größen (`E|r|`, RMS, `n_eff`, Klasse). **Autor:** Einsatzleiter (Claude), Regime „Entscheiden, nicht fragen“.
+**Status:** FESTGESCHRIEBEN Fr 23.10.2026 ≈ 10:00 UTC (Hash im Änderungslog von `01_STATUS.md`). **Erstellt:** Fr 23.10.2026 ≈ 09:50 UTC, vor jeder Signalauswertung auf realen Daten. Gemessen wurden bisher nur Gate-Größen (`E|r|`, RMS, `n_eff`, Klasse). **Autor:** Einsatzleiter (Claude), Regime „Entscheiden, nicht fragen“.
 **Geltung:** `BAU_SPEC_S1S3_v1.md` (SHA-256 `616fa8a1…37b5`) gilt weiter, **soweit v2 nichts ersetzt**. `GATE_SPEC_v1.md` (`acaed785…d5be7`) geht vor. Nach dem Hash-Eintrag unveränderlich; der Freeze nennt den Hash dieser Datei.
-**Prüfauftrag an Andi (3 Punkte, dann Hash noch am selben Tag):** (1) §V2.2 Bestätigungsmenge und Kostenfaktor, (2) §V2.5 die zwei vorregistrierten Hypothesen, (3) §V2.3 Ergebniskategorien (insbesondere „POSITIV-UNTERPOWERT“ geht in den Paper-Betrieb, nie in Echtgeld).
+**Freigabe:** Andi hat am 23.10. 11:51 Berlin ausdrücklich nach Doktrin delegiert („Du entscheidest anhand der Doktrin!“). Das ist ein Entscheid des Einsatzleiters, kein Owner-GO. Einspruch ist bis zum Freeze (So 25.10.) möglich und führt zu einem `v3` vor dem Freeze; danach ist nichts mehr änderbar. Prüfpunkte für Andi: §V2.2 Bestätigungsmenge und Kostenfaktor, §V2.5 die zwei Hypothesen, §V2.3 Kategorien (`POSITIV-UNTERPOWERT` geht in den Paper-Betrieb, nie in Echtgeld).
 
 ## V2.0 Warum v2 (Messung und Ableitung getrennt)
 - **Gemessen (Gate A, L3, Andis PC 23.10.):** Alle zulässigen Zellen sind Klasse W (BTC/ETH/SOL × 24 h/72 h), keine P-Zelle. Hypothesen in Klasse-W-Zellen sind auf **2** gedeckelt (Gate-Spec §6). `n_eff` in A: 269 (24 h), 89 (72 h).
@@ -50,7 +50,7 @@ Auswahlgrund: Kategorie aus dem Projektauftrag, Mechanismus, BTC/24 h (Power, V2
 - (e) **Laufzeit:** Python 3.11.2 und numpy 1.24.2 (Debian), `GO NUMPY` ausgeführt 23.10.
 
 ## V2.7 Ablauf und Prüfbarkeit
-Sa 24.10.: Andi liest, Hash dieser Datei (LF-normalisiert) wird noch am selben Tag in `01` eingetragen. So 25.10. früh: Freeze (`freeze` mit diesem Spec-Hash, die zwei Hypothesen aus V2.5), danach Stufe D, Q-Pflicht für E. Mo 26.10.: Stufe B. Code: die Bestätigungsstufe `confirm` ist **vor dem Freeze** fertig und geht über den Code-Hash in den Freeze ein (kein Nachbessern nach dem Freeze). Jede Abweichung vom Ablauf = Protokolleintrag, kein stilles Nachziehen.
+Fr 23.10.: festgeschrieben, Hash dieser Datei (LF-normalisiert) in `01` eingetragen. So 25.10. früh: Freeze (`freeze` mit diesem Spec-Hash, die zwei Hypothesen aus V2.5), danach Stufe D, Q-Pflicht für E. Mo 26.10.: Stufe B. Code: die Bestätigungsstufe `confirm` ist **vor dem Freeze** fertig und geht über den Code-Hash in den Freeze ein (kein Nachbessern nach dem Freeze). Jede Abweichung vom Ablauf = Protokolleintrag, kein stilles Nachziehen.
 
 ## V2.8 Neue Annahmen (nicht gemessen)
 **A14** Kostenfaktor 2.0 für E1. **A15** Epochengrenze `2021-01-01`. **A16** Schwellen der Q-Pflicht (5 %, 24 h). **A17** `σ_trade` aus A ist eine brauchbare Näherung für die Power-Prognose (V2.0/V2.4).
