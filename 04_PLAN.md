@@ -300,6 +300,42 @@ ls -la /var/backups/ct109-meta /var/lib/new-signal-system | head -30
 9. **Grenzen:** Kein Restore (Öffnen auf anderer Maschine) und kein Zeilenabgleich gegen das Original erbracht. Keine tägliche Sicherung; Registry wächst weiter.
 10. **Folge (nicht erteilt):** **GO R2** = täglicher Timer (nach Archivlauf, nicht in :05–:10) mit derselben Methode, Rotation (z. B. 14 Stück), Kopie nach `D:` weiterhin manuell. Entwurf folgt als eigene Host-Schreibaktion mit vollständiger Schablone.
 
+### 5h. GO G1 – Gateway-Neustart wegen tbt-Ausfall (ENTWURF 23.10. ≈ 15:45 Berlin, **nicht erteilt**; Schablone `02` §3)
+**Grundlage:** Auftrag B2 (§5g), Bericht von Claude Code 13:39 UTC (L2, Screenshot): `ibgateway` und `signal-ibkr` laufen seit 19.10. 09:43:17, `NRestarts=0`; offene Lücken 1685–1687 (`NVDA/INTC/TSLA:tbt`, `stale`, Beginn 13:30:00); Depth läuft (Spool wächst sekundengenau, keine Depth-Lücken); **kein einziger Fehlercode seit 13:00**; Neu-Abos #1–#3 um 13:31, 13:33, 13:37 (reqId 19–27) ohne Wirkung. **16.10. identisches Bild** (Alarm 13:31:00, sieben Neu-Abos bis 14:15, keine tbt-Fehlercodes); dort stoppte Andi `signal-ibkr` 14:18 (**ohne Wirkung**), der **Gateway-Neustart ≈ 14:50 stellte tbt wieder her** (Quelle: Memory-Eintrag laut Claude Code, L1; Andi 23.10.: „nur Neustart vom Gateway half, glaube ich“). Ursache beider Fälle UNKNOWN. Beide Tage hatten vor dem Handelsbeginn einen US-Farm-Break (16.10. 12:46/12:52, heute 04:17 und 11:09:28) mit proaktiven Neu-Abos; ob tbt danach vor 13:30 lief, ist **nicht gemessen** (`check_fresh` prüft erst ab Handelsbeginn).
+1. **Befehl (CT109, root, nicht in den Minuten :05–:10; zwei Schritte, Schritt 2 erst nach „Ergebnis: OK“ im Log; Block als Ganzes gehasht):** SHA-256 (LF, ein Zeilenumbruch am Ende) `b36516ff40a0b91810d2750ad0131c1fe3a77f0eaa742b887fa37facb62a8f41`.
+```
+# --- SCHRITT 1 (CT109, root; nicht in den Minuten :05 bis :10) ---
+date -u; hostname
+if cd /opt/new-signal-system && systemctl cat signal-ingestion.service > /dev/null 2>&1; then
+  echo "vorher:"; systemctl is-active ibgateway signal-ibkr
+  touch /var/lib/new-signal-system/planned
+  systemctl stop signal-ibkr
+  systemctl stop ibgateway
+  echo "nach Stopp:"; systemctl is-active ibgateway signal-ibkr
+  nohup bash scripts/ibkr-first-login.sh > /tmp/first-login.log 2>&1 &
+  sleep 45
+  cat /tmp/first-login.log
+else
+  echo "ABBRUCH: Verzeichnis oder signal-ingestion.service fehlt, nichts gestoppt"
+fi
+# --- SCHRITT 2 (erst wenn im Log "Ergebnis: OK" steht) ---
+cat /tmp/first-login.log
+if grep -q "Ergebnis: OK" /tmp/first-login.log; then
+  systemctl start signal-ibkr
+  sleep 75
+  date -u; systemctl is-active ibgateway signal-ibkr
+  cd /opt/new-signal-system && nice -n19 scripts/status-report --since "5 min ago"
+else
+  echo "signal-ibkr NICHT gestartet: Login nicht OK"
+fi
+```
+2. **Zweck:** `signal-ibkr` geplant stoppen (Marker `planned`), `ibgateway` stoppen und über `scripts/ibkr-first-login.sh` neu anmelden (Paper, bisher ohne Zweitfaktor), danach `signal-ibkr` starten. Ziel: tbt-Lieferung für NVDA/INTC/TSLA wieder herstellen. **Nicht Zweck:** Ursache beheben, Konfiguration (`/opt/ibc/config.ini`, `secrets.env`, `ibkr.env`) oder Code ändern, Git, Abos ändern, Löschen.
+3. **Risiken:** Depth und tbt fallen für ca. 2–4 Minuten aus (als `planned=1`-Lücken erfasst). Ein fehlgeschlagener Login zählt gegen die Kontosperre; das Skript stoppt das Gateway beim ersten Fehler, **kein zweiter Versuch ohne Rücksprache**. Bleibt das Gateway dann gestoppt, schweigen alle IBKR-Kollektoren, bis ein Mensch eingreift (Aktien-Spur, nicht der kritische Pfad). `first-login.sh` deaktiviert `signal-ingestion` (Altlast, laut Skript); der Vorlauf bricht ab, falls die Unit unbekannt ist. Auch nach dem Neustart kann tbt tot bleiben (dann ist „Gateway-Zustand“ als Ursache widerlegt). Daten des Tages sind versiegelt (IBKR ab 12.10.) und werden nicht angefasst.
+4. **Sicherung/Rollback:** Nichts zu sichern außer dem Journal (bleibt in `journald`; B2-Bericht ist in `01`/`04` festgehalten). Rollback = derselbe Ablauf (kein Zustand geändert). **Getestet:** nur Shell-Logik in der Sandbox mit Attrappen (OK-Pfad, Guard-Pfad, Login-Fehler-Pfad: kein Start des Collectors bei Fehler); **nicht getestet:** reale Ausführung des Blocks; der Ablauf entspricht `RUNBOOK.md` (Eingriff am Gateway, 05.10. gemessen).
+5. **Abbruchkriterien:** Ausgabe `ABBRUCH`; im Log `FEHLER`, `TIMEOUT` oder `GESTOPPT`; `Ergebnis` nicht `OK`; `ibgateway` nicht `active` nach Schritt 2; keine Lücken 1685–1687 geschlossen und weiter keine tbt-Zeilen 3 min nach dem Start (dann kein zweiter Neustart, Meldung an mich).
+6. **Nachweis (Originalausgabe von Andi):** `Ergebnis: OK`, danach `active active` und der Status-Report mit geschlossenen Lücken 1685–1687 (oder neuen, kurzen, geplanten Lücken) und ohne offene `*:tbt`-Lücke.
+7. **Satz von Andi:** `GO G1 – b36516ff`.
+
 ### 5g. Auftrag B2 – IBKR-tbt-Ausfall 23.10. (lesend, als Claude-Code-Prompt auf CT109; ausgegeben 23.10. ≈ 15:40 Berlin, Ausgabe **offen**)
 Anlass: HA-Alarme 15:31/15:33 Berlin (`01`, 13:36 UTC). Ersetzt den kurzen Bash-Block aus der Chat-Antwort 15:36 Berlin. Datenzugriff nur Metadaten (IBKR-Tage ab 12.10. versiegelt, `RUNBOOK.md` Datensiegel).
 ```
