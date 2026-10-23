@@ -281,6 +281,7 @@ $z = Get-FileHash .\Kraken_OHLCVT_Full.zip -Algorithm SHA256
 "gleich Kraken-Wert: " + ($z.Hash.ToLower() -eq "bc273e9027470b07d790a7fa4df9bb43f0dfc527c20c6ecae48402e123e7b1c7")
 ```
 **Auswertung (vorab):** PASS nur bei fünfmal OK **und** `gleich Kraken-Wert: True`; sonst BLOCKED und Fallback nach `02` D10 (Trigger Sa 24.10. 10:00 UTC). Der Hash vergleicht nur mit dem Herstellerwert (L1 der Seite); er belegt Unversehrtheit des Downloads, nicht die Datenqualität (die prüft die Q-Prüfung am Sa).
+**Ergebnis 23.10. ≈ 08:17 UTC: PASS** (fünfmal OK, ZIP 9 546 553 626 B, Hash gleich Kraken-Wert).
 **Danach:** das Paket `CT109_BAU_lf1_v0.1.0_2026-10-23.zip` (SHA-256 `4a17655fa112b9a5c57f812de803be01ffeaee89c62da38ed1ede8c0ef23e154`) nach `D:\CT109-Bau\` legen, Hash prüfen, `README_RUN.md` im Paket Abschnitt 0–1 ausführen (Tests, Selbstprüfung). Gate-Ablauf erst nach meinem Signal am Sa 24.10.
 
 ## 6. Erfolgskriterien Schutzteil, Stand 29.10. (ersetzen E1–E6 des Owner-Plans, Owner-OK nötig)
