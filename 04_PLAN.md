@@ -22,7 +22,7 @@ Auslöser (aus den Dokumenten, L1): Hostausfall 19.10. (Datenlücke ≈ 09:10–
 | V142 Offhost + Dirty-Arbeit (23 Dateien) + alle lokal-only Branches | **ERLEDIGT (22.10.)** – war P0 Platz 1 (drei RCs `889b52c`, `66b4b0b`, `9d29b94` nachweislich nicht auf GitHub) | Reihenfolge: E1/E1b/E3/E1c → GO Schritt 1 → 2A (GitHub, L5) → 2B (Windows `D:`, Hash vollständig gleich, L3). Details §5b. Offen nur optional: `git bundle verify` auf Windows; age-Empfänger (Auftrag D) nur nötig, falls verschlüsselt kopiert werden soll. |
 | Sicherung der **versiegelten Rohdaten** | **Neu, P0 (Information zuerst)** | Auftrag A2 klärt, ob Proxmox-Backup/Snapshots existieren. D3 entschieden (`02` §6): nur Blockebene, nie über Entsiegelung. |
 | **Registry-Sicherung (`meta.sqlite`)** | **R1 AUSGEFÜHRT (22.10. 20:37 UTC, PASS, L3); Kopie auf `D:` mit Hashvergleich (Owner-Angabe, L1); tägliche Sicherung = R2 offen** | R1-Ergebnis: §5c. Damit existiert erstmals seit 11.10. eine Sicherung außerhalb der Live-DB und außerhalb der LV. Die Registry wächst weiter; eine Einzelkopie reicht nicht → Entwurf GO R2 (täglicher Timer, Rotation, Kopie auf `D:`) als eigene Host-Schreibaktion. Restore- und Zeilenabgleich-Test nicht erbracht. |
-| Sicherung Host-only-Arbeit (`/root/run` u. a.) | **P0 – E4 ausgewertet, E4b folgt, dann Sicherungs-GO** | E4: Masse ist Test-Venv-Ballast, Paper-Harness nie committet (`git log` leer). Secret-Scan war wegen Venv-Rauschen unbrauchbar → E4b (ohne Venvs). Sicherungs-GO danach nach Schablone Schritt 1: Tar der Werte (Harness, Skripte, Doku, Ledger-Kopien, `/root`-md/Patches) ohne `tmp-ro`/`fv`, ohne Secret-/Konfig-Dateien, **Kopie nach `D:` mit Hash (kein GitHub-Push vom Host)**. |
+| Sicherung Host-only-Arbeit (`/root/run` u. a.) | **P0 – E4b ausgewertet (23.10.), GO H1 als Entwurf in §5f, nicht erteilt** | E4: Masse ist Test-Venv-Ballast, Paper-Harness nie committet (`git log` leer). Secret-Scan war wegen Venv-Rauschen unbrauchbar → E4b (ohne Venvs). Sicherungs-GO danach nach Schablone Schritt 1: Tar der Werte (Harness, Skripte, Doku, Ledger-Kopien, `/root`-md/Patches) ohne `tmp-ro`/`fv`, ohne Secret-/Konfig-Dateien, **Kopie nach `D:` mit Hash (kein GitHub-Push vom Host)**. |
 | Sicherer Reader (R1–R9 im SOL-Entwurf) | **Neu, P0-Forschungs-Enabler** | Ohne ihn kann *keine* echte Analyse sauber laufen (B3). Erst Offline-Design + synthetische Tests, dann eigenes GO. |
 | SOL-Freeze am 23.10. | **Verschieben, kriteriengetrieben** | Termin erzwingt Pfusch (unsicherer Reader, unauthentischer Freeze). Der Siegelübergang 26.10. macht neue Tage zu Bestätigungsdaten – das ist gewollt, kein Verlust. Erst Bewegungsbudget-Gate (`03` §5, `GATE_SPEC_v1.md`), dann Hypothesentexte. |
 | Lernbot-Guard/Autostopp | **Auf P2 herabstufen** | Dienst ist inactive/disabled; Risiko besteht nur bei versehentlichem Start. Placebo ist −11,30 bp/Trade – ein weiterer Canary prüft Plumbing, keinen Edge. Option für Andi: Unit *maskieren* (reversibel, eigenes GO) statt Watchdog-Bau. |
@@ -299,6 +299,104 @@ ls -la /var/backups/ct109-meta /var/lib/new-signal-system | head -30
 8. **Kopie nach `D:` (Owner-Angabe, 22.10. ≈ 22:39 Berlin, L1):** SHA-256-Vergleich Windows ↔ Host: „passt“. Originalausgabe der Windows-Hashprüfung liegt dem Einsatzleiter nicht vor (daher L1, nicht L3).
 9. **Grenzen:** Kein Restore (Öffnen auf anderer Maschine) und kein Zeilenabgleich gegen das Original erbracht. Keine tägliche Sicherung; Registry wächst weiter.
 10. **Folge (nicht erteilt):** **GO R2** = täglicher Timer (nach Archivlauf, nicht in :05–:10) mit derselben Methode, Rotation (z. B. 14 Stück), Kopie nach `D:` weiterhin manuell. Entwurf folgt als eigene Host-Schreibaktion mit vollständiger Schablone.
+
+### 5f. GO H1 – Sicherung der Host-only-Arbeit (ENTWURF 23.10. 15:30 Berlin, **nicht erteilt**; Schablone `02` §3)
+**Grundlage E4b (Andi, 23.10. 13:17 UTC, L3, Screenshots):** `/root/run` ohne `tmp-ro`/`fv`: **134 549 504 B (≈ 128 MiB), 7 504 Dateien** (ohne `.git`, `__pycache__`). Secret-Muster-Zähler: **369 Dateien**; die Namensliste fehlt, weil `tee /dev/stderr` in Andis Terminal „Permission denied“ meldete (Fehler meines Auftrags). Der Zähler zeigt nur Kandidaten (breites Muster, u. a. „secret“, „password“), kein Beweis. Sensible Dateinamen: nur `config.ini` und `secrets.env.example` (in Repo-Kopien unter `deploy/ibc/`, `deploy/`), dazu sehr viele `opt/ibc/config.ini` in Test-Verzeichnissen `tmp-paper/test_*` (Test-Artefakte); keine `*.env`, `*.pem`, `*.key` unter `/root/run`. Ledger: `shadow-live.sqlite` 4 096 B (2×, 17.10.), `shadow-run2-copy.sqlite` 1 765 376 B (19.10., `/root/run`), **Original `/var/lib/private/lernbot/shadow.sqlite` 1 765 376 B (19.10.)**. Gleiche Größe wie die Kopie, Inhaltsgleichheit nicht geprüft.
+1. **Befehl (CT109, root, Arbeitsverzeichnis egal; nicht in den Minuten :05–:10; beim Einfügen aus dem Chat auf Zeilenumbrüche achten, `PYEOF` steht auf eigener Zeile):** SHA-256 des Blocks (Datei mit LF-Zeilenenden und einem Zeilenumbruch am Ende) `8aa8844a020a3d67babea82216e3529e1b462125949771b0eae22644c7fafcb2`.
+```
+date -u; hostname; id -un
+nice -n19 ionice -c3 python3 -I - <<'PYEOF'
+import fnmatch, hashlib, os, re, shutil, sqlite3, stat, sys, tarfile, time
+DST = "/var/backups/ct109-hostwork"
+ROOTS = ["/root/run", "/root/wt"]
+TOPDIR = "/root"
+LEDGER = "/var/lib/private/lernbot/shadow.sqlite"
+PRUNE = {"tmp-ro", "fv", "tmp-paper", ".git", "__pycache__", ".pytest_cache", "node_modules"}
+BADNAME = ("*.env", "*.env.*", "*.pem", "*.key", "config.ini", "*secret*", "*credential*", "ibkr.env*")
+TOPNAME = ("*.md", "*.patch", "*.bak")
+CAP = 50 * 1024 * 1024
+SECRET = re.compile(rb"BEGIN [A-Z ]*PRIVATE KEY|AGE-SECRET-KEY|(?:api|secret|token|passw)[a-z_]*[ ]*[=:][ ]*.[A-Za-z0-9/+_=-]{16,}", re.I)
+os.umask(0o077)
+os.makedirs(DST, mode=0o700, exist_ok=True)
+if shutil.disk_usage(DST).free < 500 * 1024 * 1024:
+    print("ABBRUCH: weniger als 500 MB frei"); sys.exit(2)
+stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+inc, exc, skipped = [], [], 0
+def bad(n):
+    n = n.lower()
+    return any(fnmatch.fnmatch(n, p) for p in BADNAME)
+def consider(p):
+    global skipped
+    st = os.lstat(p)
+    if not stat.S_ISREG(st.st_mode):
+        skipped += 1
+        return
+    if bad(os.path.basename(p)):
+        exc.append(("name", p, st.st_size)); return
+    if st.st_size > CAP:
+        exc.append(("size", p, st.st_size)); return
+    try:
+        data = open(p, "rb").read()
+    except OSError as e:
+        exc.append(("unreadable", p, st.st_size)); return
+    if SECRET.search(data):
+        exc.append(("secretscan", p, st.st_size)); return
+    inc.append((p, st.st_size, hashlib.sha256(data).hexdigest()))
+for r in ROOTS:
+    for d, ds, fs in os.walk(r):
+        ds[:] = sorted(x for x in ds if x not in PRUNE and not os.path.ismount(os.path.join(d, x)))
+        for f in sorted(fs):
+            consider(os.path.join(d, f))
+for f in sorted(os.listdir(TOPDIR)):
+    p = os.path.join(TOPDIR, f)
+    if any(fnmatch.fnmatch(f.lower(), t) for t in TOPNAME) and os.path.isfile(p):
+        consider(p)
+tar_path = os.path.join(DST, "hostwork-%s.tar.gz" % stamp)
+tmp = tar_path + ".part"
+with tarfile.open(tmp, "w:gz") as t:
+    for p, size, h in inc:
+        t.add(p, arcname=p.lstrip("/"), recursive=False)
+with tarfile.open(tmp, "r:gz") as t:
+    n = len(t.getnames())
+if n != len(inc):
+    os.remove(tmp); print("ABBRUCH: Tar-Eintraege", n, "erwartet", len(inc)); sys.exit(3)
+os.rename(tmp, tar_path)
+th = hashlib.sha256(open(tar_path, "rb").read()).hexdigest()
+open(tar_path + ".sha256", "w").write("%s  %s\n" % (th, os.path.basename(tar_path)))
+with open(os.path.join(DST, "MANIFEST-%s.tsv" % stamp), "w") as m:
+    for p, size, h in inc:
+        m.write("%d\t%s\t%s\n" % (size, h, p))
+with open(os.path.join(DST, "EXCLUDED-%s.tsv" % stamp), "w") as m:
+    for why, p, size in exc:
+        m.write("%s\t%d\t%s\n" % (why, size, p))
+print("OK tar", tar_path, os.path.getsize(tar_path), "B sha256", th)
+print("eingeschlossen", len(inc), "Dateien,", sum(x[1] for x in inc), "B roh; uebersprungen (keine regulaere Datei)", skipped)
+for why in ("name", "size", "unreadable", "secretscan"):
+    print("ausgeschlossen", why, sum(1 for e in exc if e[0] == why))
+for why, p, size in exc:
+    if why in ("secretscan", "size", "unreadable"):
+        print("  AUSGESCHLOSSEN", why, size, p)
+try:
+    s = sqlite3.connect("file:%s?mode=ro" % LEDGER, uri=True)
+    out = os.path.join(DST, "lernbot-shadow-%s.sqlite" % stamp)
+    d = sqlite3.connect(out)
+    s.backup(d); d.close(); s.close()
+    c = sqlite3.connect(out); res = c.execute("pragma integrity_check").fetchall(); c.close()
+    oh = hashlib.sha256(open(out, "rb").read()).hexdigest()
+    open(out + ".sha256", "w").write("%s  %s\n" % (oh, os.path.basename(out)))
+    print("Ledger-Kopie", out, os.path.getsize(out), "B integrity", res, "sha256", oh)
+except Exception as e:
+    print("Ledger-Kopie FEHLGESCHLAGEN:", type(e).__name__, str(e)[:200])
+PYEOF
+echo "exit=$?"
+cd /var/backups/ct109-hostwork && ls -la --time-style=long-iso && sha256sum -c "$(ls -t hostwork-*.tar.gz.sha256 | head -1)"
+```
+2. **Zweck:** Eine Tar-Sicherung der Host-only-Arbeit (Paper-Harness `r/src|tests|docs|deploy/paper`, Lernbot-Skripte, Auswertungen, `/root/wt`, `/root/*.md|*.patch|*.bak`) plus eine konsistente Kopie des Lernbot-Ledgers, abgelegt neu unter `/var/backups/ct109-hostwork/` (Rechte 0700/0600). Danach kopiert Andi die Dateien von Hand nach `D:` und vergleicht Hashes (kein GitHub-Push vom Host). **Ausgeschlossen:** Verzeichnisse `tmp-ro`, `fv`, `tmp-paper`, `.git`, `__pycache__`, `.pytest_cache`, `node_modules`; Namen `*.env`, `*.env.*`, `*.pem`, `*.key`, `config.ini`, `*secret*`, `*credential*`, `ibkr.env*`; jede Datei, in der das strenge Secret-Muster (Schlüsselblock oder `api|secret|token|passw…` = Literal ab 16 Zeichen, ohne Groß/Klein) trifft; Dateien über 50 MB. Nicht angefasst: `.bash_history`, `/root/.claude*`, `/root/*.txt`, Datenverzeichnisse, Registry, Siegel. **Nicht Zweck:** Löschen, Verschieben oder Ändern irgendeiner Quelldatei, Entsiegeln, Registry-Schreiben, Dienststart, Git-Operationen.
+3. **Risiken:** Last gering (≈ 128 MiB lesen, `nice 19`/`ionice idle`); Platz auf der Root-LV: Abbruch bei < 500 MB frei. Secrets: Das Secret-Muster ist heuristisch; ein Treffer schließt die Datei aus und wird nur mit Namen ausgegeben, ein Nichttreffer ist kein Beweis. Das Tar bleibt 0600 root auf dem Host, bis Andi es auf `D:` kopiert. `.git` fehlt bewusst (mögliche Remote-URLs/Tokens); die Historie liegt auf GitHub, der Paper-Harness hatte nie einen Commit (E4). Ledger-Kopie: Lernbot-Dienst lief laut Order B nicht (nicht in der Dienstliste, Schluss aus Fehlen); Lesen mit `mode=ro` kann bei WAL-Dateien scheitern, dann steht `FEHLGESCHLAGEN` in der Ausgabe und die Tar-Sicherung bleibt gültig.
+4. **Sicherung/Rollback:** Es wird nichts verändert außer dem neuen Verzeichnis `/var/backups/ct109-hostwork/`. Rollback = dieses Verzeichnis entfernen (Löschen ist ein eigenes GO, Rest stört nicht). **Getestet in der Sandbox** (23.10. 13:20 UTC) gegen einen künstlichen Baum mit `tmp-paper`, `tmp-ro/fv`, `.git`, `config.ini`, `secrets.env.example`, `secrets.env.bak` (Top-Level), Datei mit Token-Literal (2 Varianten), Symlink, Binärdatei, `.bash_history`, SQLite-Ledger: alle Ausschlüsse griffen, Tar-Eintragszahl = Manifest, `sha256sum -c` OK, Ledger-`integrity_check` ok. **Nicht getestet:** Lauf auf CT109 (Python 3.11.2 dort, Sandbox 3.13), Verhalten bei WAL-Ledger.
+5. **Abbruchkriterien:** Ausgabe `ABBRUCH` (Platz, Tar-Eintragszahl), Exit ≠ 0, `sha256sum -c` nicht OK, Tar kleiner als 100 KB (Harness allein ≈ 340 KB roh), oder eine geänderte Quelldatei (dieser Befehl schreibt nur nach `ct109-hostwork`).
+6. **Nachweis nach Ausführung (Andi gibt die Originalausgabe zurück):** Zeile `OK tar … B sha256 …`, Zähler `eingeschlossen`/`ausgeschlossen name|size|unreadable|secretscan`, die Liste `AUSGESCHLOSSEN secretscan …` (nur Namen), Zeile `Ledger-Kopie … integrity [('ok',)]`, `exit=0`, `sha256sum -c … OK`. Danach: Entscheid, ob ausgeschlossene Treffer Fehlalarme sind (Namen ansehen, Inhalt nie ausgeben); Kopie nach `D:` und Hashvergleich durch Andi.
+7. **Satz von Andi:** `GO H1 – 8aa8844a`. Gilt nur für diesen Block.
 
 ### 5e. GO R2 – tägliche Registry-Sicherung (ENTWURF 23.10. 15:05 Berlin, **nicht erteilt**; Schablone `02` §3)
 1. **Befehl (CT109, root, Arbeitsverzeichnis egal; beim Einfügen aus dem Chat auf Zeilenumbrüche achten, die Heredocs `PYEOF`/`UNITEOF` müssen auf eigener Zeile stehen):** SHA-256 des Blocks (Datei mit LF-Zeilenenden und einem Zeilenumbruch am Ende) `78d7808ad653dfb39850e824c8d2b7d4e4ac481d55524276b440fd17cb2af0f1`.
