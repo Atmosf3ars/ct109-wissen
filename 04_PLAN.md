@@ -59,7 +59,7 @@ Auslöser (aus den Dokumenten, L1): Hostausfall 19.10. (Datenlücke ≈ 09:10–
 
 | Tag | Parallelspur 1: Forschung (seriell) | Parallelspur 2: Bau (Claude Code interaktiv; Lab-Bots + QA ergänzend) | Andi / GO |
 |---|---|---|---|
-| **Fr 23.10.** | **Erledigt:** D7 (Download, Hash), Q-Prüfung, Regimewahl, **Gate-Lauf A** (24/72 h zulässig, Klasse W, höchstens 2 Hypothesen), Sicherung. **Backtest-Modul (Freeze, Einmal-Lauf, C1–C5) gebaut, 89 Tests, 31 Mutationen, Paket v0.2.0** (Windows-Test folgt). Offen heute: Spec-v2-Entwurf vorbereiten, Bestätigungsstufe C7, Runner-Gerüst | `lf1` v0.1.1 (Gate, Kern) auf Windows PASS; **Backtest `lf1.backtest` bauen** (Freeze, Einmal-Lauf, Block-Bootstrap, BH-FDR, Placebo, Stress); einmaliger Codex-Review von `lf1` vor Abo-Ende nur mit Andis Freigabe für Push-Zugriff aufs Lab (`02` D14) | Variable auf `false` (erledigt, laut Andi); E4b-Ausgabe; ab 15:00 Entwürfe für GO `/root/run` und GO R2 |
+| **Fr 23.10.** | **Erledigt:** D7 (Download, Hash), Q-Prüfung, Regimewahl, **Gate-Lauf A** (24/72 h zulässig, Klasse W, höchstens 2 Hypothesen), Sicherung. **Backtest-Modul (Freeze, Einmal-Lauf, C1–C5) gebaut, 89 Tests, 31 Mutationen, Paket v0.2.0** (Windows-Test folgt). **Runner-Gerüst gebaut** (122 Tests, 21 Mutationen). Offen: Spec-v2-Entwurf (Sa), Bestätigungsstufe C7 (nach Spec v2), Runner: Deploy-Paket, Statusseite, Zweitprüfung | `lf1` v0.1.1 (Gate, Kern) auf Windows PASS; **Backtest `lf1.backtest` bauen** (Freeze, Einmal-Lauf, Block-Bootstrap, BH-FDR, Placebo, Stress); einmaliger Codex-Review von `lf1` vor Abo-Ende nur mit Andis Freigabe für Push-Zugriff aufs Lab (`02` D14) | Variable auf `false` (erledigt, laut Andi); E4b-Ausgabe; ab 15:00 Entwürfe für GO `/root/run` und GO R2 |
 | **Sa 24.10.** | **`BAU_SPEC_S1S3_v2` (Entwurf morgens → Andi liest → Hash noch am Sa, vor jeder Signalauswertung):** Bestätigung auf der Vorhistorie außerhalb von A, Regime-Aufteilung, Fenster B als Pflicht-Teilprüfung; Kostenmodell je Epoche; Hypothesen-Kandidaten (≤ 2) vorbereiten, **ohne** Signalauswertung | Backtest fertig + Mutationstests (≥ 15); Runner-Skelett (Zustandsspeicher, Kill-Switch, Hash-Wächter) | v2 lesen (Entwurf), keine Rechenläufe |
 | **So 25.10.** | **Vormittags Freeze** der Liste (**höchstens 2**, nur 24/72 h) → Hash. **Nachmittags Discovery Regime A**, einmalig (Windows-Lauf, nur Aggregate zurück). EU-Zeitumstellung: alles UTC | Runner feature-complete (Datenpfad, Placebo, Logging); Äquivalenztest Runner = Backtest | Freeze-Hash bestätigen; Discovery-Befehl ausführen |
 | **Mo 26.10.** | **Bestätigung nach Spec v2** (unberührte Vorhistorie), BH-FDR → ≤ 1 Kandidat oder Nullbefund | Mutationstests Runner (Doppel-Fill, Kosten=0, Lücken, Reboot, Zeitumstellung); **Zweitprüfung durch einen Claude-Agenten mit frischem Kontext** (kein Codex mehr, `02` D14) | Bestätigungs-Befehl ausführen |
@@ -165,6 +165,18 @@ nice -n19 ionice -c3 du -xB1 --max-depth=1 /var/lib/new-signal-system
 nice -n19 ionice -c3 du -xB1 --max-depth=1 /var/lib/new-signal-system/parquet
 ```
 Zweck: Aufteilung Parquet/Spool und Größe je Venue (nur Größen, keine Inhalte). **Auswertungsregeln (vorab):** Summe der Ebene-1-Zeilen muss auf ±1 % zur Gesamtzahl 32 471 126 016 B (23.10. 08:53 UTC) passen, sonst Lesart UNKNOWN; Messpunkt zählt für die Rate nur bei ≥ 20 h Abstand zu einem früheren Punkt. Originalausgabe zurückgeben.
+
+**Auftrag A4 – CT109-Shell als root (nur lesen, nicht in den Minuten :05–:10):**
+```
+date -u
+python3 --version
+python3 -c "import numpy,sqlite3;print('numpy',numpy.__version__,'sqlite',sqlite3.sqlite_version)"
+pip3 --version
+free -m
+curl -sS -m 10 -o /dev/null -w "kraken_time_http=%{http_code}\n" https://api.kraken.com/0/public/Time
+curl -sS -m 10 -o /dev/null -w "futures_tickers_http=%{http_code}\n" https://futures.kraken.com/derivatives/api/v3/tickers
+```
+Zweck: Läuft der Runner (Python ≥ 3.11, numpy, sqlite) ohne Zusatzinstallation auf CT109, und erreicht CT109 die beiden öffentlichen Endpunkte (je ein GET, kein Schlüssel)? **Auswertungsregeln (vorab):** `ModuleNotFoundError numpy` heißt: Installation nötig, das wäre ein eigener Owner-GO (Host-Schreibaktion); HTTP-Code 200 je Endpunkt = erreichbar, alles andere = Datenpfad BLOCKED bis zur Klärung. Originalausgabe zurückgeben.
 
 **Auftrag A2 – Proxmox-Host (nur falls Andi Zugang hat):** `pct config 109 | grep -E "rootfs|mp0|backup"`; `cat /etc/pve/jobs.cfg 2>/dev/null`; `pvesm status`; `ls -la <Backup-Storage>/dump | tail`; `lvs -o lv_name,lv_size,data_percent,lv_time pve`. Zweck: Existiert irgendeine Sicherung der CT109-Root-LV (also der versiegelten Rohdaten **und** der Registry)? Ergebnis `JA/NEIN/UNKNOWN`.
 
@@ -297,7 +309,7 @@ $z = Get-FileHash .\Kraken_OHLCVT_Full.zip -Algorithm SHA256
 ```
 **Auswertung (vorab):** PASS nur bei fünfmal OK **und** `gleich Kraken-Wert: True`; sonst BLOCKED und Fallback nach `02` D10 (Trigger Sa 24.10. 10:00 UTC). Der Hash vergleicht nur mit dem Herstellerwert (L1 der Seite); er belegt Unversehrtheit des Downloads, nicht die Datenqualität (die prüft die Q-Prüfung am Sa).
 **Ergebnis 23.10. ≈ 08:17 UTC: PASS** (fünfmal OK, ZIP 9 546 553 626 B, Hash gleich Kraken-Wert).
-**Danach:** das Paket `CT109_BAU_lf1_v0.1.1_2026-10-23.zip` (SHA-256 `00efc5b64839a56deafb104a5fdbf9743a44647295c02fc32e221c5faa6c24da`; v0.1.0 ist ersetzt; **seit 23.10. ≈ 09:20 UTC gilt v0.2.0, SHA-256 `7c0a4ca45258caa1c3eba62c5a8ba9886e6fc9a1c20070d09a6ea5e9b819addf`**) nach `D:\CT109-Bau\` legen, Hash prüfen, `README_RUN.md` im Paket Abschnitt 0–1 ausführen (Tests, Selbstprüfung). Gate-Ablauf erst nach meinem Signal am Sa 24.10.
+**Danach:** das Paket `CT109_BAU_lf1_v0.1.1_2026-10-23.zip` (SHA-256 `00efc5b64839a56deafb104a5fdbf9743a44647295c02fc32e221c5faa6c24da`; v0.1.0 ist ersetzt; **seit 23.10. gilt v0.3.0, SHA-256 `ef46435b2272b550d33cf080b119a587308095ebc02ea50f08418b96fc8bc07f` [v0.2.0 `7c0a4ca4…addf` ist auf dem PC getestet]**) nach `D:\CT109-Bau\` legen, Hash prüfen, `README_RUN.md` im Paket Abschnitt 0–1 ausführen (Tests, Selbstprüfung). Gate-Ablauf erst nach meinem Signal am Sa 24.10.
 
 ## 6. Erfolgskriterien Schutzteil, Stand 29.10. (ersetzen E1–E6 des Owner-Plans, Owner-OK nötig)
 - **E1 Code-Schutz:** V142 + Dirty-Arbeit nachweislich offhost und wiederherstellbar – oder präziser Blocker. (**Stand: GitHub PASS L5, Host-Hash PASS L3, Windows-Hash PASS L3**; offen nur optional Windows-Restore.)
