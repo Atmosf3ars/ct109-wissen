@@ -74,7 +74,7 @@ Auslöser (aus den Dokumenten, L1): Hostausfall 19.10. (Datenlücke ≈ 09:10–
 **Track S (Aktien):** erst ab Fr 30.10.; nativer IBKR-Paper-Account, kein Order-Pfad ohne eigenes GO.
 
 ## 5. Claude-Code-Aufträge (Read-only, eine Runde = ein Auftrag)
-**Stand der Aufträge (23.10.):** A1 ausgegeben (Ergebnis offen) · C nächste Runde · E4b danach · A2/A3/B/D offen · D7-Anleitung §5d.
+**Stand der Aufträge (23.10.):** A1 ausgeführt (Teilergebnis, `du`-Befehl fehlerhaft, `01` §5.25), A1b ausgegeben · C nächste Runde · E4b danach · A2/A3/B/D offen · D7-Anleitung §5d.
 Jeweils: Host und UTC-Zeit in die Ausgabe, Originalausgabe/Screenshot an mich zurück. Alle Befehle lesen nur; `du` mit `nice/ionice`, damit die Aufzeichnung nicht gestört wird.
 
 **Auftrag E1 – Inventur lokaler, ungepushter Git-Arbeit (CT109, root, read-only; ausgeführt 22.10. 19:41 UTC):**
@@ -157,6 +157,14 @@ journalctl -u signal-archive.service --since "2026-10-23 03:15:00 UTC" --until "
 nice -n19 ionice -c3 du -sxB1 /var/lib/new-signal-system /var/lib/new-signal-system/parquet /var/lib/new-signal-system/spool
 ```
 Zweck: dritter Kapazitätspunkt, Archivlauf 23.10. (Kandidaten/kopiert/Fehler/`sealed`-Zahl), Aufteilung Parquet/Spool. Kein Registry-, kein Seal-Zugriff. **Korrektur 23.10.:** `--since/--until` jetzt mit Suffix `UTC` (Zeitzone von CT109 UNKNOWN, `01` §5.19). **Auswertungsregeln (vorab):** Archivlauf = PASS (Job) nur bei `copied` = Kandidatenzahl und 0 Fehlern; Wachstumsrate nur aus Messpunkten ≥ 20 h Abstand, Parquet und Spool getrennt; Stage-2-Design-Trigger nur bei ≥ 5 Messpunkten und Restlaufzeit bis 85 % < 30 Tage oder Luft < 30 GiB (D2).
+
+**Auftrag A1b (Ersatz für die `du`-Zeile von A1), CT109-Shell als root, nicht in den Minuten :05–:10:**
+```
+date -u
+nice -n19 ionice -c3 du -xB1 --max-depth=1 /var/lib/new-signal-system
+nice -n19 ionice -c3 du -xB1 --max-depth=1 /var/lib/new-signal-system/parquet
+```
+Zweck: Aufteilung Parquet/Spool und Größe je Venue (nur Größen, keine Inhalte). **Auswertungsregeln (vorab):** Summe der Ebene-1-Zeilen muss auf ±1 % zur Gesamtzahl 32 471 126 016 B (23.10. 08:53 UTC) passen, sonst Lesart UNKNOWN; Messpunkt zählt für die Rate nur bei ≥ 20 h Abstand zu einem früheren Punkt. Originalausgabe zurückgeben.
 
 **Auftrag A2 – Proxmox-Host (nur falls Andi Zugang hat):** `pct config 109 | grep -E "rootfs|mp0|backup"`; `cat /etc/pve/jobs.cfg 2>/dev/null`; `pvesm status`; `ls -la <Backup-Storage>/dump | tail`; `lvs -o lv_name,lv_size,data_percent,lv_time pve`. Zweck: Existiert irgendeine Sicherung der CT109-Root-LV (also der versiegelten Rohdaten **und** der Registry)? Ergebnis `JA/NEIN/UNKNOWN`.
 
