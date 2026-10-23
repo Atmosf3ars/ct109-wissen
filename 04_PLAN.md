@@ -74,7 +74,7 @@ Auslöser (aus den Dokumenten, L1): Hostausfall 19.10. (Datenlücke ≈ 09:10–
 **Track S (Aktien):** erst ab Fr 30.10.; nativer IBKR-Paper-Account, kein Order-Pfad ohne eigenes GO.
 
 ## 5. Claude-Code-Aufträge (Read-only, eine Runde = ein Auftrag)
-**Stand der Aufträge (23.10.):** A1 ausgeführt (Teilergebnis, `du`-Befehl fehlerhaft, `01` §5.25), A1b ausgeführt (23.10. 08:55 UTC) · C ausgegeben · E4b danach · A2/A3/B/D offen · D7-Anleitung §5d.
+**Stand der Aufträge (23.10.):** A1 ausgeführt (Teilergebnis, `du`-Befehl fehlerhaft, `01` §5.25), A1b ausgeführt (23.10. 08:55 UTC) · C ausgeführt (Cloud, lesend; Variable offen) · E4b danach · A2/A3/B/D offen · D7-Anleitung §5d.
 Jeweils: Host und UTC-Zeit in die Ausgabe, Originalausgabe/Screenshot an mich zurück. Alle Befehle lesen nur; `du` mit `nice/ionice`, damit die Aufzeichnung nicht gestört wird.
 
 **Auftrag E1 – Inventur lokaler, ungepushter Git-Arbeit (CT109, root, read-only; ausgeführt 22.10. 19:41 UTC):**
