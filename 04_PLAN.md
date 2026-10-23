@@ -300,6 +300,78 @@ ls -la /var/backups/ct109-meta /var/lib/new-signal-system | head -30
 9. **Grenzen:** Kein Restore (Öffnen auf anderer Maschine) und kein Zeilenabgleich gegen das Original erbracht. Keine tägliche Sicherung; Registry wächst weiter.
 10. **Folge (nicht erteilt):** **GO R2** = täglicher Timer (nach Archivlauf, nicht in :05–:10) mit derselben Methode, Rotation (z. B. 14 Stück), Kopie nach `D:` weiterhin manuell. Entwurf folgt als eigene Host-Schreibaktion mit vollständiger Schablone.
 
+### 5e. GO R2 – tägliche Registry-Sicherung (ENTWURF 23.10. 15:05 Berlin, **nicht erteilt**; Schablone `02` §3)
+1. **Befehl (CT109, root, Arbeitsverzeichnis egal; beim Einfügen aus dem Chat auf Zeilenumbrüche achten, die Heredocs `PYEOF`/`UNITEOF` müssen auf eigener Zeile stehen):** SHA-256 des Blocks (Datei mit LF-Zeilenenden und einem Zeilenumbruch am Ende) `78d7808ad653dfb39850e824c8d2b7d4e4ac481d55524276b440fd17cb2af0f1`.
+```
+date -u; hostname
+cat > /usr/local/sbin/ct109-meta-backup.py <<'PYEOF'
+#!/usr/bin/python3
+import glob, hashlib, os, sqlite3, sys, time
+SRC = "file:/var/lib/new-signal-system/meta.sqlite?mode=ro"
+DST = "/var/backups/ct109-meta"
+KEEP = 14
+stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+out = os.path.join(DST, "meta-%s.sqlite" % stamp)
+tmp = out + ".part"
+s = sqlite3.connect(SRC, uri=True)
+t = sqlite3.connect(tmp)
+s.backup(t)
+t.close()
+s.close()
+c = sqlite3.connect(tmp)
+res = c.execute("pragma integrity_check").fetchall()
+c.close()
+if res != [("ok",)] or os.path.getsize(tmp) < 5000000:
+    os.remove(tmp)
+    print("ABBRUCH", res)
+    sys.exit(2)
+os.rename(tmp, out)
+h = hashlib.sha256(open(out, "rb").read()).hexdigest()
+open(out + ".sha256", "w").write("%s  %s\n" % (h, os.path.basename(out)))
+for f in sorted(glob.glob(os.path.join(DST, "meta-*.sqlite")))[:-KEEP]:
+    os.remove(f)
+    if os.path.exists(f + ".sha256"):
+        os.remove(f + ".sha256")
+print("OK", out, h)
+PYEOF
+chmod 0755 /usr/local/sbin/ct109-meta-backup.py
+cat > /etc/systemd/system/ct109-meta-backup.service <<'UNITEOF'
+[Unit]
+Description=CT109 registry backup (SQLite online backup, read-only source, keeps 14)
+[Service]
+Type=oneshot
+User=signalsvc
+Group=signalsvc
+Nice=19
+IOSchedulingClass=idle
+ExecStart=/usr/bin/python3 /usr/local/sbin/ct109-meta-backup.py
+UNITEOF
+cat > /etc/systemd/system/ct109-meta-backup.timer <<'UNITEOF'
+[Unit]
+Description=CT109 registry backup daily 04:27 UTC (outside compactor minutes 05-10)
+[Timer]
+OnCalendar=*-*-* 04:27:00 UTC
+Persistent=false
+AccuracySec=1s
+[Install]
+WantedBy=timers.target
+UNITEOF
+systemd-analyze verify /etc/systemd/system/ct109-meta-backup.service /etc/systemd/system/ct109-meta-backup.timer
+systemctl daemon-reload
+systemctl enable --now ct109-meta-backup.timer
+systemctl start ct109-meta-backup.service
+systemctl status ct109-meta-backup.service --no-pager | head -12
+systemctl list-timers ct109-meta-backup.timer --no-pager
+ls -la /var/backups/ct109-meta
+sha256sum /usr/local/sbin/ct109-meta-backup.py /etc/systemd/system/ct109-meta-backup.service /etc/systemd/system/ct109-meta-backup.timer
+```
+2. **Zweck:** täglich (04:27 UTC, außerhalb der Compactor-Minuten 05–10 und des Archivlaufs 03:20) eine konsistente Kopie der `meta.sqlite` per SQLite-Online-Backup (Quelle `mode=ro`, Besitzer `signalsvc`, wie R1), Integritätsprüfung, SHA-256-Datei je Kopie, Rotation auf 14 Kopien; erste Kopie sofort. **Nicht Zweck:** Registry-Schreiben, Entsiegeln, Dienständerung an bestehenden Units, Kopie nach `D:` (bleibt manuell), Restore-Test.
+3. **Risiken:** kurze Lesetransaktion auf der Live-DB (≈ 6 MB, Dauer Sekunden), `Nice=19` und `IOSchedulingClass=idle`; Platz ≈ 14 × 6 MB = 84 MB (wächst mit der Registry) auf der Root-LV; die Rotation löscht **nur** Dateien `meta-*.sqlite` (und deren `.sha256`) in `/var/backups/ct109-meta`, also ältere eigene Sicherungskopien (auch die R1-Kopie vom 22.10. fällt nach 14 Tagen heraus, ihre Kopie auf `D:` bleibt); kein Alarm bei Fehlschlag (Lücke: `OnFailure` bewusst nicht gesetzt, weil die bestehende Alarmvorlage nicht gelesen ist; Ersatz: tägliche Sichtkontrolle `ls -la /var/backups/ct109-meta`). Skript in der Sandbox gegen eine WAL-Testdatenbank geprüft (Kopie, Integrität, Hash, Rotation auf 14: Ergebnis wie erwartet, C/L6), nicht gegen die echte Registry und nicht auf CT109.
+4. **Rollback (ungetestet):** `systemctl disable --now ct109-meta-backup.timer`; `rm /etc/systemd/system/ct109-meta-backup.service /etc/systemd/system/ct109-meta-backup.timer /usr/local/sbin/ct109-meta-backup.py`; `systemctl daemon-reload`. Die Kopien bleiben liegen.
+5. **Abbruch:** jede Fehlermeldung von `systemd-analyze verify`; Ausgabe `ABBRUCH`; `Active:` nicht `inactive (dead)` mit `status=0/SUCCESS` für den Einmallauf; neue Kopie < 5 MB oder fehlt; Besitzer/Modus von `meta.sqlite*` verändert. Dann nichts weiter ausführen, Originalausgabe zurückgeben.
+6. **Nachweis:** `OK /var/backups/ct109-meta/meta-<UTC>.sqlite <SHA-256>`, `Active: inactive (dead)` ohne Fehler, `list-timers` zeigt den nächsten Lauf 04:27 UTC, die Kopie und `.sha256` im Verzeichnis (Besitzer `signalsvc`), Hashes der drei neuen Dateien. Danach Kopie nach `D:` wie bei R1 (manuell, Hashvergleich).
+7. **Satz von Andi:** `GO R2 – 78d7808a` (gilt nur für diesen Block, einmalig).
+
 ### 5d. D7 – Kraken-OHLCVT-Download (Andi, Windows PowerShell; Stand 23.10.)
 **Quelle (L1, Support-Artikel 360047124832, WebFetch 23.10.):** fünf Teile `Kraken_OHLCVT_Full.zip.part00` bis `part04` (je ≈ 2 GB) unter `https://assets.kraken.com/marketing/institutions/`, Prüfsummen der Teile in `OHLCVT_Full_PARTS_SHA256SUMS.txt` (selber Ordner), erwarteter SHA-256 des zusammengesetzten ZIPs `bc273e9027470b07d790a7fa4df9bb43f0dfc527c20c6ecae48402e123e7b1c7`. Daten laut Artikel bis 30.06.2026 (gemessen: bis 30.09.2026, `01` §5.22). **Die Links nicht im Browser öffnen** (Hinweis der Seite), sondern mit `curl.exe` laden. Platzbedarf: Teile plus zusammengesetztes ZIP, also etwa das Doppelte der Gesamtgröße (mindestens 25 GB frei auf `D:`; sonst anderes Laufwerk und Pfad ersetzen).
 **Regeln:** Datei **nicht entpacken, nicht öffnen, nicht in Excel laden**, keine Teile löschen. Rückmeldung an den Chat: nur die Ausgabe der Schritte 3 und 5 (Dateinamen, Bytes, OK/ABWEICHUNG, ZIP-Hash und ZIP-Größe). Fehler 416 von `curl` bei einem bereits vollständigen Teil ist harmlos.
