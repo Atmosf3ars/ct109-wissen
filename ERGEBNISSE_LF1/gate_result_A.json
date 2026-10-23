@@ -1,0 +1,332 @@
+{
+  "assumptions": {
+    "block_h": 168,
+    "c0_bp": {
+      "BTC": 10.1,
+      "ETH": 10.4,
+      "SOL": 16.0
+    },
+    "cost_factor": 1.25,
+    "funding_bp_per_8h": 1.0,
+    "n_boot": 2000,
+    "neff_min": 60,
+    "rho_plausible": 0.05,
+    "rho_wide": 0.1
+  },
+  "cells": [
+    {
+      "asset": "BTC",
+      "c_gate_bp": 12.75,
+      "class": "X",
+      "evaluable": true,
+      "h_hours": 1,
+      "lcb95_bp": 30.800613,
+      "mde_net_bp_full_exposure": 2.07,
+      "mean_abs_r_bp": 33.129441,
+      "n_eff": 6475,
+      "n_windows": 6473,
+      "reason": null,
+      "rho_min_mean": 0.384854,
+      "rho_min_plus": 0.413953,
+      "rms_bp": 49.884239
+    },
+    {
+      "asset": "BTC",
+      "c_gate_bp": 13.125,
+      "class": "X",
+      "evaluable": true,
+      "h_hours": 4,
+      "lcb95_bp": 62.369951,
+      "mde_net_bp_full_exposure": 8.295,
+      "mean_abs_r_bp": 67.552746,
+      "n_eff": 1618,
+      "n_windows": 6467,
+      "reason": null,
+      "rho_min_mean": 0.194293,
+      "rho_min_plus": 0.210438,
+      "rms_bp": 99.91576
+    },
+    {
+      "asset": "BTC",
+      "c_gate_bp": 15.625,
+      "class": "W",
+      "evaluable": true,
+      "h_hours": 24,
+      "lcb95_bp": 159.89426,
+      "mde_net_bp_full_exposure": 48.969,
+      "mean_abs_r_bp": 175.909538,
+      "n_eff": 269,
+      "n_windows": 6446,
+      "reason": null,
+      "rho_min_mean": 0.088824,
+      "rho_min_plus": 0.097721,
+      "rms_bp": 240.512864
+    },
+    {
+      "asset": "BTC",
+      "c_gate_bp": 21.625,
+      "class": "W",
+      "evaluable": true,
+      "h_hours": 72,
+      "lcb95_bp": 280.141721,
+      "mde_net_bp_full_exposure": 144.873,
+      "mean_abs_r_bp": 314.820986,
+      "n_eff": 89,
+      "n_windows": 6398,
+      "reason": null,
+      "rho_min_mean": 0.06869,
+      "rho_min_plus": 0.077193,
+      "rms_bp": 409.282923
+    },
+    {
+      "asset": "ETH",
+      "c_gate_bp": 13.125,
+      "class": "X",
+      "evaluable": true,
+      "h_hours": 1,
+      "lcb95_bp": 41.25425,
+      "mde_net_bp_full_exposure": 2.863,
+      "mean_abs_r_bp": 44.545807,
+      "n_eff": 6475,
+      "n_windows": 6473,
+      "reason": null,
+      "rho_min_mean": 0.294641,
+      "rho_min_plus": 0.318149,
+      "rms_bp": 68.990934
+    },
+    {
+      "asset": "ETH",
+      "c_gate_bp": 13.5,
+      "class": "X",
+      "evaluable": true,
+      "h_hours": 4,
+      "lcb95_bp": 85.219959,
+      "mde_net_bp_full_exposure": 11.706,
+      "mean_abs_r_bp": 92.973018,
+      "n_eff": 1618,
+      "n_windows": 6467,
+      "reason": null,
+      "rho_min_mean": 0.145203,
+      "rho_min_plus": 0.158414,
+      "rms_bp": 141.012381
+    },
+    {
+      "asset": "ETH",
+      "c_gate_bp": 16.0,
+      "class": "W",
+      "evaluable": true,
+      "h_hours": 24,
+      "lcb95_bp": 222.632841,
+      "mde_net_bp_full_exposure": 69.391,
+      "mean_abs_r_bp": 247.811291,
+      "n_eff": 269,
+      "n_windows": 6446,
+      "reason": null,
+      "rho_min_mean": 0.064565,
+      "rho_min_plus": 0.071867,
+      "rms_bp": 340.818294
+    },
+    {
+      "asset": "ETH",
+      "c_gate_bp": 22.0,
+      "class": "W",
+      "evaluable": true,
+      "h_hours": 72,
+      "lcb95_bp": 387.756154,
+      "mde_net_bp_full_exposure": 205.937,
+      "mean_abs_r_bp": 439.633806,
+      "n_eff": 89,
+      "n_windows": 6398,
+      "reason": null,
+      "rho_min_mean": 0.050042,
+      "rho_min_plus": 0.056737,
+      "rms_bp": 581.79429
+    },
+    {
+      "asset": "SOL",
+      "c_gate_bp": 20.125,
+      "class": "X",
+      "evaluable": true,
+      "h_hours": 1,
+      "lcb95_bp": 47.166465,
+      "mde_net_bp_full_exposure": 3.17,
+      "mean_abs_r_bp": 51.126863,
+      "n_eff": 6475,
+      "n_windows": 6473,
+      "reason": null,
+      "rho_min_mean": 0.393629,
+      "rho_min_plus": 0.42668,
+      "rms_bp": 76.378125
+    },
+    {
+      "asset": "SOL",
+      "c_gate_bp": 20.5,
+      "class": "X",
+      "evaluable": true,
+      "h_hours": 4,
+      "lcb95_bp": 97.837065,
+      "mde_net_bp_full_exposure": 12.934,
+      "mean_abs_r_bp": 106.199581,
+      "n_eff": 1618,
+      "n_windows": 6467,
+      "reason": null,
+      "rho_min_mean": 0.193033,
+      "rho_min_plus": 0.209532,
+      "rms_bp": 155.796532
+    },
+    {
+      "asset": "SOL",
+      "c_gate_bp": 23.0,
+      "class": "W",
+      "evaluable": true,
+      "h_hours": 24,
+      "lcb95_bp": 248.808316,
+      "mde_net_bp_full_exposure": 76.828,
+      "mean_abs_r_bp": 277.050708,
+      "n_eff": 269,
+      "n_windows": 6446,
+      "reason": null,
+      "rho_min_mean": 0.083017,
+      "rho_min_plus": 0.092441,
+      "rms_bp": 377.345056
+    },
+    {
+      "asset": "SOL",
+      "c_gate_bp": 29.0,
+      "class": "W",
+      "evaluable": true,
+      "h_hours": 72,
+      "lcb95_bp": 414.888252,
+      "mde_net_bp_full_exposure": 222.525,
+      "mean_abs_r_bp": 475.164042,
+      "n_eff": 89,
+      "n_windows": 6398,
+      "reason": null,
+      "rho_min_mean": 0.061032,
+      "rho_min_plus": 0.069898,
+      "rms_bp": 628.658334
+    }
+  ],
+  "code_hash": "13a66705f35086f024aab3c8aaccf0e7535c735231dcd57dbba1731d385c2810",
+  "data_manifest": [
+    {
+      "asset": "BTC",
+      "bytes": 6582038,
+      "member": "XBTUSD_60.csv",
+      "sha256": "8e223ba40708314039ed95dfdff9c833d8f5341b43b59a95d73bc8aba132baed"
+    },
+    {
+      "asset": "ETH",
+      "bytes": 5897039,
+      "member": "ETHUSD_60.csv",
+      "sha256": "2d01e67714b628bde75a15eef88013e9f360671d65e01c82f7205c32673d06eb"
+    },
+    {
+      "asset": "SOL",
+      "bytes": 2714011,
+      "member": "SOLUSD_60.csv",
+      "sha256": "53dd64334b8dec66103548ac02426b662f07b4fa224d4005234f8f3e66648c2a"
+    }
+  ],
+  "freeze_hash": null,
+  "quality": [
+    {
+      "asset": "BTC",
+      "big_move_count": 0,
+      "big_move_review_list": [],
+      "duplicate_ts": 0,
+      "expected_bars": 6480,
+      "max_gap_hours": 5,
+      "missing_pct": 0.0772,
+      "no_volume_pct": 0.0,
+      "non_monotonic": 0,
+      "passes": true,
+      "present_bars": 6475,
+      "reasons": [],
+      "series_first_ts": "2013-10-06T21:00:00Z"
+    },
+    {
+      "asset": "ETH",
+      "big_move_count": 0,
+      "big_move_review_list": [],
+      "duplicate_ts": 0,
+      "expected_bars": 6480,
+      "max_gap_hours": 5,
+      "missing_pct": 0.0772,
+      "no_volume_pct": 0.0,
+      "non_monotonic": 0,
+      "passes": true,
+      "present_bars": 6475,
+      "reasons": [],
+      "series_first_ts": "2015-08-07T14:00:00Z"
+    },
+    {
+      "asset": "SOL",
+      "big_move_count": 0,
+      "big_move_review_list": [],
+      "duplicate_ts": 0,
+      "expected_bars": 6480,
+      "max_gap_hours": 5,
+      "missing_pct": 0.0772,
+      "no_volume_pct": 0.0,
+      "non_monotonic": 0,
+      "passes": true,
+      "present_bars": 6475,
+      "reasons": [],
+      "series_first_ts": "2021-06-17T15:00:00Z"
+    }
+  ],
+  "regime_hash": "c790f9cf8c0ea3a6e018bf4b1a376d608613c087bed7f6bca52001d443920b2c",
+  "result_hash": "4d9279733c83a4e46c0c9de402dd8e0f685d4990979a98f92411b9ea3f26d649",
+  "run_utc": "2026-10-23T08:42:25Z",
+  "seed": 20261022,
+  "spec_check": {
+    "expected": "acaed785b2a0e7b5e7fa2f74565e6d1b5250e1ef793a3d5c768d6771d59d5be7",
+    "matched": "raw",
+    "ok": true,
+    "sha256_lf_normalized": "acaed785b2a0e7b5e7fa2f74565e6d1b5250e1ef793a3d5c768d6771d59d5be7",
+    "sha256_raw": "acaed785b2a0e7b5e7fa2f74565e6d1b5250e1ef793a3d5c768d6771d59d5be7"
+  },
+  "summary": {
+    "allowed_cells": 6,
+    "class_P_cells": 0,
+    "class_W_cells": 6,
+    "freeze_rule": {
+      "max_class_W_hypotheses": 2,
+      "max_hypotheses": 8
+    },
+    "lf1_status": "ZULAESSIG",
+    "per_horizon": {
+      "1": {
+        "allowed_assets": [],
+        "blocked": true
+      },
+      "24": {
+        "allowed_assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "blocked": false
+      },
+      "4": {
+        "allowed_assets": [],
+        "blocked": true
+      },
+      "72": {
+        "allowed_assets": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "blocked": false
+      }
+    }
+  },
+  "tool": "lf1.gate",
+  "window": "A",
+  "window_bounds": {
+    "end": "2026-06-30",
+    "start": "2025-10-04"
+  }
+}

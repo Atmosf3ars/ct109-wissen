@@ -1,0 +1,32 @@
+{
+ "A": {
+  "days": 270,
+  "end": "2026-06-30",
+  "median_rv30": 0.425273,
+  "start": "2025-10-04"
+ },
+ "B": {
+  "days": 270,
+  "end": "2023-03-03",
+  "median_rv30": 0.550246,
+  "start": "2022-06-07"
+ },
+ "W": 270,
+ "candidates_W270": {
+  "hv_windows": 2142,
+  "lv_windows": 980
+ },
+ "code_hash": "13a66705f35086f024aab3c8aaccf0e7535c735231dcd57dbba1731d385c2810",
+ "cutoff": "2026-06-30",
+ "daily_rows": 4731,
+ "hash_sha256": "c790f9cf8c0ea3a6e018bf4b1a376d608613c087bed7f6bca52001d443920b2c",
+ "input_sha256": "27fd91e9528d421c606ff7cd37bf3b8a4eed3b39631beb09ac8aec36a9b69266",
+ "rv30_defined_days": 4431,
+ "spec": "GATE_SPEC_v1 §3",
+ "status": "OK",
+ "thresholds": {
+  "HV_min": 0.55,
+  "LV_max": 0.45,
+  "min_gap_days": 14
+ }
+}

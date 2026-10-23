@@ -1,6 +1,6 @@
 # CT109 – 03 FORSCHUNG
 
-**Stand:** 22.10.2026. Maßstab bleibt: Netto-Expectancy je Trade in bp nach allen Kosten (und gegen die faire Rate 1/(1+R) je Trade, nie Bucket-Mittel von R, nie Trefferquote gegen 50 %).
+**Stand:** 23.10.2026 ≈ 20:40 Berlin (Ergebnisbilanz um Freeze/Stufe D/B ergänzt). Maßstab bleibt: Netto-Expectancy je Trade in bp nach allen Kosten (und gegen die faire Rate 1/(1+R) je Trade, nie Bucket-Mittel von R, nie Trefferquote gegen 50 %).
 **Kernaussage vorweg:** Bisher ist **kein positiver Edge nachgewiesen** (`PROVEN_EDGE=NO`). Nachgewiesen ist, *warum* die bisherigen Ansätze scheitern: Signalgrößen von ~1 bp stehen Kosten von 10–160 bp gegenüber.
 
 ## 1. Ergebnisbilanz (alles Stufe L1/L2, soweit nicht anders vermerkt)
@@ -13,6 +13,7 @@
 | N1 / C1 | nichts | – |
 | H-ML-A | Phase 2 gebaut, Ergebnis nicht dokumentiert | Lücke (`01` §5) |
 | Lernbot-Placebo (5j-Teilauswertung, Release-Register V166 §87) | 471 geschlossene Placebo-Trades: **Spot 228** (brutto −0,49 bp, netto −160,50 bp), **Futures 243** (brutto −1,30 bp, **netto −11,30 bp**); gesamt netto −19 670,39 USD, Gebühren ≈ 19 455,74 USD. 8 Konto-/Markt-Zellen mit je 47–76 Trades. `PROVEN_EDGE=NO` | Brutto ≈ 0, die Kosten erklären den gesamten Verlust: Zufall verliert genau die Kosten – Placebo bestätigt das Kostenmodell (und liefert keinerlei Aussage über Signale). Canary 5j/24h INCOMPLETE (~16 h 44 min). |
+| **Neues Signalsystem `lf1`: H1 `TS_MOM(L=24)`, H2 `SHOCK_FADE(w=4,k=1.5,N=168)`, BTC 24 h (eingefroren 23.10., `FREEZE_HASH 93146882…359c`)** | **Stufe D (A, 270 d): H1 +3,85 bp netto (n 269, p 0,40), H2 −22,15 bp. Stufe B (E2, 2021–2025): H1 −24,93 bp (n 1736, p 0,998), H2 −32,18 bp (n 918). Beide `NULLBEFUND`** (L3, `01` §1) | Das Plus in A war Rauschen; auf 4,8 Jahren keine Netto-Expectancy, H1 unter Placebo-q95. Keine Richtungsumkehr (Snooping). E (BTC) verbraucht. Runde 2: andere Zellen/Assets (ETH, SOL, weitere Coins) und Vorwärtsdaten, Mehrfachtest-Korrektur über alle bisher auf E geprüften Hypothesen. |
 | SOL-O1 | 0 registrierte Hypothesen | `§4` |
 
 ## 2. Kostenhürden (Stufe L1, PROJEKTSTAND §10 und SOL-Entwurf)

@@ -1,0 +1,1 @@
+[{"id":"H1","rule":"TS_MOM","params":{"L":24,"side":"both"},"asset":"BTC","H":24},{"id":"H2","rule":"SHOCK_FADE","params":{"w":4,"k":1.5,"N":168},"asset":"BTC","H":24}]

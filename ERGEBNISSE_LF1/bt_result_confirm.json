@@ -1,0 +1,121 @@
+{
+  "c6_process": {
+    "code_hash_matches_freeze": true,
+    "extern_pruefen": [
+      "Testsuite gruen",
+      "Mutationsliste >= 15",
+      "kein Eingriff nach dem Freeze"
+    ]
+  },
+  "candidate": null,
+  "code_hash": "901f6e0a3086184cb55952dbdcda195f03aa0fba2fd8588b14de3be01edbdaa6",
+  "confirmed": [],
+  "epoch_quality": {
+    "BTC": {
+      "E1": {
+        "expected_bars": 63435,
+        "first_idx": 336,
+        "last_idx": 63770,
+        "max_gap_h": 56,
+        "missing_pct": 17.101,
+        "present_bars": 52587,
+        "reason": "Fehlend>5% oder Luecke>24h",
+        "valid": false
+      },
+      "E2": {
+        "expected_bars": 41688,
+        "first_idx": 63771,
+        "last_idx": 105458,
+        "max_gap_h": 5,
+        "missing_pct": 0.0528,
+        "present_bars": 41666,
+        "reason": null,
+        "valid": true
+      }
+    }
+  },
+  "freeze_hash": "9314688276da73ee1ab726d7f029247aaa90504a048ebb74cbf25dfcca48359c",
+  "result_hash": "9d24018ab1f6c49fc40a762ab18d9734cd5117cb37c1899c867af10761f1f3f6",
+  "results": [
+    {
+      "a_net_mean_bp": 3.8480716798734695,
+      "bh_reject": false,
+      "block_len_trades": 6,
+      "bonferroni_reject": false,
+      "c1_power": false,
+      "c2_signif": false,
+      "c3_placebo": false,
+      "c4_stress": false,
+      "c5_conc": false,
+      "c7a_epoch": false,
+      "c7b_regime_a": true,
+      "category": "NULLBEFUND",
+      "core_ok_without_c1": false,
+      "delta_min_bp": 15.625,
+      "e2_n": 1736,
+      "e2_net_mean_bp": -24.93302849679648,
+      "gross_mean_bp": -9.30802849679648,
+      "id": "H1",
+      "lcb95_bp": -37.98832495101005,
+      "mde_bp_at_n": 25.411620426214203,
+      "n_long": 885,
+      "n_min": 4592,
+      "n_short": 851,
+      "n_trades": 1736,
+      "net_mean_bp": -24.93302849679648,
+      "p": 0.9982003599280144,
+      "placebo_mean_bp": -15.35629153951803,
+      "placebo_q95_bp": -3.1503981182689085,
+      "sigma_trade_bp": 317.06500370999026,
+      "stress_cost_net_bp": -32.74552849679648,
+      "stress_latency_net_bp": -21.356784311895932,
+      "top5_share": null
+    },
+    {
+      "a_net_mean_bp": -22.14833471194112,
+      "bh_reject": false,
+      "block_len_trades": 4,
+      "bonferroni_reject": false,
+      "c1_power": false,
+      "c2_signif": false,
+      "c3_placebo": false,
+      "c4_stress": false,
+      "c5_conc": false,
+      "c7a_epoch": false,
+      "c7b_regime_a": false,
+      "category": "NULLBEFUND",
+      "core_ok_without_c1": false,
+      "delta_min_bp": 15.625,
+      "e2_n": 918,
+      "e2_net_mean_bp": -32.177113005864676,
+      "gross_mean_bp": -16.552113005864673,
+      "id": "H2",
+      "lcb95_bp": -49.24652313431936,
+      "mde_bp_at_n": 38.38230409165339,
+      "n_long": 449,
+      "n_min": 5540,
+      "n_short": 469,
+      "n_trades": 918,
+      "net_mean_bp": -32.177113005864676,
+      "p": 0.9994001199760048,
+      "placebo_mean_bp": -15.677210734153263,
+      "placebo_q95_bp": 1.503124553248747,
+      "sigma_trade_bp": 348.2518815476226,
+      "stress_cost_net_bp": -39.98961300586467,
+      "stress_latency_net_bp": -28.654733691493124,
+      "top5_share": null
+    }
+  ],
+  "run_utc": "2026-10-23T18:30:06Z",
+  "stage": "confirm",
+  "stage_d_result_hash": "898281e9579db0012433d7e2664b91ca09b729fadfe6bf340bcf654e2d04fd30",
+  "tool": "lf1.backtest",
+  "verdict": "NULLBEFUND",
+  "window_e": {
+    "BTC": {
+      "end_ts_exclusive": 1759536000,
+      "first_ts": 1381093200,
+      "grid_start_ts": 1379883600
+    }
+  }
+}

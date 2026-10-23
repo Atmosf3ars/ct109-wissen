@@ -1,0 +1,96 @@
+{
+ "freeze_hash": "9314688276da73ee1ab726d7f029247aaa90504a048ebb74cbf25dfcca48359c",
+ "payload": {
+  "code_hash": "901f6e0a3086184cb55952dbdcda195f03aa0fba2fd8588b14de3be01edbdaa6",
+  "cost_model": {
+   "c0_bp": {
+    "BTC": 10.1,
+    "ETH": 10.4,
+    "SOL": 16.0
+   },
+   "factor": 1.25,
+   "funding_bp_per_8h": 1.0
+  },
+  "data_manifest": [
+   {
+    "asset": "BTC",
+    "bytes": 6582038,
+    "member": "XBTUSD_60.csv",
+    "sha256": "8e223ba40708314039ed95dfdff9c833d8f5341b43b59a95d73bc8aba132baed"
+   }
+  ],
+  "gate_result_hash": "4d9279733c83a4e46c0c9de402dd8e0f685d4990979a98f92411b9ea3f26d649",
+  "hypotheses": [
+   {
+    "H": 24,
+    "asset": "BTC",
+    "id": "H1",
+    "params": {
+     "L": 24,
+     "side": "both"
+    },
+    "rule": "TS_MOM"
+   },
+   {
+    "H": 24,
+    "asset": "BTC",
+    "id": "H2",
+    "params": {
+     "N": 168,
+     "k": 1.5,
+     "w": 4
+    },
+    "rule": "SHOCK_FADE"
+   }
+  ],
+  "limits": {
+   "n": 2,
+   "n_class_W": 2
+  },
+  "per_hypothesis_protocol": [
+   {
+    "c_gate_bp": 15.625,
+    "gate_class": "W",
+    "id": "H1",
+    "max_trades_in_gate_window": 269,
+    "mde_net_bp_full_exposure": 48.969
+   },
+   {
+    "c_gate_bp": 15.625,
+    "gate_class": "W",
+    "id": "H2",
+    "max_trades_in_gate_window": 269,
+    "mde_net_bp_full_exposure": 48.969
+   }
+  ],
+  "protocol": {
+   "conc_max": 0.5,
+   "conc_top": 5,
+   "e1_cost_factor": 2.0,
+   "epoch_gap_max_h": 24,
+   "epoch_missing_max": 0.05,
+   "epoch_split_utc": "2021-01-01",
+   "latency_stress_bars": 1,
+   "nboot_p": 5000,
+   "nplacebo": 1000,
+   "q_fdr": 0.05,
+   "stress_cost": 1.5
+  },
+  "regime_hash": "c790f9cf8c0ea3a6e018bf4b1a376d608613c087bed7f6bca52001d443920b2c",
+  "seeds": {
+   "base": 20261022
+  },
+  "spec_hashes": {
+   "bau_spec": "34d6add4f7c4dbbf0dbcab5311c29f3981382d0885da32d8e8c11354c720e068",
+   "gate_spec": "acaed785b2a0e7b5e7fa2f74565e6d1b5250e1ef793a3d5c768d6771d59d5be7"
+  },
+  "windows": {
+   "A": {
+    "days": 270,
+    "end": "2026-06-30",
+    "median_rv30": 0.425273,
+    "start": "2025-10-04"
+   }
+  }
+ }
+}
