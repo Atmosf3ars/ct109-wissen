@@ -661,6 +661,26 @@ python -m lf1 backtest --zip $Z --regime out\regime_selection.json --freeze out\
 ```
 **Abbruch:** jede Abweichung in Block 1; `FREEZE ABGELEHNT` (Meldung unverändert an den Chat, nichts löschen, nichts wiederholen); Python-Fehler. **Nach dem Freeze keine Änderung an `lf1/*.py`** (Code-Hash steckt im Freeze).
 
+### 5l. Auftrag B4 – Deploy-Vorprüfung + tbt-Spool-Zeitpunkte (ausgegeben 23.10. ≈ 14:40 UTC, nur lesend, Ergebnis offen)
+```
+AUFTRAG B4 – Deploy-Vorprüfung und tbt-Spool-Zeitpunkte (nur lesen, danach STOPP)
+
+REGELN (wie B2/B3):
+- Nur lesen. Kein start/stop/restart/reload/enable von Units, kein Schreiben in /etc, /opt, /var/lib, kein git commit/checkout, keine Datei außer EINER Notizdatei unter /tmp (kein b4.py, keine Journal-Dumps; Pipes direkt in die Ausgabe), keine Orders, keine API-Abos, kein Gateway-Login.
+- Keine Inhalte von Spool/Parquet/SQLite lesen; von Datendateien nur Name, Größe, mtime (ls -l --time-style=full-iso). IBKR-Tage ab 12.10. sind versiegelt; kein Analysepfad, kein scripts/analysis-run, kein collector.measure.
+- Kein IBC-Log, kein secrets.env, keine ibkr.env, kein ibgateway-Journal. Keine Konten, URLs, Tokens, Webhooks ausgeben: bei jeder Textausgabe von Unit-/Skriptdateien vorher mit  sed -E 's#(https?://)[^ ]+#\1<REDACTED>#g; s#(token|key|secret|password|webhook)[^ ]*=[^ ]+#\1=<REDACTED>#Ig'  filtern.
+- Nicht in den Minuten :05 bis :10 jeder Stunde (UTC) laufen lassen.
+
+AUFGABE:
+1. date -u; df -h / /opt /var/lib; free -m; nproc; uptime; systemctl --version | head -1; python3 -c "import sys,numpy,sqlite3;print(sys.version.split()[0],numpy.__version__,sqlite3.sqlite_version)".
+2. Existiert schon etwas für den Runner? ls -ld /opt/ct109-paper /var/lib/ct109-paper /etc/systemd/system/ct109-paper-* 2>&1; getent passwd ct109-paper; ss -tlnH | wc -l (nur die Zahl offener TCP-Listener) .
+3. Alarmweg bei Dienstausfall (nur lesen, redigiert): systemctl cat 'signal-unit-failed@.service' | sed-Filter oben; für den dort aufgerufenen Befehl nur ls -l (Name, Größe, mtime) und die Anzahl Zeilen, KEINEN Inhalt; für alle Units signal-*.service: systemctl show -p OnFailure -p Restart -p StartLimitBurst -p StartLimitIntervalUSec je Unit als eine Zeile.
+4. tbt-Spool-Zeitpunkte (nur Metadaten): für NVDA, INTC, TSLA an den Tagen 2026-10-16, 2026-10-21, 2026-10-23: Dateinamen der tbt- und depth-Spooldateien mit Größe und mtime (full-iso, UTC), sortiert nach mtime. Einsortierung in Worten: letzte tbt-mtime vor dem Ausfallbeginn (16.10. 13:31, 21.10. 16:01, 23.10. 13:31) und vor dem jeweils letzten US-Farm-Abbruch (16.10. 12:52, 21.10. 16:01:28, 23.10. 11:09) – nur wenn aus Name/mtime ableitbar, sonst [unklar]. Falls die Dateien tageweise ohne laufende mtime geschrieben werden (z. B. erst beim Schließen), das so sagen.
+5. Jede Zeile mit [gemessen] oder [unklar] kennzeichnen.
+
+AUSGABE: Fakten zuerst (Abschnitte 1–4), dann drei Sätze: (i) Reicht Platz/Last/Version für den Runner (nur Aussage, ob Werte der Annahmen in DEPLOY.md §3 widersprechen)? (ii) Gibt es einen Alarmweg bei Dienstausfall, und wie wird er ausgelöst (nur Unit-Ebene)? (iii) Was sagen die Spool-mtimes zu „tbt starb beim Farm-Abbruch“ vs. „bei Open“? Keine Änderungsvorschläge. Danach STOPP.
+```
+
 ## 6. Erfolgskriterien Schutzteil, Stand 29.10. (ersetzen E1–E6 des Owner-Plans, Owner-OK nötig)
 - **E1 Code-Schutz:** V142 + Dirty-Arbeit nachweislich offhost und wiederherstellbar – oder präziser Blocker. (**Stand: GitHub PASS L5, Host-Hash PASS L3, Windows-Hash PASS L3**; offen nur optional Windows-Restore.)
 - **E2 Daten-Schutz:** Sicherungsstatus der versiegelten Rohdaten geklärt (JA/NEIN) und Entscheid D3; **Registry-Kopie außerhalb des Containers (R1 + Kopie nach `D:`: erledigt 22.10., L3/L1) und tägliche Sicherung (R2) offen**; Host-only-Arbeit (`/root/run`) gesichert oder bewusst verworfen (E4b → GO offen).
