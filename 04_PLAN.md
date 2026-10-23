@@ -74,7 +74,7 @@ Auslöser (aus den Dokumenten, L1): Hostausfall 19.10. (Datenlücke ≈ 09:10–
 **Track S (Aktien):** erst ab Fr 30.10.; nativer IBKR-Paper-Account, kein Order-Pfad ohne eigenes GO.
 
 ## 5. Claude-Code-Aufträge (Read-only, eine Runde = ein Auftrag)
-**Stand der Aufträge (23.10.):** A1 ausgeführt (Teilergebnis, `du`-Befehl fehlerhaft, `01` §5.25), A1b ausgegeben · C nächste Runde · E4b danach · A2/A3/B/D offen · D7-Anleitung §5d.
+**Stand der Aufträge (23.10.):** A1 ausgeführt (Teilergebnis, `du`-Befehl fehlerhaft, `01` §5.25), A1b ausgeführt (23.10. 08:55 UTC) · C ausgegeben · E4b danach · A2/A3/B/D offen · D7-Anleitung §5d.
 Jeweils: Host und UTC-Zeit in die Ausgabe, Originalausgabe/Screenshot an mich zurück. Alle Befehle lesen nur; `du` mit `nice/ionice`, damit die Aufzeichnung nicht gestört wird.
 
 **Auftrag E1 – Inventur lokaler, ungepushter Git-Arbeit (CT109, root, read-only; ausgeführt 22.10. 19:41 UTC):**
@@ -172,7 +172,14 @@ Zweck: Aufteilung Parquet/Spool und Größe je Venue (nur Größen, keine Inhalt
 
 **Auftrag B – Dateninventur (CT109):** `systemctl list-units 'signal-*' ibgateway.service --all --no-pager --plain`; `ls /var/lib/new-signal-system/parquet`; `nice -n19 ionice -c3 du -sxB1 /var/lib/new-signal-system/parquet/venue=*`; `systemctl is-active signal-ibkr ibgateway`. Zweck: Welche Feeds laufen, was belegen sie, läuft IBKR (44,50 USD/Monat)?
 
-**Auftrag C – Lab (GitHub, Andis Rechner mit `gh`):** `gh variable list -R Atmosf3ars/ct109-agentic-lab`; `gh run list -R … -L 20`; `gh pr list -R … --state all -L 30`. Zweck: Läuft Automatik, wie oft, mit welchen Ergebnissen; keine Secrets ausgeben.
+**Auftrag C – Lab (GitHub, Andis PC, PowerShell mit `gh`; ausgegeben 23.10.):**
+```
+gh variable list -R Atmosf3ars/ct109-agentic-lab
+gh workflow list -R Atmosf3ars/ct109-agentic-lab --all
+gh run list -R Atmosf3ars/ct109-agentic-lab -L 20 --json databaseId,workflowName,event,status,conclusion,createdAt,updatedAt
+gh pr list -R Atmosf3ars/ct109-agentic-lab --state all -L 30 --json number,title,state,isDraft,author,updatedAt
+```
+Zweck: Läuft die Automatik, wie oft, mit welchen Ergebnissen; keine Secrets, keine Variablenwerte mit Schlüsselcharakter in den Chat kopieren (bei Zweifel Wert durch `***` ersetzen). **Auswertungsregeln (vorab):** „Automatik läuft“ nur bei `CT109_AGENTS_ENABLED=true` **und** mindestens einem Lauf mit `conclusion=success` in den letzten 48 h; Kosten sind nur als Anzahl Läufe belegbar (Abrechnung nicht lesbar, Preis UNKNOWN); Codex-Verbindung gilt nur als belegt, wenn ein Review/Kommentar eines Codex-Kontos an einem PR existiert (sonst UNKNOWN); offene Draft-PRs #8/#10/#14 werden nicht gemergt. Ergebnis fließt in `lab_draft/CHANGES_LAB_REPO.md` Punkte 8–10.
 
 **Auftrag D – Windows PowerShell (nur Metadaten):** `Get-ChildItem D:\CT109-Backup -Recurse -File | Select FullName,Length,LastWriteTime`; `Test-Path "$env:USERPROFILE\CT109-Keys\ct109-age-key.txt"` (nur Existenz, **Inhalt nie ausgeben**). Zweck: Existiert das V169-Systembackup (31 482 185 159 B), wo liegt der age-Schlüssel. (Hash-Zusatz für die Code-Sicherung: erledigt, siehe E2 Ergebnis 1.)
 
