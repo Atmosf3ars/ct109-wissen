@@ -681,6 +681,62 @@ AUFGABE:
 AUSGABE: Fakten zuerst (Abschnitte 1–4), dann drei Sätze: (i) Reicht Platz/Last/Version für den Runner (nur Aussage, ob Werte der Annahmen in DEPLOY.md §3 widersprechen)? (ii) Gibt es einen Alarmweg bei Dienstausfall, und wie wird er ausgelöst (nur Unit-Ebene)? (iii) Was sagen die Spool-mtimes zu „tbt starb beim Farm-Abbruch“ vs. „bei Open“? Keine Änderungsvorschläge. Danach STOPP.
 ```
 
+### 5m. GO-Textentwurf DEPLOY + SCHATTENBETRIEB (Stand Fr 23.10. ≈ 14:50 UTC; **ENTWURF, nicht erteilbar**: Paketversion, Hashes und Freeze stehen erst nach QA, Freeze und Windows-Test fest; Stelle `‹…›` sind offen; geplant Mi 28.10. nach `DEPLOY.md` §4 B)
+**Voraussetzungen vor dem GO (alle als Beleg im Chat, sonst kein GO-Text):** (1) QA-Bericht ohne offenen BLOCKER und Windows-Test des endgültigen Pakets (Tests OK, `code_hash` = Freeze); (2) Freeze-Datei vorhanden, `FREEZE_HASH` bestätigt; (3) B4 ausgewertet (Platz, Last, Python/numpy `1.24.2`, Alarmweg bei Ausfall geklärt); (4) `feed-check ok` am Tag des GO (Formate der Live-Antworten); (5) `GO R2` entschieden (Registry-Backup), da CT109 im selben Zug Neues bekommt.
+1. **Exakter Befehl.** Teil A, Andis PC (PowerShell, schreibt nur auf CT109 in `/root/ct109-in`): `scp D:\CT109-Bau\‹PAKET›.zip D:\CT109-Bau\lf1\out\freeze.json root@‹CT109-ADRESSE›:/root/ct109-in/` [Annahme: SSH/scp vom PC nach CT109 funktioniert; nicht gemessen; Verzeichnis `/root/ct109-in` vorher mit `mkdir -p` anlegen]. Teil B, CT109, root, `cd /root/ct109-in`, bash:
+```
+set -eu
+echo "‹PAKET-SHA256›  ‹PAKET›.zip" | sha256sum -c -
+echo "‹FREEZE-DATEI-SHA256›  freeze.json" | sha256sum -c -
+test ! -e /opt/ct109-paper
+install -d -m 0755 /opt/ct109-paper
+python3 -m zipfile -e ‹PAKET›.zip /root/ct109-in/pkg
+cp -r /root/ct109-in/pkg/lf1 /opt/ct109-paper/lf1
+install -m 0644 freeze.json /opt/ct109-paper/freeze.json
+install -m 0644 /root/ct109-in/pkg/deploy/runner_config.example.json /opt/ct109-paper/runner_config.json
+install -m 0644 /root/ct109-in/pkg/deploy/ct109-paper-runner.service /root/ct109-in/pkg/deploy/ct109-paper-status.service /root/ct109-in/pkg/deploy/ct109-paper-status.timer /etc/systemd/system/
+grep -n '"shadow"' /opt/ct109-paper/runner_config.json
+systemd-analyze verify /etc/systemd/system/ct109-paper-runner.service /etc/systemd/system/ct109-paper-status.service
+cd /opt/ct109-paper && python3 -m lf1 selfcheck | grep -E 'code_hash|lf1_version'
+systemctl daemon-reload
+systemctl enable --now ct109-paper-runner.service ct109-paper-status.timer
+sleep 90
+systemctl is-active ct109-paper-runner.service ct109-paper-status.timer
+journalctl -u ct109-paper-runner.service -n 20 --no-pager
+python3 -m lf1 paper-status --config /opt/ct109-paper/runner_config.json
+```
+Befehlsblock-Hash: `‹8 Hex›` (nach Fertigstellung, wie bei GO G2 mit `sha256sum`).
+2. **Zweck:** Runner installieren und im **Schattenmodus** (`"shadow": true`, nie ein Einstieg) 24 h laufen lassen: Feed, Latenz, Lücken, Last, Statusseite. **Nicht Zweck:** Paper-Wertung (Schatten-DB zählt nicht), Änderung bestehender Dienste, Parquet/Registry/IBKR, Orders, Schlüssel, `apt`, offene Ports.
+3. **Risiken:** neue Prozesse auf dem Host mit Netzzugriff auf zwei öffentliche Kraken-Ziele; Last (Annahme `DEPLOY.md` §3, B4 prüft); `DynamicUser=yes` mit gleichem `User=` in zwei Units ungetestet (Fehler = Dienst startet nicht, kein Schaden; Ersatz `User=root` bräuchte neuen GO-Text); Ausfall bliebe still, solange der Alarmweg nicht verdrahtet ist (`OnFailure=` auskommentiert, B4 klärt, **vor dem GO entscheiden**).
+4. **Rollback (ungetestet):** der Block in `DEPLOY.md` §6 (disable/stop, Unit-Dateien löschen, `/opt/ct109-paper` umbenennen); `/var/lib/ct109-paper` bleibt als Beweismaterial.
+5. **Abbruch (messbar):** `sha256sum -c` meldet nicht `OK`; `/opt/ct109-paper` existiert schon; `systemd-analyze verify` gibt Fehler aus; `code_hash` im `selfcheck` ≠ Freeze; Dienst nicht `active` nach 90 s; Ausgabe `RUNNER START VERWEIGERT`; weitere Kriterien `DEPLOY.md` §5.
+6. **Nachweis:** `is-active` zweimal `active`; Journalzeile `RUNNER START freeze=‹Hash› code=‹Hash› assets=BTC`; `paper-status`: `age_s` < 3700 nach dem ersten Stundenwechsel, `gap_events` 0, `kill_flag` false.
+7. **Satz:** `GO DEPLOY – ‹8 Hex›`.
+
+### 5n. GO-Textentwurf PAPER-START (Stand Fr 23.10.; **ENTWURF**; geplant Do 29.10. nach bestandener Schatten-Auswertung)
+**Voraussetzung (Beleg):** Auswertung des 24-h-Schattenbetriebs: keine `fetch_error`-Serie, Latenz und Last innerhalb der Annahmen, `gap_events` 0 oder erklärt, Statusseite aktuell; sonst kein GO-Text.
+1. **Befehl (CT109, root, bash):**
+```
+set -eu
+systemctl stop ct109-paper-runner.service
+D=/var/lib/ct109-paper/archiv/schatten-$(date -u +%Y%m%dT%H%M%SZ)
+install -d -m 0755 "$D"
+mv /var/lib/ct109-paper/runner.sqlite* "$D"/
+sed -i 's/"shadow": true/"shadow": false/' /opt/ct109-paper/runner_config.json
+grep -n '"shadow"' /opt/ct109-paper/runner_config.json
+systemctl start ct109-paper-runner.service
+sleep 60
+systemctl is-active ct109-paper-runner.service
+journalctl -u ct109-paper-runner.service -n 10 --no-pager
+ls -l "$D"
+```
+2. **Zweck:** Wechsel von Schatten auf **Paper** (Einstiege werden simuliert, kein Echtgeld) mit frischer Datenbank; Schatten-DB archiviert. **Nicht Zweck:** neue Hypothesen, Parameteränderung, Löschen, Eingriff in laufende Signale.
+3. **Risiken:** Datenlücke ≈ 1–2 min beim Neustart (eine Stundenkerze wird per Idempotenz nachgeholt; Annahme, Lückenverhalten im QA-Bericht prüfen); ab Start gilt **kein manuelles Eingreifen** (nur Kill-Schalter, Abweichung wird in `01` protokolliert).
+4. **Rollback (ungetestet):** `systemctl stop`, `shadow` zurück auf `true`, archivierte DB zurück; Paper-Wertung wäre dann ungültig und beginnt neu.
+5. **Abbruch:** Dienst nicht `active` nach 60 s; `RUNNER START VERWEIGERT`; `grep` zeigt nicht `false`; `mv` meldet Fehler.
+6. **Nachweis:** `active`, Journalzeile `RUNNER START …`, `ls -l "$D"` zeigt die archivierte DB, `paper-status` nach der nächsten vollen Stunde mit neuer Kerze und `shadow` false.
+7. **Satz:** `GO PAPER-START – ‹8 Hex›`.
+
 ## 6. Erfolgskriterien Schutzteil, Stand 29.10. (ersetzen E1–E6 des Owner-Plans, Owner-OK nötig)
 - **E1 Code-Schutz:** V142 + Dirty-Arbeit nachweislich offhost und wiederherstellbar – oder präziser Blocker. (**Stand: GitHub PASS L5, Host-Hash PASS L3, Windows-Hash PASS L3**; offen nur optional Windows-Restore.)
 - **E2 Daten-Schutz:** Sicherungsstatus der versiegelten Rohdaten geklärt (JA/NEIN) und Entscheid D3; **Registry-Kopie außerhalb des Containers (R1 + Kopie nach `D:`: erledigt 22.10., L3/L1) und tägliche Sicherung (R2) offen**; Host-only-Arbeit (`/root/run`) gesichert oder bewusst verworfen (E4b → GO offen).
