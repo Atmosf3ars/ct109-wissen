@@ -766,6 +766,42 @@ Befehlsblock-Hash: `‹8 Hex, nach Freigabe des Textes›`.
 6. **Nachweis:** dreimal `active`, Journalzeile `RUNNER START … mode=paper` (sinngemäß), archivierte DB im `ls`, `paper-status` mit `mode paper`, nach der nächsten vollen Stunde neue Kerze.
 7. **Satz:** `GO PAPER-START – ‹8 Hex›`
 
+### 5q. Schattenauswertung (Sa 24.10. ab ≈ 19:05 UTC; **nur lesend**, CT109 root, als ein Block; Skript getestet in der Sandbox gegen leere und synthetische Datenbank)
+Zweck: Beleg für die Voraussetzung in §5n. Schreibt nichts (DB wird `mode=ro` geöffnet, nur `date`, `systemctl`, `journalctl`, `df`, `paper-status`). Block-Hash (SHA-256 des Skripts, 8 Hex): `47385869`.
+```
+set -u
+export PYTHONDONTWRITEBYTECODE=1
+date -u
+cd /opt/ct109-paper
+systemctl is-active ct109-paper-runner.service ct109-paper-status.timer ct109-paper-watch.timer
+systemctl show ct109-paper-runner.service -p NRestarts -p ActiveEnterTimestamp -p MemoryCurrent -p MemoryPeak -p CPUUsageNSec
+systemctl --failed --no-pager --plain | grep -E 'ct109|signal' || echo "keine fehlgeschlagenen Units (ct109/signal)"
+journalctl -u ct109-paper-watch.service --since "2026-10-23 19:00" --no-pager | grep -cE "Finished|Succeeded" || true
+journalctl -u ct109-paper-watch.service --since "2026-10-23 19:00" --no-pager | grep -iE "fail|alarm" | tail -5 || true
+journalctl -u ct109-paper-runner.service --since "2026-10-23 19:00" -p warning --no-pager | tail -20
+python3 - <<'PYEOF'
+import sqlite3, statistics, json
+c = sqlite3.connect("file:/var/lib/ct109-paper/runner.sqlite?mode=ro", uri=True)
+q = lambda s, *a: c.execute(s, a).fetchall()
+print("mode", q("SELECT v FROM meta WHERE k='mode'"))
+for a, n, t0, t1 in q("SELECT asset, COUNT(*), MIN(ts), MAX(ts) FROM bars GROUP BY asset"):
+    ts = [r[0] for r in q("SELECT ts FROM bars WHERE asset=? ORDER BY ts", a)]
+    miss = [(x, y) for x, y in zip(ts, ts[1:]) if y - x != 3600]
+    print("bars", a, "n", n, "erwartet", (t1 - t0) // 3600 + 1, "luecken", len(miss), miss[:5])
+lat = [r[0] - r[1] for r in q("SELECT recv_ts, ts FROM bars")]
+if lat:
+    lat.sort()
+    print("bar-Verzug s (recv_ts - ts): min", lat[0], "median", int(statistics.median(lat)), "p95", lat[int(len(lat) * .95) - 1], "max", lat[-1])
+print("events", q("SELECT kind, COUNT(*) FROM events GROUP BY kind"))
+print("decisions", q("SELECT hyp_id, action, COUNT(*) FROM decisions GROUP BY hyp_id, action"))
+print("processed", q("SELECT asset, kind, COUNT(*) FROM processed GROUP BY asset, kind"))
+print("positions", q("SELECT COUNT(*) FROM positions"), "trades", q("SELECT COUNT(*) FROM trades"))
+PYEOF
+python3 -m lf1 paper-status --config /opt/ct109-paper/runner_config.json
+df -h / /var/lib | tail -2
+```
+**Bewertung (vorab festgelegt, damit das Ergebnis die Messlatte nicht verschiebt):** (a) Dienste dreimal `active`, `NRestarts` 0, keine fehlgeschlagene `ct109`/`signal`-Unit; (b) `bars`: Anzahl ≈ erwartet, Lücken 0 (oder jede einzeln erklärbar, z. B. dokumentierter Kraken-Ausfall); (c) Bar-Verzug (`recv_ts − ts`) Median < 60 s, Maximum < `late_s` = 300 s; (d) `events`: höchstens vereinzelt `fetch_error`, **keine** `bar_error`, `bad_candle`, `bar_missing`-Serie; (e) Watch-Läufe ≈ 24, keiner fehlgeschlagen; (f) `paper-status`: `errors_24h` ≈ 0, `age_s` kleiner 3700 (im Mittel der Stunde), `mode shadow`; (g) Last: Speicher unter 80 MB (Annahme `DEPLOY.md`), `df` Platz unverändert (72 G frei bei B4); (h) im Schattenmodus keine Einträge in `trades`/`positions`. Jede Abweichung: kein GO-Text, erst klären. Hinweis zur Erwartung: H1/H2 handeln wenig (≈ 7 Trades/Woche je Hypothese), `decisions` zeigt aber jede Stunde je Hypothese eine Entscheidung (`action` flat/blocked/shadow o. ä.).
+
 ### 5o. B4-Ergebnis und Auftrag B5 (23.10. ≈ 15:10 UTC)
 **B4 ausgewertet (Andis Screenshots, Host 14:37:30 UTC, L3):** `/`, `/opt`, `/var/lib` ein Volume, 122 G, 45 G belegt, **72 G frei**; RAM 8192 MB, 6867 MB verfügbar, Swap 1 MB genutzt; 4 Kerne, Load ≈ 0,85; Uptime 4 d 4:54; systemd 252 (252.30-1~deb12u2); Python 3.11.2, numpy 1.24.2, SQLite 3.40.1; **keine Reste** von `/opt/ct109-paper`, `/var/lib/ct109-paper`, `ct109-paper-*`-Units, Benutzer `ct109-paper`; 6 TCP-Listener. **Alarmweg:** `OnFailure=signal-unit-failed@%n.service` bei clock, ibkr, ingestion, kraken, kraken-x, kraken-futures-x, kraken-funding, netprobe, compactor, lernbot, lernbot-watch (Typ oneshot, ruft `.venv/bin/python -m alerting.unit_failed %i`, Skript 33 Zeilen, Inhalt nicht gelesen); er greift erst, wenn die Unit nach StartLimit (5 Starts in 5 min) `failed` ist; `signal-alerting`, `signal-heartbeat`, `signal-ibkr-watch`, `signal-status` ohne OnFailure. **Spool:** je Symbol nur die laufende Stunde als JSONL (NVDA 1,70 GB, INTC 1,76 GB, TSLA 0,39 GB nach 38 min, ≈ 3,9 GB, wächst bis ≈ 6 GB/h); Kompaktierung zu `parquet/…/hour=HH/part-0.parquet`, mtime = Kompaktierzeit, **tbt und depth nicht getrennt** → die Frage „tbt starb beim Farm-Abbruch oder bei Open“ ist aus Metadaten **[unklar]** (nur: Stunde 12 klein, ab Stunde 13 groß). **Nicht ausgeführt/Abweichung:** `DEPLOY.md` liegt nicht auf dem Host (steht im Paket), daher kein Abgleich von §3 am Host; mein Auftrag war hier ungenau. Claude Code fragte nach `/root/ergebnis.md`: Antwort **Nein** (Auftragsregel „keine Datei“ geht vor).
 **Bewertung (Einsatzleiter):** (1) Platz, RAM, CPU widersprechen den Annahmen von `DEPLOY.md` §3 **nicht** [gemessen: 72 G frei, 6,9 GB verfügbar; Runner < 80 MB, DB < 15 MB/Jahr bleiben Annahmen]. (2) **Risiko:** fällt die Kompaktierung aus, füllt der Spool die Platte in ≈ 12 h (Rechnung, linear, Annahme); der Runner (SQLite) würde mit voller Platte Schreibfehler bekommen; Plattenalarm unbekannt (B5 Punkt 4). (3) **Lücke:** ein hängender oder still beendeter Runner (kein `failed`) erzeugt über `OnFailure` **keinen** Alarm; dafür braucht es einen Stale-Alarm (siehe Entscheidungsentwurf). (4) **Entscheidungsentwurf (nur nach QA, vor Freeze, weil Codeänderung):** `paper-status` mit `--max-age-s` (Exit 8 bei Kerzenalter über Schwelle oder Datenbankfehler), eigene `ct109-paper-watch.service`/`.timer` (stündlich, außerhalb :05–:10) mit `OnFailure=signal-unit-failed@%n.service`, und `OnFailure` auch am Runner. Voraussetzung: B5 (Verhalten von `unit_failed.py` bei fremdem Unit-Namen, Entprellung).
