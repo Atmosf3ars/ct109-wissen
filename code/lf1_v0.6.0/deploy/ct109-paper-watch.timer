@@ -1,0 +1,11 @@
+# ENTWURF. Stuendlich zur Minute 25 (ausserhalb :05-:10), 5 min nach dem Stundenabruf des Runners plus Puffer.
+[Unit]
+Description=CT109 paper runner freshness watch hourly
+
+[Timer]
+OnCalendar=*:25
+AccuracySec=30s
+Persistent=false
+
+[Install]
+WantedBy=timers.target

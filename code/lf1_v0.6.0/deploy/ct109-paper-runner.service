@@ -1,0 +1,53 @@
+# ENTWURF (nicht installiert, nicht getestet auf CT109). Installation nur nach Einzel-GO, siehe DEPLOY.md.
+[Unit]
+Description=CT109 paper runner (lf1, public Kraken GET only, no keys, no orders)
+After=network-online.target
+Wants=network-online.target
+# Absturzschleife: erst nach 60 Starts in 2 h (ca. 1 h Dauerabsturz) wird die Unit failed und loest den Alarm aus;
+# Start verweigert (Exit 6) wird sofort failed (RestartPreventExitStatus=6) und alarmiert.
+StartLimitIntervalSec=7200
+StartLimitBurst=60
+OnFailure=signal-unit-failed@%n.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/ct109-paper
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 -m lf1 paper-run --config /opt/ct109-paper/runner_config.json
+Restart=on-failure
+RestartSec=60
+RestartPreventExitStatus=6
+# Identitaet und Schreibrechte: nur der eigene Zustandsordner
+DynamicUser=yes
+User=ct109-paper
+StateDirectory=ct109-paper
+StateDirectoryMode=0755
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+NoNewPrivileges=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictNamespaces=yes
+LockPersonality=yes
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_INET AF_INET6
+# Betriebsgrenzen (Last, Speicher, Dateigroesse)
+Nice=10
+CPUQuota=25%
+MemoryHigh=200M
+MemoryMax=300M
+TasksMax=32
+LimitFSIZE=268435456
+LimitNOFILE=256
+# Logmenge
+LogRateLimitIntervalSec=60
+LogRateLimitBurst=100
+# Alarm: OnFailure im [Unit]-Abschnitt nutzt die bestehende Vorlage signal-unit-failed@ (unveraendert, B5 23.10.).
+
+[Install]
+WantedBy=multi-user.target

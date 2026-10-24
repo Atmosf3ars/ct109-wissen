@@ -1,0 +1,11 @@
+{
+  "freeze": "/opt/ct109-paper/freeze.json",
+  "db": "/var/lib/ct109-paper/runner.sqlite",
+  "kill_flag": "/var/lib/ct109-paper/KILL",
+  "max_daily_loss_bp": 1500,
+  "max_open": 2,
+  "late_s": 300,
+  "shadow": true,
+  "expected_freeze_hash": "<64 Hex aus der Zeile FREEZE_HASH, im GO-Text genannt>",
+  "expected_code_hash": "<64 Hex code_hash aus selfcheck/Freeze, im GO-Text genannt>"
+}

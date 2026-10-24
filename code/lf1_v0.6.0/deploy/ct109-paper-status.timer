@@ -1,0 +1,11 @@
+# ENTWURF. Alle 5 Minuten; der Dienst liest nur und ist kurz.
+[Unit]
+Description=CT109 paper runner status page every 5 min
+
+[Timer]
+OnCalendar=*:0/5
+AccuracySec=30s
+Persistent=false
+
+[Install]
+WantedBy=timers.target

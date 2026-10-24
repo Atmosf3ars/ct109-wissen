@@ -1,0 +1,25 @@
+# ENTWURF. Erzeugt die statische Statusseite (nur lesender Zugriff auf die Datenbank, kein Server, kein Port).
+[Unit]
+Description=CT109 paper runner status page (static HTML, read-only DB access)
+OnFailure=signal-unit-failed@%n.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/ct109-paper
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 -m lf1 paper-status --config /opt/ct109-paper/runner_config.json --html /var/lib/ct109-paper/status.html
+DynamicUser=yes
+User=ct109-paper
+StateDirectory=ct109-paper
+StateDirectoryMode=0755
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+NoNewPrivileges=yes
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=
+Nice=15
+CPUQuota=10%
+MemoryMax=150M
+TimeoutStartSec=60
