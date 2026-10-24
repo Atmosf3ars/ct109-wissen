@@ -829,7 +829,7 @@ Zeitrahmen (Rechnung, Annahme): R2-1/2/3 Sa–So, R2-4 Mo, R2-5 Mo–Mi, R2-6 Do
 | P0-12 Optionen-OI | Preis des Optionen-Datenabos (IBKR/OPRA) und Machbarkeit OI-Mitschnitt prüfen; Entscheidung erst nach Kostenlage | ich | Mi 28.10. |
 | P0-13 Ereigniszählung | AFTERSHOCK (Krypto) und SYMPATHY (Aktien): nur Zahl unabhängiger Episoden je Regime, keine Renditen nach dem Ereignis; Ergebnis in die Power-Zeile | ich (Block für Andi) | nach P0-10/11 |
 | P0-6 Sleeve-Verbund | Entwurf Haupttest + Zerlegungsregel (`02` D29 Punkt 3) | ich | Fr 30.10. |
-| **Freeze Runde 3** | Liste ≤ 6, je Zeile Klasse (prüfbar/HINWEIS), Hash **vor** Datenöffnung; Krypto und Aktien gleichrangig (D24) | ich | frühestens Fr 30.10. |
+| **Freeze Runde 3** | Liste ≤ 6, je Zeile Klasse (prüfbar/HINWEIS), Hash **vor** Datenöffnung; Krypto und Aktien gleichrangig (D24). **Vorschlag der sechs (25.10.):** Krypto AFTERSHOCK, FUND_CROWD, WEEKEND-UMKEHR; Aktien SYMPATHY-REVERSION, INSIDER-CLUSTER (Form 4), 8-K-NACHRICHT/KEINE-NACHRICHT. Zurückgestellt (unter Auflösung): CS_MOM14, RESREV, TAUZIEHEN, FINRA | ich | **Ziel Do 29.10., spätestens Fr 30.10.** (hängt an Downloads, Futures-Zugang, Intraday-Quelle) |
 | Paper-Erfolgskriterien (D23) | Mindestzahl Trades, Netto-Erwartung mit LCB95 > 0 **oder** ehrlich als „nicht in Wochen belegbar“ ausgewiesen, zwei Regime, keine Betriebsfehler | ich | Bilanz Mo 02.11. |
 Nicht tun: Sonntag-Auftrag SOL-L2 (D30), neue Preis-Hypothesen auf A/E/F ohne Kontaminationsvermerk, Kauf MarketParquet (kein positiver Hinweis), L2-Abo bei IBKR (Tageskerzen brauchen es nicht).
 
