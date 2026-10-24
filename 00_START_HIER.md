@@ -23,6 +23,8 @@
 
 **Beleg-Ordner `ERGEBNISSE_LF1/` (23.10.2026):** unveränderte Kopien (SHA-256 in `SHA256SUMS.txt`, hashgleich zu `D:\CT109-Bau\lf1_v0.6.0`) von Freeze, Stufe-D/B-Ergebnissen, Sperrdateien, Gate-Ergebnis, Regimewahl und Hypothesenliste – damit die Beweiskette nicht nur auf Andis PC liegt. Nur lesen, nie ändern.
 
+**Neunte Datei, mit Begründung (24.10.2026):** `RUNDE2_SPEC_v1.md` – Spezifikation der Runde 2 für US-Aktien (Track S): Universum, Fenster, Hypothesen, Kosten, Entscheidungsregeln und Survivorship-Regel **vor** dem ersten Preisabruf. SHA-256 (LF-normalisiert) `09b6ca179575ead1604b6e87f014d55ef3b91a36b9bb5386f80bf5d021ec6c56`. Gleiche Unveränderlichkeitsregel; Krypto bleibt bei `GATE_SPEC_v1`/`BAU_SPEC_S1S3_v2`.
+
 Nicht angefasst und weiter maßgeblich: `PROJECT.md`, `PROJECT_PROMPT.md` (Gründungsdokumente), im Repo `BLUEPRINT.md`, `ARCHITECTURE.md`, `RUNBOOK.md`, `PREREGISTRATION.md`, `docs/CT109_SOL_PREREG_DRAFT_2026-10-21.md`.
 
 **Neue Regel gegen Dokumentenflut:** Keine V-Nummern, keine vier Tagesdateien mehr. Tagesabschluss = Änderungslog-Zeile in `01_STATUS.md` + Update `04_PLAN.md`. Neue Dateien nur mit Begründung hier.
