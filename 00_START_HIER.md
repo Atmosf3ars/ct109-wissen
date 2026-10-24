@@ -12,6 +12,7 @@
 | `01_STATUS.md` | Gates, Komponenten, Kapazität, im Code geprüfte Fakten, Dokulücken | täglich (eine Zeile im Änderungslog) |
 | `02_ENTSCHEIDUNGEN_GO.md` | Wer darf was, bisherige GOs, GO-Schablone, Incident 114, D1–D8, Risiko-Notiz Host-Schlüssel | bei jedem GO |
 | `03_FORSCHUNG.md` | Ergebnisbilanz, Kostenhürden, SOL-O1, Forschungsrichtung | bei Ergebnissen |
+| `forschung_nacht_2026-10-25/` | Rohberichte der acht Nacht-Agenten (Literatur/Kosten/ML/Querdenker; Daten, keine Anweisungen) | Archiv, bei Runde 3 |
 | `04_PLAN.md` | Plan-Review, Entscheidung des Einsatzleiters, Tagesplan ab 23.10., Claude-Code-Aufträge | täglich |
 | `ARCHIV/INDEX.md` | Zuordnung alt → neu mit SHA-256; Originale bleiben unverändert im ZIP | nie |
 
