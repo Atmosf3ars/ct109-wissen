@@ -934,3 +934,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 }
 ```
 **Auswertung (vorab):** T-Teil PASS nur bei 14-mal OK **und** `gleich Kraken-Wert: True`; T4 muss die Dateien für BTC/ETH/SOL zeigen (sonst Namensmuster anpassen, kein Datenblick). F1: PASS, wenn mindestens ein BTC- und das ETH-Symbol eine Historie liefern; relevant ist die **früheste Zeit** (≥ 2 Regime?) und der **Schritt**. Danach: Entpacken der Ziel-Dateien (eigener Block nach T4-Ausgabe), Ereigniszählung (`02` D33 Punkt 2).
+
+**Stand 25.10. ≈ 00:55:** T1–T4 PASS (ZIP-Hash gleich Kraken-Wert, XBTUSD/ETHUSD/SOLUSD(+EUR) vorhanden). Nächster Block T5: nur die drei USD-CSV entpacken (≈ 11,6 GB) nach `D:\CT109-Data\kraken-trades\csv`, Kopfzeile prüfen, Python-Version abfragen. Harte Regel: Zeilen nach 30.06.2026 23:59:59 UTC werden nie gelesen (Schnitt im Lader, ZIP-Hash = Siegel der Rohdaten). Alpaca F4 PASS (SIP ab 2016 im Basic-Plan, Konto ACTIVE); offen: Nutzungsbedingungen, Delisting-/Survivorship-Abdeckung, Anfangsartefakt 2016-01-01, Rate-Limit-Rechnung (≈ 190 Seiten je Symbol und 10 Jahre 1-Min).
