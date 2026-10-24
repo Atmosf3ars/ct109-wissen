@@ -879,3 +879,57 @@ AUSGABE: Fakten zuerst, dann zwei Sätze: (i) Kann eine neue Unit mit OnFailure=
 - **E5 Betrieb:** Lernbot bleibt aus; BTC/ETH-L2 bleibt aus.
 - **E6 Doku:** 5 Dateien aktuell (+ Gate-Spec), Tagesabschluss = Änderungslog; erstes Sicherungspaket 23.10. auf `D:` abgelegt und per Hash geprüft (01, 13:14 UTC); **Wissensspeicher `ct109-wissen` als Wahrheit, Sicherungspaket auf `D:`** (`00` §8).
 Stop-Regel bleibt: scheitert ein hartes Gate, keine Scope-Ausweitung, sondern Ursache und sichere Alternative.
+
+### 5t. Blöcke T1–T4 (Kraken Time & Sales) und F1 (Funding-Historie) – Andis PowerShell, Stand 25.10. ≈ 00:45 Berlin (P0-2, P0-10; Vorlage D7 §5d; nur Download/Lesen öffentlicher Daten, kein Schlüssel; **ungetestet in der Sandbox, keine PowerShell vorhanden**)
+**Quelle (L1, Support-Artikel 360047543791, WebFetch 25.10.):** 14 Teile `Kraken_Trades_Full.zip.part00` bis `part13` (je ≈ 2 GB) unter `https://assets.kraken.com/marketing/institutions/`, Teil-Prüfsummen `Trades_Full_PARTS_SHA256SUMS.txt`, erwarteter SHA-256 des zusammengesetzten ZIPs `5f5affd6c341366cdc5db290beaf281b8e362fd650bc9273aac6defdcaa98018`; Daten je Paar von der ersten Order bis 30.09.2026. CSV-Spalten laut Artikel: `timestamp, price, volume, type (b/s), order_type (l/m), misc, trade_id`; **ob `type` die Taker-Seite ist, steht dort nicht (zu prüfen).** Platz: Teile ≈ 28 GB + zusammengesetztes ZIP ≈ 28 GB. **Regeln:** Links nicht im Browser öffnen, nichts entpacken (außer T4 nur Auflistung), nicht in Excel öffnen, Teile nicht löschen; Rückmeldung an den Chat nur die Ausgabe von T2, T3, T4, F1.
+T1 (Download, fortsetzbar):
+```
+Get-PSDrive D | Select-Object Used, Free
+New-Item -ItemType Directory -Force -Path D:\CT109-Data\kraken-trades | Out-Null
+Set-Location D:\CT109-Data\kraken-trades
+$base = "https://assets.kraken.com/marketing/institutions"
+foreach ($n in "00","01","02","03","04","05","06","07","08","09","10","11","12","13") {
+  curl.exe -L --fail -C - -o "Kraken_Trades_Full.zip.part$n" "$base/Kraken_Trades_Full.zip.part$n"
+}
+curl.exe -L --fail -o Trades_Full_PARTS_SHA256SUMS.txt "$base/Trades_Full_PARTS_SHA256SUMS.txt"
+```
+T2 (Teile gegen Kraken-Prüfsummen; erwartet 14-mal OK):
+```
+Set-Location D:\CT109-Data\kraken-trades
+$sums = Get-Content .\Trades_Full_PARTS_SHA256SUMS.txt
+foreach ($f in Get-ChildItem .\Kraken_Trades_Full.zip.part*) {
+  $h = (Get-FileHash $f.FullName -Algorithm SHA256).Hash.ToLower()
+  $ok = [bool]($sums | Where-Object { $_.ToLower().Contains($h) -and $_.Contains($f.Name) })
+  "{0}  {1} B  {2}" -f $f.Name, $f.Length, $(if ($ok) { "OK" } else { "ABWEICHUNG" })
+}
+```
+T3 (nur wenn alle 14 OK; Zusammenfügen und Hash, dauert einige Minuten):
+```
+Set-Location D:\CT109-Data\kraken-trades
+cmd /c copy /b Kraken_Trades_Full.zip.part00+Kraken_Trades_Full.zip.part01+Kraken_Trades_Full.zip.part02+Kraken_Trades_Full.zip.part03+Kraken_Trades_Full.zip.part04+Kraken_Trades_Full.zip.part05+Kraken_Trades_Full.zip.part06+Kraken_Trades_Full.zip.part07+Kraken_Trades_Full.zip.part08+Kraken_Trades_Full.zip.part09+Kraken_Trades_Full.zip.part10+Kraken_Trades_Full.zip.part11+Kraken_Trades_Full.zip.part12+Kraken_Trades_Full.zip.part13 Kraken_Trades_Full.zip
+$z = Get-FileHash .\Kraken_Trades_Full.zip -Algorithm SHA256
+"{0}  {1} B" -f $z.Hash.ToLower(), (Get-Item .\Kraken_Trades_Full.zip).Length
+"gleich Kraken-Wert: " + ($z.Hash.ToLower() -eq "5f5affd6c341366cdc5db290beaf281b8e362fd650bc9273aac6defdcaa98018")
+```
+T4 (nur Auflistung der Einträge für BTC/ETH/SOL, ohne Entpacken):
+```
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$zip = [System.IO.Compression.ZipFile]::OpenRead("D:\CT109-Data\kraken-trades\Kraken_Trades_Full.zip")
+"Einträge gesamt: " + $zip.Entries.Count
+$zip.Entries | Where-Object { $_.Name -match '^(XBT|BTC|ETH|SOL)(USD|EUR)\.csv$' } | Select-Object FullName, Length | Format-Table -AutoSize
+$zip.Dispose()
+```
+F1 (Funding-Historie, öffentlicher GET `…/derivatives/api/v3/historical-funding-rates?symbol=…`, Endpoint laut Kraken-Doku `security: []`; Symbolnamen BTC-Perp unklar → beide probiert):
+```
+New-Item -ItemType Directory -Force -Path D:\CT109-Data\kraken-funding | Out-Null
+foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
+  try {
+    $r = Invoke-RestMethod -Uri "https://futures.kraken.com/derivatives/api/v3/historical-funding-rates?symbol=$s" -TimeoutSec 60
+    $r | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 "D:\CT109-Data\kraken-funding\$s.json"
+    $n = $r.rates.Count
+    $d = ([datetime]$r.rates[1].timestamp - [datetime]$r.rates[0].timestamp).TotalHours
+    "{0}: {1} Raten, von {2} bis {3}, Schritt {4} h" -f $s, $n, $r.rates[0].timestamp, $r.rates[$n-1].timestamp, $d
+  } catch { "{0}: FEHLER {1}" -f $s, $_.Exception.Message }
+}
+```
+**Auswertung (vorab):** T-Teil PASS nur bei 14-mal OK **und** `gleich Kraken-Wert: True`; T4 muss die Dateien für BTC/ETH/SOL zeigen (sonst Namensmuster anpassen, kein Datenblick). F1: PASS, wenn mindestens ein BTC- und das ETH-Symbol eine Historie liefern; relevant ist die **früheste Zeit** (≥ 2 Regime?) und der **Schritt**. Danach: Entpacken der Ziel-Dateien (eigener Block nach T4-Ausgabe), Ereigniszählung (`02` D33 Punkt 2).
