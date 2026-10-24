@@ -738,7 +738,7 @@ Befehlsblock-Hash (SHA-256 über Teil A + Teil B, 8 Hex): `db15d060`.
 7. **Satz:** `GO DEPLOY – db15d060`
 
 ### 5n. GO-Textentwurf PAPER-START (v0.6.0; **ENTWURF**; frühestens 24 h nach dem Schattenstart, bei Deploy Fr 23.10. also Sa 24.10. abends)
-**Nächster Schritt:** Schattenauswertung Sa 24.10. ab ≈ 19:05 UTC (nur lesende Befehle, Andi fügt ein), danach GO-Text mit Block-Hash.
+**Stand 24.10. ≈ 20:55 UTC:** Schattenauswertung bestanden (`01`), GO-Text vorgelegt, Befehlsblock-Hash `b1f33a5e` (SHA-256 `b1f33a5ea06fa2dd…`); Ausführung empfohlen 23:05–23:19 Berlin (nach voller Stunde, vor :20). Danach: Nachweis prüfen, Paper-Start in `01`/`02` protokollieren, Bilanz Mo 02.11. (Paper-Laufzeit dann ≈ 8 Tage; reiner Betriebstest).
 **Voraussetzung (Beleg im Chat vor dem GO-Text):** Auswertung des Schattenbetriebs (`paper-status`, `journalctl`, `errors_24h`, `gap_events`, Last): keine `fetch_error`-Serie, Lücken 0 oder erklärt, jede Stunde eine Kerze, Statusseite aktuell, kein unerklärter Alarm; sonst kein GO-Text.
 1. **Befehl (CT109, root, bash, nicht zwischen :20 und :30 starten, wegen des Watch bei :25):**
 ```
