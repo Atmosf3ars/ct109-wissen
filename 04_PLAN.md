@@ -824,6 +824,10 @@ Zeitrahmen (Rechnung, Annahme): R2-1/2/3 Sa–So, R2-4 Mo, R2-5 Mo–Mi, R2-6 Do
 | P0-7 Kapital & Verlustdeckel | Andi nennt Größenordnung Kapital je Markt (Aktien/Krypto) und den harten Verlustdeckel für ein späteres Echtgeld-Experiment (D32); bestimmt Konzentration, Mindestgebühren, Positionsgröße | Andi | bis Fr 30.10. |
 | P0-8 Runde-3-Spec | neue Spec nach D31 (Register, Zustandsvariable, Operationscharakteristik, Zeitversatz-Placebo, Kalibrierung ≥ 200 Nullwelten, Kosteneichung) – vor Freeze, vor jedem Datenzugriff gehasht | ich | Fr 30.10. |
 | P0-9 Paper-Kriterien hashen | Säulen A–D (`03` §8.9) als Datei, SHA-256 in `01`, vor Paper-Start des ersten echten Kandidaten | ich | vor dessen Start (Entwurf bis Bilanz Mo 02.11.) |
+| P0-10 Kraken Time & Sales | Andi-PowerShell-Block (kostenloser Hersteller-Download, 14 Teile à ~2 GB, SHA-256-Prüfung wie D7); vorher freien Platz auf `D:` nennen; nur BTC/ETH(/SOL)-USD entpacken; Rohdaten bleiben auf der PC (D:\CT109-Data) | ich liefere, Andi führt aus | ab Mo 26.10. |
+| P0-11 Intraday-Aktien | Quelle klären: Alpaca Basic (SIP/IEX? Lizenz?) vs. IBKR-Paper-Historie (Tiefe?); Ziel ≥ 2 Regime 1-Min-Bars für Sektor-Leader/-Follower; kein Kauf | ich recherchiere, Andi legt ggf. kostenloses Konto an | Di 27.10. |
+| P0-12 Optionen-OI | Preis des Optionen-Datenabos (IBKR/OPRA) und Machbarkeit OI-Mitschnitt prüfen; Entscheidung erst nach Kostenlage | ich | Mi 28.10. |
+| P0-13 Ereigniszählung | AFTERSHOCK (Krypto) und SYMPATHY (Aktien): nur Zahl unabhängiger Episoden je Regime, keine Renditen nach dem Ereignis; Ergebnis in die Power-Zeile | ich (Block für Andi) | nach P0-10/11 |
 | P0-6 Sleeve-Verbund | Entwurf Haupttest + Zerlegungsregel (`02` D29 Punkt 3) | ich | Fr 30.10. |
 | **Freeze Runde 3** | Liste ≤ 6, je Zeile Klasse (prüfbar/HINWEIS), Hash **vor** Datenöffnung; Krypto und Aktien gleichrangig (D24) | ich | frühestens Fr 30.10. |
 | Paper-Erfolgskriterien (D23) | Mindestzahl Trades, Netto-Erwartung mit LCB95 > 0 **oder** ehrlich als „nicht in Wochen belegbar“ ausgewiesen, zwei Regime, keine Betriebsfehler | ich | Bilanz Mo 02.11. |
