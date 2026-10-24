@@ -821,6 +821,9 @@ Zeitrahmen (Rechnung, Annahme): R2-1/2/3 Sa–So, R2-4 Mo, R2-5 Mo–Mi, R2-6 Do
 | P0-3 Nutzungsbedingungen | FINRA Reg SHO, SEC EDGAR (Rate-/User-Agent-Regeln), Tiingo-Lizenz-Vermerk | ich | Mo 26.10. |
 | P0-4 Power-Tabelle | je Kandidat aus `03` §8.6: erwartete Netto-Kante, σ, n, MDE, Klasse (HINWEIS oder prüfbar) | ich | Di 27.10. |
 | P0-5 Ticker-Reihe | Qualität/Beginn der vorhandenen BTC/ETH-Futures-Ticker (funding_rate, premium, OI) in der Meta-DB; läuft im nächsten (einzigen) lesenden Claude-Code-Auftrag mit Retention-Stufe-2-Vorarbeit | ich bestelle, Andi führt aus | frühestens Di 27.10., nicht :05–:10 |
+| P0-7 Kapital & Verlustdeckel | Andi nennt Größenordnung Kapital je Markt (Aktien/Krypto) und den harten Verlustdeckel für ein späteres Echtgeld-Experiment (D32); bestimmt Konzentration, Mindestgebühren, Positionsgröße | Andi | bis Fr 30.10. |
+| P0-8 Runde-3-Spec | neue Spec nach D31 (Register, Zustandsvariable, Operationscharakteristik, Zeitversatz-Placebo, Kalibrierung ≥ 200 Nullwelten, Kosteneichung) – vor Freeze, vor jedem Datenzugriff gehasht | ich | Fr 30.10. |
+| P0-9 Paper-Kriterien hashen | Säulen A–D (`03` §8.9) als Datei, SHA-256 in `01`, vor Paper-Start des ersten echten Kandidaten | ich | vor dessen Start (Entwurf bis Bilanz Mo 02.11.) |
 | P0-6 Sleeve-Verbund | Entwurf Haupttest + Zerlegungsregel (`02` D29 Punkt 3) | ich | Fr 30.10. |
 | **Freeze Runde 3** | Liste ≤ 6, je Zeile Klasse (prüfbar/HINWEIS), Hash **vor** Datenöffnung; Krypto und Aktien gleichrangig (D24) | ich | frühestens Fr 30.10. |
 | Paper-Erfolgskriterien (D23) | Mindestzahl Trades, Netto-Erwartung mit LCB95 > 0 **oder** ehrlich als „nicht in Wochen belegbar“ ausgewiesen, zwei Regime, keine Betriebsfehler | ich | Bilanz Mo 02.11. |
