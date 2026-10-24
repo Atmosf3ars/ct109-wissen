@@ -816,7 +816,7 @@ Zeitrahmen (Rechnung, Annahme): R2-1/2/3 Sa–So, R2-4 Mo, R2-5 Mo–Mi, R2-6 Do
 ### 5s. Runde 3 – Phase 0 bis Freeze (Entwurf 25.10. ≈ 00:45 Berlin; Basis `03` §8, `02` D28–D30; nichts davon liest Ergebnisdaten)
 | Schritt | Inhalt | Wer | Termin |
 |---|---|---|---|
-| P0-1 Futures-Zugang | Kraken-App: ist die Derivate-Freischaltung (Fragebogen, Steuer-ID) für Andis Bestandskonto möglich? **Nur ansehen, nicht handeln, nichts anklicken, was Hebel/Handel aktiviert** | Andi | bis Mo 26.10. |
+| P0-1 Futures-Zugang | **ERLEDIGT 25.10. 00:26 (Andi im Chat, L1): Kraken Futures sind für sein Konto freigeschaltet.** (Handelsumfang/Hebel nicht geprüft; ESMA-Grenzen offen) | Andi | erledigt |
 | P0-2 Funding-Historie | PowerShell-Block (nur öffentlicher GET, kein Schlüssel, Ausgabe nur Anzahl, früheste/späteste Zeit, Takt je Symbol): reicht die Historie für ≥ 2 Regime? Sandbox ist gesperrt (403). Block kommt von mir mit Hash | ich liefere, Andi führt aus | Mo 26.10. |
 | P0-3 Nutzungsbedingungen | FINRA Reg SHO, SEC EDGAR (Rate-/User-Agent-Regeln), Tiingo-Lizenz-Vermerk | ich | Mo 26.10. |
 | P0-4 Power-Tabelle | je Kandidat aus `03` §8.6: erwartete Netto-Kante, σ, n, MDE, Klasse (HINWEIS oder prüfbar) | ich | Di 27.10. |
@@ -825,7 +825,7 @@ Zeitrahmen (Rechnung, Annahme): R2-1/2/3 Sa–So, R2-4 Mo, R2-5 Mo–Mi, R2-6 Do
 | P0-8 Runde-3-Spec | neue Spec nach D31 (Register, Zustandsvariable, Operationscharakteristik, Zeitversatz-Placebo, Kalibrierung ≥ 200 Nullwelten, Kosteneichung) – vor Freeze, vor jedem Datenzugriff gehasht | ich | Fr 30.10. |
 | P0-9 Paper-Kriterien hashen | Säulen A–D (`03` §8.9) als Datei, SHA-256 in `01`, vor Paper-Start des ersten echten Kandidaten | ich | vor dessen Start (Entwurf bis Bilanz Mo 02.11.) |
 | P0-10 Kraken Time & Sales | Andi-PowerShell-Block (kostenloser Hersteller-Download, 14 Teile à ~2 GB, SHA-256-Prüfung wie D7); vorher freien Platz auf `D:` nennen; nur BTC/ETH(/SOL)-USD entpacken; Rohdaten bleiben auf der PC (D:\CT109-Data) | ich liefere, Andi führt aus | ab Mo 26.10. |
-| P0-11 Intraday-Aktien | Quelle klären: Alpaca Basic (SIP/IEX? Lizenz?) vs. IBKR-Paper-Historie (Tiefe?); Ziel ≥ 2 Regime 1-Min-Bars für Sektor-Leader/-Follower; kein Kauf | ich recherchiere, Andi legt ggf. kostenloses Konto an | Di 27.10. |
+| P0-11 Intraday-Aktien (**Andi 25.10.: Alpaca-Konto „gern“, EDGAR-Header mit seiner E-Mail erlaubt, `D:` hat 800 GB frei**) | Quelle klären: Alpaca Basic (SIP/IEX? Lizenz?) vs. IBKR-Paper-Historie (Tiefe?); Ziel ≥ 2 Regime 1-Min-Bars für Sektor-Leader/-Follower; kein Kauf | ich recherchiere, Andi legt ggf. kostenloses Konto an | Di 27.10. |
 | P0-12 Optionen-OI | Preis des Optionen-Datenabos (IBKR/OPRA) und Machbarkeit OI-Mitschnitt prüfen; Entscheidung erst nach Kostenlage | ich | Mi 28.10. |
 | P0-13 Ereigniszählung | AFTERSHOCK (Krypto) und SYMPATHY (Aktien): nur Zahl unabhängiger Episoden je Regime, keine Renditen nach dem Ereignis; Ergebnis in die Power-Zeile | ich (Block für Andi) | nach P0-10/11 |
 | P0-6 Sleeve-Verbund | Entwurf Haupttest + Zerlegungsregel (`02` D29 Punkt 3) | ich | Fr 30.10. |
