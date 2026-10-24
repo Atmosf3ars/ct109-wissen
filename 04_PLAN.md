@@ -806,7 +806,7 @@ df -h / /var/lib | tail -2
 | Schritt | Inhalt | Wer/Was | Bedingung |
 |---|---|---|---|
 | R2-1 Design | `03` §7 (Korrektur: Krypto-Pooling trägt wegen Korrelation kaum; Aktien-Querschnitt aussichtsreicher) | Einsatzleiter, heute | keine Daten |
-| R2-2 Datenquelle | kostenlose Tagesdaten für ein festes liquides Universum prüfen (Verfügbarkeit, Lizenz, Delistings, Adjustierung); Entscheid | Einsatzleiter recherchiert, Andi lädt auf dem PC | **kein Kauf ohne Andis Abo-GO** |
+| R2-2 Datenquelle | **Recherche erledigt (`03` §7, L1):** Pilot Tiingo Free; Fallback MarketParquet (einmalig 79 USD, nur mit Andis Kauf-GO). Offen: Andi legt kostenloses Tiingo-Konto an, Token nur auf dem PC (Umgebungsvariable), Lizenz/Nutzungsbedingungen von mir zu prüfen | Andi registriert (≈ 10 min), ich prüfe Bedingungen | **kein Kauf ohne Andis GO** |
 | R2-3 Spec | `RUNDE2_SPEC_v1`-Entwurf (Universum-Regel ex ante, Kostenmodell, Inferenzeinheit Tag/Portfolio, Blockbootstrap, FDR-Umfang, Gate v1.1 für Aktien) → Hash **vor** Datenzugriff | Einsatzleiter | R2-2 |
 | R2-4 Q-Zähler | nur Zähler (Vollständigkeit, Lücken, Anzahl Titel/Tage); Universum festlegen | Andi führt aus (lesend), ich werte | R2-3 gehasht |
 | R2-5 Code | Tages-Querschnitt-Backtest, Loader, Tests (inkl. Mutationen), QA durch unabhängigen Agenten, Windows-Test; **neues Paket** | Einsatzleiter | R2-3 |
