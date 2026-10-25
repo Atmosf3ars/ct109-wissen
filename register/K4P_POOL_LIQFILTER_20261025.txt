@@ -1,0 +1,3 @@
+# K4P-Pool nach Liquiditaetsfilter D44/D45 (Perp vorhanden, Median-Spread <= 12 bp, 24h-Volumen >= 250000 USD; Ticker-Momentaufnahme 25.10.2026 15:32 UTC, fut_spread_v1)
+# ausgeschlossen: ALGO,ETC,FLOW,KAS,MANA,SHIB,XTZ
+SOL,XRP,XDG,ADA,LTC,DOT,LINK,XMR,ZEC,XLM,BCH,ATOM,SUI,PEPE,AVAX,TAO,FIL,UNI,TRX,AAVE,FET,NEAR,DASH,CRV,ICP,FARTCOIN,INJ,PENGU,ONDO,SEI,TIA,TRUMP
