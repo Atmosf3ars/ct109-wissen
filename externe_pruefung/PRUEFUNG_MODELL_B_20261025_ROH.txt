@@ -1,0 +1,71 @@
+Das System CT109 operiert an einer harten statistischen Auflösungswand. Bei einem FWER-Budget von 0,05 über \(N_{max} = 20\) Tests (\(\alpha_i = 0,0025\), z = 2,807) und einer Datenhistorie von circa 6,5 Jahren fordert das System eine Netto-Sharpe-Ratio von \(SR \gtrsim 1,3\), um die Nachweisgrenze (MDE) analytisch zu durchbrechen. Da ereignisbasierte und strukturelle Ansätze im Krypto- und liquiden Aktienbereich typischerweise Netto-Kanten von 5 bis 30 bp bei hoher Volatilität aufweisen, ist das vorzeitige Sortieren in die HINWEIS-Klasse konsequent und schützt das Lebenszeit-α-Konto vor kombinatorischer Erschöpfung.
+
+1. Statistische & methodische Prüfung (§2 / §9)
+
+
+Einwände gegen die statistische Methodik
+
+• Die Nullwelt-Schwachstelle bei Event-Clustering: Die Erhöhung des empirischen Standardfehlers (Nullwelt-SE) von 27 bp auf 80 bp bei INSIDER-ALL zeigt, dass der klassische Zeitversatz-Placebotest (Shift) bei stark gehäuften Ereignissen kollabiert. Wenn am gleichen Tag 50 Insider-Käufe parallel stattfinden, ist die Annahme unabhängiger Episoden verletzt. Der Block-Bootstrap über Kalenderwochen fängt dies nur teilweise ab, wenn die Blöcke nicht assetübergreifend synchronisiert sind.
+• Konservatismus des Bonferroni-Kontos: Die feste Fixierung auf N = 20 ist extrem restriktiv und bestraft sequentielle Lernprozesse. Da das Forward-Fenster (Juli–Oktober 2026) als strikt isolierte Out-of-Sample-Welt existiert, ist die strikte Bonferroni-Korrektur auf den In-Sample-Daten mathematisch überbelegt, wenn ein zweistufiges Testverfahren (Screening → Validation) angewendet wird.
+
+Methodische Empfehlungen und Korrekturen
+
+1. Nullwelt-Konstruktion via Faktor-Residuen (Cross-Sectional Bootstrapping): Anstatt Ereignis-Zeitpunkte stochastisch zu verschieben, sollten die Renditen des Ziel-Assets um ein lokales Faktormodell (Krypto: BTC-Beta + Volatilitäts-In-Sample-Terzil; Aktien: Fama-French 3-Faktoren + Branchen-ETF) bereinigt werden. Der Placebo-Test prüft dann die Netto-Erwartung der Residuen. Dies eliminiert das Problem, dass die Nullwelt versehentlich Marktphasen-Drifts oder Volatilitäts-Cluster erbt.
+2. Übergang zu Alpha-Investing (Online-FDR): Ersetzen Sie das statische Bonferroni-Konto durch ein dynamisches Alpha-Investing-Verfahren nach Foster & Stine. Jedes Mal, wenn ein Ansatz BESTAETIGT wird, verdient das System Alpha-Budget zurück. Schlägt ein Test fehl, sinkt das verbleibende Budget strenger. Dies erhält die FWER-Kontrolle auf Lebenszeit, verhindert aber den harten algorithmischen Tod nach 20 Versuchen.
+3. Zulässige Pre-Freeze-Informationen: Das Verbot, Datenfenster vor dem Freeze zu öffnen, ist korrekt. Zulässig (und dringend notwendig zur Power-Maximierung) ist jedoch die Meta-Analyse von Effektgrößen-Verteilungen aus akademischen Datensätzen, um die A-priori-Varianz σ präziser zu schätzen. Wenn die Literatur für ein Signal ein Informations-Koeffizienten (IC) von 0,02 ausweist, kann die Power-Zeile die Unmöglichkeit des Nachweises vor dem Freeze deterministisch berechnen.
+
+2. Bewertung der HINWEIS-Einstufungen (§5)
+
+Die Einordnungen in die HINWEIS-Klasse sind mathematisch valide. Die folgende Tabelle fasst die Kernursachen zusammen:
+
+Ansatz	Prüfung der HINWEIS-Einstufung	Logische Konsequenz
+INSIDER-ALL	Korrekt. Bei σ = 1658 bp und effektiver MDE von 230–290 bp müsste die Kante anomal hoch sein. Die Literatur zeigt für Form-4-Cluster Netto-Alphas von max. 120–150 bp vor Transaktionskosten über 28 Tage.	Verwerfen für Einzeltrades; nur als Filtervariable für Multi-Faktor-Modelle nutzbar.
+Spot/Perp-Carry	Korrekt. Die Kraken Spot-Taker-Kosten von 0,80 % (80 bp) fressen bei der Eröffnung und Schließung (160 bp Gesamt-Friction) den annualisierten Funding-Ertrag von ~10 % vollständig auf.	Handelsverbot auf Tier 1. Nur als Maker via L2-Warteschlange theoretisch denkbar.
+FUND_XS	Korrekt. Die Querschnitts-Streuung von 5–6,4 % pro Woche erzeugt eine Nachweisgrenze, die weit über den strukturellen Kapazitäten des Marktes nach Abzug von Rebalancing-Kosten liegt.	Validierung beendet.
+
+
+3. Neue & erweiterte Kandidaten mit Power-Zeile (§6)
+
+Alle folgenden Vorschläge basieren auf direkt via EDGAR, Alpaca, Kraken oder Binance abfragbaren Daten und nutzen die Parameter des CT109-Systems.
+
+A. 8-K Filings: Item 4.02 / 3.01 Post-Announcement Drift (Short-Fokus)
+
+• Mechanismus: Ausnutzung der Informations-Verarbeitungsträgheit bei katastrophalen Unternehmensnachrichten. Fokus ausschließlich auf Item 4.02 (Nicht-Verlässlichkeit von Abschlüssen) und Item 3.01 (Delisting-Mitteilung). Da diese Ereignisse fundamentale Strukturbrüche darstellen, existiert ein ausgeprägter, autokorrelierter Post-Announcement-Drift über 3 bis 10 Handelstage.
+• Datenbasis: EDGAR Bulk-Downloads (Metadaten-Zähler für Timestamps), Alpaca Daily Bars für das US-Universum (inklusive Delistings).
+• Kostenannahme [A]: Da es sich um potenzielle Leerverkäufe oder das Vermeiden von Long-Positionen handelt: 50 bp Taker/Slippage je Seite bei Small Caps, 5 bp bei Mid/Large Caps.
+• Power-Zeile & MDE-Schätzung:
+	• Historische Frequenz: Seltene Ereignisse, ca. n = 180 valide Episoden in 6,5 Jahren.
+	• Geschätzte Idiosynkratische Volatilität: σ = 400 bp über ein 5-Tages-Fenster.
+	• \(MDE = z_{2.807} \times \frac{400}{\sqrt{180}} \approx 83,7\text{ bp}\).
+	• Erwartete Netto-Kante: Literaturwerte weisen nach Item 4.02 Drifts von -300 bis -500 bp auf. Netto-Kante (~200 bp) > MDE (84 bp).
+• Evidenzstufe: [R] (Akademisch dokumentiert in Accounting-Literatur).
+
+B. Krypto-Perp Basis-Convergence-Exploitation (No-Spot-Bein)
+
+• Mechanismus: Reines Derivate-Arbitragedreieck ohne teures Spot-Trading. Ausnutzung der temporären Ineffizienz zwischen Fixed-Maturity-Futures (z. B. quartalsweise) und dem Perpetual Swap auf Kraken/Binance. Bei extremen Marktphasen weitet sich die Basis (Spread) aus. Der Trade geht Short im überteuerten Kontrakt und Long im unterbewerteten Kontrakt. Die Konvergenz zum Laufzeitende ist mathematisch garantiert (deterministisch).
+• Datenbasis: Kraken Futures API (Historische Kontrakte, 1-Minuten-Aggregate), Binance Futures Historie.
+• Kostenannahme [L2]: Kraken Futures Tier 1: 0,02 % Maker / 0,05 % Taker. Da beide Beine im Futures-Buch liegen, beträgt die maximale Gebührenlast bei Taker-Ausführung auf beiden Seiten 2 × (5 + 5) = 20 bp Rundreise. Spreads: 5–8 bp.
+• Power-Zeile & MDE-Schätzung:
+	• Da die Konvergenz deterministisch ist, ist die Inferenz-Einheit hier nicht die Varianz freier Aktienrenditen, sondern die Verteilung der Basis-Spreads bei Eröffnung.
+	• Bei n = 400 signifikanten Spread-Ausreißern (> 4σ des historischen Basis-Medians) und einer Restlaufzeit-Volatilität des Spreads von \(\sigma_{spread} = 30\) bp:
+	• \(MDE = 2,807 \times \frac{30}{\sqrt{400}} \approx 4,21\text{ bp}\).
+	• Erwartete Netto-Kante: Historische Übertreibungen bieten oft 40–80 bp annualisierte Prämie über die Haltedauer (3–14 Tage), was ca. 15–30 bp Netto-Kante nach Kosten entspricht. Netto-Kante (15 bp) > MDE (4,2 bp).
+• Evidenzstufe: [L2] für Gebührenstrukturen; [A] für historische Basis-Weiten auf Kraken.
+
+C. Cross-Asset ETF Intra-Day Sympathy Momentum (Sektor-Leader Lead-Lag)
+
+• Mechanismus: US-Aktienmärkte prozessieren Informationen über Sektor-Leader (z. B. NVDA für Halbleiter, AAPL für Tech) schneller als über sekundäre und tertiäre Sektor-Komponenten. Ein plötzlicher, volumenunterstützter intra-day Impuls (> 3σ innerhalb von 15 Minuten) im Leader induziert einen verzögerten Trendfolge-Effekt in den nachgelagerten Komponenten des gleichen ETFs (z. B. SMH, XLK). Haltedauer: 1 Stunde bis Market Close.
+• Datenbasis: Alpaca Minutendaten (historisch über SIP-Feed für das US-Universum verfügbar).
+• Kostenannahme [A]: Liquide Mid-Caps im ETF-Korb: 5 bp Slippage + 2 bp IBKR-Gebühren = 7 bp je Seite (14 bp Rundreise).
+• Power-Zeile & MDE-Schätzung:
+	• Frequenz: Ca. n = 1.200 Episoden über 6,5 Jahre im Querschnitt der Top-10-Sektoren.
+	• Sektor-bereinigte Restvolatilität über 2 Stunden: σ = 120 bp.
+	• \(MDE = 2,807 \times \frac{120}{\sqrt{1200}} \approx 9,72\text{ bp}\).
+	• Erwartete Netto-Kante: Brutto-Drifts liegen typischerweise bei 25–35 bp. Nach Abzug von 14 bp Kosten verbleiben 11–21 bp. Netto-Kante (~15 bp) > MDE (9,7 bp).
+• Evidenzstufe: [R] (Lead-Lag-Effekte im Hochfrequenzbereich).
+
+4. Synthese & Strategischer Ausblick
+
+Die Krypto-Taker-Kostenwand auf Kraken Spot ( Tier 1: 80 bp) ist für statistische Arbitrage oder kurzfristige Mean-Reversion unüberwindbar. Die strategische Priorisierung muss sich zwingend verschieben:
+1. Fokus auf Kraken Futures / Perps: Durch die Reduktion der Gebühren um den Faktor 16 (0,05 % Taker) verschieben sich Ansätze wie K4 AFTERSHOCK oder K6 FLOW sofort aus der statistischen Todeszone. Eine Re-Evaluation der Krypto-Familien ausschließlich auf Futures-Daten ist die dringendste Maßnahme vor dem Forward-Fenster-Reset.
+2. Kombinatorische Validierung (§6.5): Die Erstellung des Diversifizierten Forward-Paper-Bündels ist mathematisch der eleganteste Ausweg aus der Auflösungswand. Wenn 5 unkorrelierte HINWEIS-Ansätze mit jeweils einer unnachweisbaren Sharpe von 0,4 gebündelt werden, transformiert die Portfoliotheorie das Gesamtsystem in eine nachweisbare Netto-Sharpe von ≈ 0,9–1,1, welche die MDE-Barriere des Gesamtsystems signifikant senkt

@@ -988,3 +988,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 25.10. ≈ 22:00:** Gold-Silber-Freeze-Paket bereit; nach GO-Satz `GO FREEZE-GS – 405f2125` Registerzeile anhängen (`freeze_gs_v1.py --append`), Andi führt `run_gs_final.ps1` aus; danach Ergebnis in 01/02/03 und Registerzeile `result`. Danach 8-K-Nachrichten (Vorbereitung EDGAR-Einlesung).
 
 **Korrektur 25.10. ≈ 21:40:** Die Richtung „Mikrostruktur/Maker auf L2“ (Stand ≈ 21:00) widerspricht D30 (Mikrostruktur trägt nicht; brutto 0,5–2 bp). Wiederaufnahme nur mit neuer Evidenz (Fill-Simulation Time & Sales). Priorität bleibt: 8-K-Zählung, Kalender-Basis prüfen, Forward-Paper-Bündel.
+
+**Stand 25.10. ≈ 21:50:** Phase 0 (a) 8-K-Zählung (Andi: `edgar_8k_count_v1.py download/count`), (b) Basis FM vs. Perp (Binance-Quartale, Kraken-Kontraktliste), Faktor-Residuen-Nullwelt in den Test-Werkzeugen ergänzen (Sektor-ETF-Residuum). Sympathie zurückgestellt.
