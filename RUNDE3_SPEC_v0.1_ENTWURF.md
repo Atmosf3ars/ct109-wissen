@@ -57,7 +57,12 @@ Runde 3 prüft **sechs vorab festgelegte, ereignisbasierte Mechanismen** mit gro
 ## 6 Regel für Schwellen (Zählregel, statt Renditesuche)
 Ereignisschwellen (θ, φ, k) werden **aus dem Raster {3 %, 4 %, 5 %} bzw. {3, 5, 8 bp}** gewählt als **kleinster Wert, bei dem E2 ≥ N_min unabhängige Episoden im Gesamtfenster zeigt** (`N_min = 120` Krypto-Schock, `N_min = 80` Funding, Wochenende: Raster {1,0; 1,5; 2,0}σ_W mit N_min = 100). Hält keiner N_min, wird die Hypothese `INSUFFICIENT/HINWEIS` (kein α). **Die Wahl nutzt ausschließlich E2-Zähler.** Danach festgeschrieben.
 
-**Ergebnis der Zählregel (E2, L2, Andi 25.10. ≈ 12:00):** **K4:** θ = 3 % (kleinster Rasterwert ≥ 2 %-Raster nicht vorhanden; 3 % erfüllt N_min): seit 2019 BTC 245, ETH 363 Episoden (je Asset, überlappend) ⇒ **α-Test zulässig**. **K1 absolute Schwelle:** BTC ≥ 5 bp je 8 h nur **32 Episoden**, fast alle 2020/2021, seit 2022 praktisch keine ⇒ **INSUFFICIENT** (N_min 80); Ersatzvariante **K1r mit relativer Schwelle** (Extrem gegenüber den letzten 90 Tagen) wird in E2b gezählt und ist **eine** Hypothese (nicht zusätzlich zu K1). **K5:** Zähler aus E2b. **Folge für Paper:** BTC/ETH-Schocks 2023–26 nur 15–25 Episoden/Jahr ⇒ Vorwärtsbestätigung dauert Jahre, nicht Wochen.
+**Ergebnis der Zählregel (E2/E2b, L2, Andi 25.10. 12:00–12:30):**
+- **K4 (θ = 3 %, Einstiegsregel §7 simuliert, ab 2019-01-01):** XBT 337 Einstiege/251 Episoden, ETH 509/369; **vereinigt 409 unabhängige Episoden** (24-h-Cluster; je Jahr 85/75/66/51/37/34/49/12); je Zustand NIEDRIG 151, MITTEL 162, HOCH 111 (alle ≥ 20 ✓). Streuung der 4-h-Rendite (zentriert, ohne Stop, nur Betrag): XBT 268 bp, ETH 337 bp; Mittelwert des Betrags 166/215 bp; je Zustand NIEDRIG 161–212, MITTEL 270–397, HOCH 313–357 bp. ⇒ **α-Test zulässig.**
+- **K1 absolut:** BTC ≥ 5 bp nur 32 Episoden (2020/21 geklumpt) ⇒ INSUFFICIENT. **K1r relativ** (≥ max(2 bp, P97,5 der letzten 90 Tage)): positiv BTC 30, ETH 33, SOL 28 Episoden (2022/2025/2026 praktisch leer), negativ BTC 31, ETH 41, SOL 51 ⇒ **N_min 80 verfehlt, HINWEIS** (auch beidseitig gepoolt MDE ≈ 185 bp ≫ erwartete 30–70 bp).
+- **K5:** 390 Wochenenden; |R_W| ≥ 1,0σ: 77, ≥ 1,5σ: 45, ≥ 2σ: 27 Ereignisse (je ≈ 50 % Auf/Ab) ⇒ **N_min 100 verfehlt, HINWEIS**.
+- **Folge:** Welle 3a hat **genau einen α-Test: K4** (plus gekettete Replikation K4P auf unabhängigen Coins, §7). K1r und K5 laufen deskriptiv.
+- **Paper:** BTC/ETH-Schocks seit 2023 nur ≈ 35–50 vereinigte Episoden/Jahr ⇒ Vorwärtsbestätigung dauert Jahre.
 
 ## 7 Hypothesen Welle 3a (Krypto; Daten vorhanden)
 **Gemeinsam:** Assets XBT und ETH (SOL nur deskriptiv wegen kurzer Historie); Long/Short wie unten; ein Ereignis je Asset und 6 h Abkühlung; Position ≤ 600 EUR (`02` D34); keine Pyramiden.
@@ -71,7 +76,11 @@ Ereignisschwellen (θ, φ, k) werden **aus dem Raster {3 %, 4 %, 5 %} bzw. {3, 5
 - *Erwartung (Annahme, Autorenbericht, nicht gemessen):* Retracement 38–50 % des Abverkaufs ⇒ brutto ≈ 0,4·θ ≈ 120–200 bp bei θ 3–5 %, **netto ≈ 100–180 bp**, Streuung je Episode σ_ep ≈ 300–500 bp [A]. **Vorab-Klasse:** abhängig von n_ep aus E2 (Tabelle §9).
 - *Deskriptiv (kein α):* Retracement-Anteil, Anzahl Folgeereignisse ≥ 1 % in 60 min (Aftershock-Intensität), Hawkes-n̂-Proxy.
 
-**K1 FUND_CROWD (Funding-Extrem → Perp-Short; erwarteter Zustand MITTEL und HOCH).**
+- *Verwandtschaft (Offenlegung):* lf1 **H2 SHOCK_FADE** (Register-Index 2, **Nullbefund**) testete einen verwandten Mechanismus auf BTC (24-h-Raster, andere Auslöseregel). K4 unterscheidet sich durch Minuten-Auslöser, Wartebedingung und 4-h-Horizont, **zählt aber als eigener Test**; der frühere Nullbefund senkt die Prior-Erwartung (Annahme), nicht das α.
+- *Power (E2b, L2/A):* Episoden n = 409, σ_ep ≈ 300 bp (Spanne 270–340) ⇒ SE ≈ 13–17 bp, **MDE (80 %, α_i = 0,0025) ≈ 49–61 bp**. Operationscharakteristik (Normalnäherung, σ 300): Power bei wahrem Netto-Edge 0/25/40/55/75/100 bp = 0/13/46/82/99/≈100 %. Zustandsspezifisch (HOCH n = 111): MDE ≈ 116 bp ⇒ **Zustandskontrast nur deskriptiv**. Erwartete Netto-Kante 100–180 bp stammt aus Autorenberichten und gilt als **zu optimistisch** (E|r| nach Einstieg ≈ 166–215 bp); realistische Prior-Spanne 20–60 bp [A] ⇒ Power des Haupttests 10–85 %, ehrliche Aussage: „nur bei Kante ≳ 50 bp nachweisbar“.
+- *K4P Replikation (gekettet, noch nicht festgelegt):* dieselbe Regel auf **unabhängigen Coins** (Kraken-USD-Paare mit Dateigröße ≥ 150 MB **und** handelbarem Kraken-Perp gleichen Namens; ohne Stablecoins, Fiat, LUNA, MATIC; Auslöser `θ = max(3 %, 6·σ̂₁₅)` mit trailing-30-Tage-σ der 15-Min-Renditen; Rundreise 26 bp [A-C5]). **Fixed-Sequence-Familie {K4 → K4P}:** K4P wird nur getestet, wenn K4 verworfen wurde, mit demselben α_i; die Familie verbraucht **einen** Konto-Platz. Zählung (E2c) folgt.
+
+**K1 FUND_CROWD (Funding-Extrem → Perp-Short; erwarteter Zustand MITTEL und HOCH). STATUS: INSUFFICIENT bzw. HINWEIS (E2/E2b), läuft nur deskriptiv, kein α.**
 - *Mechanismus:* extreme positive Funding-Raten zeigen überfüllte Long-Positionen; Abbau und negative Konvexität; zusätzlich vereinnahmt der Short das Funding.
 - *Ereignis:* Binance-Funding-Zeitstempel `s` mit `f_s ≥ φ` (φ nach §6, Raster {3, 5, 8 bp je 8 h}) für BTC bzw. ETH; Ereignisuhr = Funding-Zeit.
 - *Einstieg:* Short zum Open der Minute nach `s` (Taker); *Ausstieg:* nach **72 h** (Open) oder Stop `+8 %`.
@@ -80,7 +89,7 @@ Ereignisschwellen (θ, φ, k) werden **aus dem Raster {3 %, 4 %, 5 %} bzw. {3, 5
 - *Erwartung (Annahme):* Preiskomponente 0–40 bp [A]; **Funding-Komponente allein bei φ = 5 bp: ≈ 9 × 5 bp = 45 bp** (rechnerisch, aber nur bei erhaltener Rate); Rundreise 16 bp; **netto ≈ 30–70 bp** [A]. σ_ep (72 h) ≈ 400 bp [A] ⇒ **wahrscheinlich HINWEIS-Klasse** (Tabelle §9), außer E2 zeigt ≥ 200 Episoden.
 - *Deskriptiv:* Zerlegung Preis vs. Funding; Vergleich mit Kraken-Funding im 12-Monats-Fenster (Proxy-Güte).
 
-**K5 WEEKEND-UMKEHR (Mean-Reversion; erwarteter Zustand NIEDRIG und MITTEL).**
+**K5 WEEKEND-UMKEHR (Mean-Reversion; erwarteter Zustand NIEDRIG und MITTEL). STATUS: HINWEIS (45–77 Ereignisse < N_min), kein α.**
 - *Ereignis:* `R_W` = ln-Rendite XBT von **Fr 21:00 UTC bis So 21:00 UTC**; `σ_W` = Std der letzten 52 `R_W` (ex ante); Ereignis, wenn `|R_W| ≥ k·σ_W` (k nach §6, Raster {1,0; 1,5; 2,0}).
 - *Einstieg:* So 21:00 UTC (Open 21:01), **gegen** die Wochenendrichtung (Taker); *Ausstieg:* nach **24 h**, Stop `−4 %`.
 - *Placebo:* **Zufallsfenster** – dieselbe Regel für Mo–Do-Fenster gleicher Länge und Folgehaltedauer (C3b).
