@@ -34,7 +34,7 @@ SPY-RV30 (annualisierte Standardabweichung der letzten 30 Tagesrenditen, Informa
 - **Kategorien:** BESTAETIGT / NICHT BESTAETIGT (C2 erfüllt, anderes verfehlt) / POSITIV-UNTERPOWERT / NICHT NACHWEISBAR / INSUFFICIENT. Echtgeld nie aus diesem Test allein; Paper vorab (Pflicht).
 
 ## 6 Power-Zeile (vor Freeze)
-MDE80 = (z_{1−α} + z_{0,8})·σ/√n = 3,649·σ/√n. Mit σ je Ereignis ≈ 1 500 bp [A] und n ≈ 3 400 ⇒ ≈ **88 bp** Nachweisgrenze. Erwartung der Netto-Kante: Literatur-Brutto für Small-Cap-Insider-Cluster 100–300 bp in 1–3 Monaten [R, nicht geprüft]; abzüglich 50–100 bp Kosten ⇒ Erwartung **0 … 150 bp** [A] – liegt **an** der Auflösung. Nach dem Zählschritt wird σ durch die gezählte Streuung ersetzt; liegt MDE > 120 bp, wird INSIDER-ALL als HINWEIS-Klasse deklariert.
+MDE80 = (z_{1−α} + z_{0,8})·σ/√n = 3,649·σ/√n. Mit σ je Ereignis ≈ 1 500 bp [A] und n ≈ 3 400 ⇒ ≈ **88 bp** Nachweisgrenze. Erwartung der Netto-Kante: Literatur-Brutto für Small-Cap-Insider-Cluster 100–300 bp in 1–3 Monaten [R, nicht geprüft]; abzüglich 50–100 bp Kosten ⇒ Erwartung **0 … 150 bp** [A] – liegt **an** der Auflösung. **Zählung (Andi, 25.10. ≈ 19:00, L2):** n = 3 752, σ (zentriert) = 1 658 bp ⇒ MDE80 ≈ **99 bp**; Klassen 1 122 / 1 065 / 1 565, Zustände 1 022 / 1 099 / 1 631. Regel: liegt MDE > 120 bp, wird INSIDER-ALL als HINWEIS-Klasse deklariert.
 
 ## 7 Ablauf
 1. `insider_test_v1.py count` (nur Anzahlen, zentrierte Streuung, keine Mittelwerte).
@@ -43,7 +43,7 @@ MDE80 = (z_{1−α} + z_{0,8})·σ/√n = 3,649·σ/√n. Mit σ je Ereignis ≈
 4. `final … --spec-hash` genau einmal; keine Zwischenblicke; Registerzeile auch bei Abbruch.
 
 ## 8 Offene Punkte (vor Freeze zu klären)
-- SPY/IWM-Download (`--extra`) auf Andis PC ausstehend.
+- SPY/IWM-Download erledigt (25.10. ≈ 19:00).
 - Tickerwiederverwendung/Umbenennungen: Symbol → Bars-Zuordnung kann falsche Firmen treffen [A]; wird über Ereignisse ohne Bars (301) und frühe Enden (21) beziffert, nicht korrigiert.
 - Survivorship: Cluster-CSV enthält delistete Emittenten nur, wenn Alpaca Bars hält; Stress C4(d) deckelt die Verzerrung grob.
 - Kostenannahmen 100/50/25 bp sind ungemessen (IBKR-Gebührenseite und echte Spreads small caps offen) – Paper-Säule B misst sie.
