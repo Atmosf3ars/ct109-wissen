@@ -24,11 +24,11 @@ Wie 3A §3 (XBT-RV30-Perzentil, NIEDRIG/MITTEL/HOCH, nur Information ≤ D−1).
 ## 5 Kriterien (je Seite)
 Wie 3A §5 mit α = 0,00125: C2 (Bootstrap über Kalenderwochen, Blocklänge 4, 10 000 Ziehungen, Seed 20261025), C3 (2000 Zeitversatz- und 500 vol-gematchte Placebos, Quantil 0,975, Ereignisse behalten Richtung und Zustand), C4 (Kosten × 1,5; Einstieg 1 Minute später; Slippage × 2 in HOCH), C5, C6; Kategorien wie 3A. „0 Trades“ = INSUFFICIENT.
 
-## 6 Kalibrierung C7 (Andi-Lauf 25.10. ≈ 17:20, L2; Skript-SHA256-Kurzform `b715f5fa4fdfa6ef`, 200 Nullwelten, 2000 Zeitversatz- und 500 vol-gematchte Placebos, 10 000 Ziehungen, Seed 20261025, α je Seite 0,00125; Nullwelten auf σ = 241 bp je Einstieg skaliert, Faktor 0,99 = Annahme A)
+## 6 Kalibrierung C7 (Andi-Lauf 25.10. ≈ 16:20, L2; Skript-SHA256-Kurzform `b715f5fa4fdfa6ef`, 200 Nullwelten, 2000 Zeitversatz- und 500 vol-gematchte Placebos, 10 000 Ziehungen, Seed 20261025, α je Seite 0,00125; Nullwelten auf σ = 241 bp je Einstieg skaliert, Faktor 0,99 = Annahme A)
 | Seite | Episoden (Zählung/Engine) | Episoden-σ skaliert | MDE80 | Fehlpass δ=0 | Gesamtregel bei ½MDE / MDE / 2·MDE |
 |---|---|---|---|---|---|
 | K6-C (Fortsetzung) | 3 553 | 208 bp | 13,5 bp | 0/200 | 4 % (6,7 bp) / 57,5 % (13,5 bp) / 100 % (26,9 bp) |
-| K6-R (Umkehr) | 3 550 | 208 bp | 13,5 bp | 1/200 (C2-Fehlalarm, übrige Kriterien verfehlt) | 7 % (6,8 bp) / 51 % (13,5 bp) / 100 % (27,0 bp) |
+| K6-R (Umkehr) | 3 550 | 208 bp | 13,5 bp | 1/200 (volle Regel bei δ=0 bestanden = Fehlpass; Einzelkriterien C2 1, C3 5, C4 1, C5 28, C6 41) | 7 % (6,8 bp) / 51 % (13,5 bp) / 100 % (27,0 bp) |
 **Beide Seiten zusammen: Fehlpass 1/200 = 0,5 % (≤ 5 % ✓) ⇒ C7 formal bestanden.** Einzelkriterien bei MDE: C4 (Stress) ist der Engpass (Seite C 115/200, R 102/200), da Kosten × 1,5 in dünnen Alts ≈ 13 bp zusätzlich fordern ⇒ der 80-%-Punkt der **Gesamtregel liegt bei ≈ 1,4–1,6 × MDE ≈ 19–22 bp** (Interpolation). Power bei wahrer Netto-Kante 10 / 15 / 20 bp ≈ 20 / 65 / 88 % (interpoliert) [L2/A]. Grenzen wie 3A (Nullwelten ohne Mikrostruktur, Skalierung auf Streuung).
 
 ## 7 Paper

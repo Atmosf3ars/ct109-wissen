@@ -965,4 +965,4 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 
 **Stand 25.10. ≈ 16:45:** D43 (K6). **Jetzt:** `k6_test_v1.py` (Engine mit Richtung, Stop, Cooldown je Paar; Placebos; C7), Spec Welle 4a (K6) als eigener Freeze-Kandidat; Kalibrierlauf bei Andi (ca. 1–2 h).
 
-**Stand 25.10. ≈ 17:30:** K6 kalibriert (C7 bestanden). **Entscheid offen für mich (Doktrin):** K6 mit 3A gemeinsam am Do 29.10. freezen (Register 5/6/7) – Vorbehalt: Perp-Liquidität/Kosten der dünnen Alts ungeprüft; zuerst Kostencheck (Kraken-Futures-Orderbuch-/Spread-Stichprobe, nur Lesen) und Konzentrationsregel prüfen.
+**Stand 25.10. ≈ 16:25:** K6 kalibriert (C7 bestanden). **Entscheid offen für mich (Doktrin):** K6 mit 3A gemeinsam am Do 29.10. freezen (Register 5/6/7) – Vorbehalt: Perp-Liquidität/Kosten der dünnen Alts ungeprüft; zuerst Kostencheck (Kraken-Futures-Orderbuch-/Spread-Stichprobe, nur Lesen) und Konzentrationsregel prüfen.
