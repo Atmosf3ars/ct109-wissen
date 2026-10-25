@@ -265,6 +265,8 @@ def variants(world, shift=None):
     return res
 
 def calib(agg, names, nnull, nplac, B, alpha, seed, sigma):
+    import hashlib
+    print("Skript-SHA256 %s (Version mit --sigma-Skalierung)" % hashlib.sha256(open(__file__, "rb").read()).hexdigest()[:16], flush=True)
     rng = np.random.default_rng(seed)
     world = World(agg, names)
     log("Welt geladen")
