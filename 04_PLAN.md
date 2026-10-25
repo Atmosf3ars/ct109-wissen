@@ -986,3 +986,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 25.10. ≈ 21:00 – Neubewertung (D49):** Keine weiteren Einzel-Ereignis-α-Tests in Tageskerzen. Kandidaten-Richtungen mit hoher Sharpe-Struktur: (1) Maker-/Mikrostruktur auf eigener L2-Aufzeichnung (CT109, Daten wachsen; Mindest-Historie klären), (2) Kalender-/Basis-Strukturen ohne Spot-Gebühr (Kraken-Fixed-Maturity vs. Perp, Gebühren/Marginregeln prüfen), (3) diversifiziertes Portfolio aus den schwachen Signalen nur als Forward-Paper (Beleg im Betrieb). Bilanz lf1 02.11. bleibt.
 
 **Stand 25.10. ≈ 22:00:** Gold-Silber-Freeze-Paket bereit; nach GO-Satz `GO FREEZE-GS – 405f2125` Registerzeile anhängen (`freeze_gs_v1.py --append`), Andi führt `run_gs_final.ps1` aus; danach Ergebnis in 01/02/03 und Registerzeile `result`. Danach 8-K-Nachrichten (Vorbereitung EDGAR-Einlesung).
+
+**Korrektur 25.10. ≈ 21:40:** Die Richtung „Mikrostruktur/Maker auf L2“ (Stand ≈ 21:00) widerspricht D30 (Mikrostruktur trägt nicht; brutto 0,5–2 bp). Wiederaufnahme nur mit neuer Evidenz (Fill-Simulation Time & Sales). Priorität bleibt: 8-K-Zählung, Kalender-Basis prüfen, Forward-Paper-Bündel.
