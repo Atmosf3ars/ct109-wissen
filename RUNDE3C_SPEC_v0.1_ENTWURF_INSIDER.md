@@ -1,6 +1,6 @@
 # CT109 – RUNDE-3C-SPEZIFIKATION v0.1 (ENTWURF INSIDER-ALL, NICHT GEHASHT)
 
-**Status:** Entwurf des Einsatzleiters, Stand So 25.10.2026 (≈ 19:00 Berlin). Wird erst mit eigenem Freeze-Paket und GO-Satz **gültig**. Neuer, **eigener** Freeze (Register-Index 8), unabhängig vom Freeze `830bac6d…`. Evidenzstufen: [L1] Herstellerangabe, [L2] von Andi gemessen, [A] Annahme, [R] Recherche.
+**Status: GEPARKT – HINWEIS-Klasse, kein Freeze (D47, 25.10. ≈ 20:30).** C7-Kalibrierung: wirksame MDE ≈ 230–290 bp (Nullwelt-SE 80 bp statt analytisch 27 bp) ≫ erwartete Netto-Kante; das Dokument bleibt Entwurf für eine spätere Variante. Ursprünglicher Stand: Entwurf des Einsatzleiters, Stand So 25.10.2026 (≈ 19:00 Berlin). Wird erst mit eigenem Freeze-Paket und GO-Satz **gültig**. Neuer, **eigener** Freeze (Register-Index 8), unabhängig vom Freeze `830bac6d…`. Evidenzstufen: [L1] Herstellerangabe, [L2] von Andi gemessen, [A] Annahme, [R] Recherche.
 
 ## 1 Gegenstand und Einordnung
 **INSIDER-ALL:** Cluster von Insider-Käufen (Form 4, Code P) im **gesamten US-Universum** (nicht nur S&P 500). Long-Position, Haltedauer 28 Kalendertage, Zielgröße Netto-Überschussrendite gegen SPY in bp je Ereignis. **Ein** einseitiger Test (Long, Netto-Kante > 0), α_i = 0,0025 (z = 2,807), Register-Index 8 von 20 (D37). Danach 12 Plätze frei.
@@ -50,4 +50,5 @@ MDE80 = (z_{1−α} + z_{0,8})·σ/√n = 3,649·σ/√n. Mit σ je Ereignis ≈
 - Alpaca-Lizenz: nur lokale Forschung, keine Weitergabe [A].
 
 ## 9 Änderungslog
+- v0.1a (25.10.2026 ≈ 20:30): geparkt (D47); Code um `--hedge` und `hedgecmp` erweitert (SHA `f97240b93835effc`).
 - v0.1 (25.10.2026 ≈ 19:00): Entwurf; Code `code/tools/insider_test_v1.py` (SHA `05c1e9d6192997c5`, synthetisch getestet: count/calib/final laufen, Nullwelt besteht nicht).

@@ -54,10 +54,22 @@ def spy_state(spy):
     return st
 
 class World:
-    def __init__(self, csvp, folder):
+    def __init__(self, csvp, folder, hedge="SPY"):
         self.B = Bars(folder)
         self.spy = self.B.get("SPY")
         if self.spy is None: sys.exit("SPY.csv fehlt im Bars-Ordner (alpaca_daily_v1.py ... --extra SPY,IWM)")
+        self.hedge = hedge
+        if hedge == "SPY": self.hd = (self.spy[0], self.spy[1])
+        else:
+            iwm = self.B.get("IWM")
+            if iwm is None: sys.exit("IWM.csv fehlt im Bars-Ordner")
+            if hedge == "IWM": self.hd = (iwm[0], iwm[1])
+            elif hedge == "IWMB":     # IWM mit Beta (120 Bars vor Clusterdatum, Mischung 0,5*Beta + 0,5*1, Grenzen 0..3)
+                self.hd = (iwm[0], iwm[1]); self.hc = iwm[2]
+            elif hedge == "MIX":      # 50/50 geometrisch, nur gemeinsame Handelstage
+                common, ia, ib = np.intersect1d(self.spy[0], iwm[0], return_indices=True)
+                self.hd = (common, np.sqrt(self.spy[1][ia] * iwm[1][ib]))
+            else: sys.exit("--hedge SPY|IWM|IWMB|MIX")
         self.sst = spy_state(self.spy)
         rows = []
         with open(csvp, newline="", encoding="utf-8") as f:
@@ -97,6 +109,19 @@ class World:
         k = int(np.searchsorted(self.spy[0], cd, side="right")) - 1
         return int(self.sst[k]) if k >= 0 else -1
 
+    def beta(self, d, c, cd):
+        i0 = int(np.searchsorted(d, cd, side="right"))
+        lo = max(1, i0 - 120)
+        if i0 - lo < 60: return 1.0
+        hd, hc = self.hd[0], self.hc
+        a = np.searchsorted(hd, d[lo - 1:i0]); 
+        if a.max() >= len(hd) or not np.all(hd[a] == d[lo - 1:i0]): return 1.0
+        rs = np.diff(np.log(c[lo - 1:i0])); rh = np.diff(np.log(hc[a]))
+        v = float(np.var(rh))
+        if v <= 0: return 1.0
+        b = float(np.cov(rs, rh)[0, 1]) / v
+        return min(3.0, max(0.0, 0.5 * b + 0.5))
+
     def trade(self, sym, cd, delay):
         """liefert (Excess gegen SPY vor Kosten in bp, early) oder None"""
         b = self.B.get(sym)
@@ -115,10 +140,11 @@ class World:
         else:
             if d[-1] <= e + 3 or c[-1] <= 0: return None
             px = c[-1]; ed = int(d[-1]); early = True
-        sd, so = self.spy[0], self.spy[1]
+        sd, so = self.hd
         k = int(np.searchsorted(sd, e, side="left")); kk = int(np.searchsorted(sd, ed, side="left"))
         if k >= len(sd) or kk >= len(sd) or sd[k] - e > 5 or sd[kk] - ed > 5: return None
-        return (math.log(px / o[i]) - math.log(so[kk] / so[k])) * 1e4, early
+        bt = self.beta(d, c, cd) if self.hedge == "IWMB" else 1.0
+        return (math.log(px / o[i]) - bt * math.log(so[kk] / so[k])) * 1e4, early
 
     def net(self, rex, tier, mult=1.0, t1x=1.0):
         c = TIER_COST[tier] * (t1x if tier == 1 else 1.0)
@@ -207,10 +233,26 @@ def counts(w):
     print("Wochen mit Ereignis: %d von %d; Emittenten (Symbole): %d" % (len(set(((T - START) // WEEK).tolist())), w.W, len(w.by_sym)))
     print("Streuung der Netto-Excess-Rendite je Ereignis (zentriert): %.0f bp; mittlere Abweichung vom Mittel (|x-m|): %.0f bp" % (float(np.std(X, ddof=1)), float(np.mean(np.abs(X - X.mean())))))
 
-def calib(csvp, folder, nnull, nplac, nsame, B, alpha, seed, sigma):
+def hedgecmp(csvp, folder, nnull, seed):
+    """Waehlt den Hedge ex ante NUR nach Nullwelt-Streuung (Zeitversatz-Nullwelten). Gibt keine Mittelwerte aus, nur Streuungen und Anzahlen."""
+    print("Skript-SHA256 %s (hedgecmp)" % hashlib.sha256(open(__file__, "rb").read()).hexdigest()[:16], flush=True)
+    for hedge in ("SPY", "IWM", "IWMB", "MIX"):
+        rng = np.random.default_rng(seed)
+        w = World(csvp, folder, hedge); mm = []; sd = []; n0 = None
+        for dw in make_shifts(rng, nnull * 2):
+            T, S, X, _ = w.shifted(dw)
+            if len(X) < 500: continue
+            mm.append(float(X.mean())); sd.append(float(np.std(X, ddof=1)))
+            if len(mm) >= nnull: break
+        T, S, X, _ = w.arrays()
+        print("Hedge %-3s: Ereignisse %d; Streuung je Ereignis (zentriert) %.0f bp; SE analytisch %.1f bp; SE der Nullwelt-Mittel (Streuung ueber %d Welten) %.1f bp; Verhaeltnis %.2f" % (
+            hedge, len(X), float(np.std(X, ddof=1)), float(np.std(X, ddof=1)) / math.sqrt(len(X)), len(mm), float(np.std(mm, ddof=1)), float(np.std(mm, ddof=1)) / (float(np.std(X, ddof=1)) / math.sqrt(len(X)))), flush=True)
+
+def calib(csvp, folder, hedge, nnull, nplac, nsame, B, alpha, seed, sigma):
     print("Skript-SHA256 %s (INSIDER-ALL)" % hashlib.sha256(open(__file__, "rb").read()).hexdigest()[:16], flush=True)
     rng = np.random.default_rng(seed)
-    w = World(csvp, folder); log("Welt geladen")
+    w = World(csvp, folder, hedge); log("Welt geladen")
+    print("Hedge: %s" % hedge)
     Tr, Sr, Xr, ner = w.arrays()
     print("echte Ereignisse (nur Anzahl): %d; Zustaende %s; fehlend (ohne Bars) %d" % (len(Xr), [int((Sr == s).sum()) for s in (0, 1, 2)], len(w.miss_dates)))
     plac = []
@@ -257,11 +299,12 @@ def calib(csvp, folder, nnull, nplac, nsame, B, alpha, seed, sigma):
             lab, dlt, cnt["all"], k, 100.0 * cnt["all"] / k, cnt["c2"], cnt["c3"], cnt["c4"], cnt["c5"], cnt["c6"]), flush=True)
     print("Hinweis: bei delta=0 ist die erwartete Fehlpass-Rate durch C2 (alpha_i) und C3 begrenzt; Soll <= 5 %.")
 
-def final(csvp, folder, spec_hash, B, alpha, seed, nplac, nsame):
+def final(csvp, folder, hedge, spec_hash, B, alpha, seed, nplac, nsame):
     print("Skript-SHA256 %s" % hashlib.sha256(open(__file__, "rb").read()).hexdigest()[:16])
     print("SPEC-HASH %s" % spec_hash, flush=True)
     rng = np.random.default_rng(seed)
-    w = World(csvp, folder)
+    w = World(csvp, folder, hedge)
+    print("Hedge: %s" % hedge)
     T, S, X, ne = w.arrays()
     ok2, p, lcb = c2(T, X, w.W, B, rng, alpha)
     plac = np.array([m for m in (w.shifted(dw)[2].mean() if len(w.shifted(dw)[2]) >= 500 else np.nan for dw in make_shifts(rng, nplac)) if not np.isnan(m)])
@@ -288,11 +331,13 @@ if __name__ == "__main__":
     mode, csvp, folder = sys.argv[1], sys.argv[2], sys.argv[3]
     a = sys.argv[4:]
     def opt(k, d, f=float): return f(a[a.index(k) + 1]) if k in a else d
-    if mode == "count": counts(World(csvp, folder))
+    hedge = opt("--hedge", "SPY", str)
+    if mode == "count": counts(World(csvp, folder, hedge))
+    elif mode == "hedgecmp": hedgecmp(csvp, folder, opt("--nnull", 80, int), opt("--seed", 20261025, int))
     elif mode == "calib":
         if "--sigma" not in a: sys.exit("calib braucht --sigma <gezaehlte Streuung der Netto-Excess-Rendite je Ereignis in bp> (Ausgabe von count)")
-        calib(csvp, folder, opt("--nnull", 200, int), opt("--nplac", 2000, int), opt("--nsame", 500, int), opt("--boot", 10000, int), opt("--alpha", 0.0025), opt("--seed", 20261025, int), opt("--sigma", 0.0))
+        calib(csvp, folder, hedge, opt("--nnull", 200, int), opt("--nplac", 2000, int), opt("--nsame", 500, int), opt("--boot", 10000, int), opt("--alpha", 0.0025), opt("--seed", 20261025, int), opt("--sigma", 0.0))
     elif mode == "final":
         h = opt("--spec-hash", "", str)
         if not re.fullmatch(r"[0-9a-f]{64}", h): sys.exit("final nur mit --spec-hash <sha256>")
-        final(csvp, folder, h, opt("--boot", 10000, int), opt("--alpha", 0.0025), opt("--seed", 20261025, int), opt("--nplac", 2000, int), opt("--nsame", 500, int))
+        final(csvp, folder, hedge, h, opt("--boot", 10000, int), opt("--alpha", 0.0025), opt("--seed", 20261025, int), opt("--nplac", 2000, int), opt("--nsame", 500, int))
