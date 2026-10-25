@@ -1,0 +1,19 @@
+CT109-FREEZE-R3-v1
+spec RUNDE3A_SPEC_v1_FREEZEKANDIDAT.md 919e26cbf1df39c3dc89f472bdbde8a4a291487c8821e41917a08ac79886915b
+spec RUNDE3B_SPEC_v1_FREEZEKANDIDAT.md 548d368c331d8f9374ea4de375ffcf48d2680ccc762424a98b1c53cb3cbff14d
+code code/tools/k4_test_v1.py d253f1a66c39003726f555645b15d60f339f1c693da08b15dfb68de6f0c3b1f5
+code code/tools/k6_test_v1.py b715f5fa4fdfa6ef4ce15ba464be608aaa74283b406e1fc086aa6561d952ef8e
+code code/tools/count_events_v2.py a2588ea0c3d3a8561ba11757fcb704fcc645fc55ca94f690944d89027412dc3d
+code code/tools/count_events_v3.py 6a93ec86fbfd846119cec77e1d87711d62518c40c4ee08b80a279ec9207fc936
+code code/tools/count_events_v4.py 931e1850c054fe780567dfb99cc8dc4a8a5cc68e022855198ff9bc6beef764f6
+code code/tools/count_cs_v1.py 81e2550ad6b716df0ebb3c3145bc7f24c37243ebb9651d1daaedcde375a77215
+code code/tools/agg_trades_v1.py e7e61ff3eaf7841ae0a7a0aced636b2741ade5286270dcf6d047d2f7c923c503
+data register/MANIFEST_AGG_SHA256.txt d40d9b9b0c5a595b9ca7be6ef0c27011036e257056a6f29b432d95e856cfcba6
+data register/K4P_POOL_LIQFILTER_20261025.txt 42bc9db74ffafc14f44fce92fc781451eb9670cd1b2eba1f032a3d768c648cdc
+data register/K6_POOL_LIQFILTER_20261025.txt 179918007351e21748cf62cfebd02eeb2f12f6b2b2394488a77a6db7a31de0bd
+param alpha_konto N_max=20 FWER=0.05 alpha_i=0.0025 einseitig (D37); bisher verbraucht 4, mit diesem Freeze 7
+param K4 register_index=5 alpha_i=0.0025 w=1 pairs=XBT,ETH
+param K4P register_index=6 alpha_i=0.0025 w=1 pairs=32 (register/K4P_POOL_LIQFILTER_20261025.txt)
+param K6 register_index=7 alpha_i=0.0025 w=1 geteilt C/R je 0.00125 pairs=34 (register/K6_POOL_LIQFILTER_20261025.txt)
+param fenster 2019-01-01 .. 2026-06-30 (hartes Ende ab 2026-07-01 gesperrt)
+param bootstrap blocklaenge=4 ziehungen=10000 seed=20261025; placebos zeitversatz=2000 volgematcht=500 quantil=0.975

@@ -1,6 +1,6 @@
-# CT109 – RUNDE-4A-SPEZIFIKATION v0.1 (ENTWURF K6 FLOW, NICHT GEHASHT)
+# CT109 – RUNDE-3B-SPEZIFIKATION v1 (FREEZE-KANDIDAT K6 FLOW, NICHT GEHASHT)
 
-**Status:** Entwurf des Einsatzleiters, Stand So 25.10.2026 ≈ 17:45 Berlin. Nicht gültig bis zum Freeze-Eintrag in `01`. Ergänzt `RUNDE3A_SPEC_v1_FREEZEKANDIDAT.md` (gleiche Datenbasis, gleiche Zustandsvariable, gleiche Test-Mechanik C2–C7); bei Widerspruch gilt für K6 diese Datei. Entscheidung: `02` D43. Evidenzstufen wie dort.
+**Status:** Kandidat des Einsatzleiters, Stand So 25.10.2026 ≈ 17:30 Berlin (früher `RUNDE4A_SPEC_v0.1_ENTWURF_K6.md`, umbenannt: K6 geht gemeinsam mit 3A in **einen** Freeze). Wird erst mit dem Freeze-Eintrag in `01` (Datum, Freeze-Hash) **gültig**; nach dem Freeze keine Änderung. Ergänzt `RUNDE3A_SPEC_v1_FREEZEKANDIDAT.md` **in der gemeinsam gefrorenen Fassung** (gleiche Datenbasis, Zustandsvariable und Test-Mechanik C2–C7); bei Widerspruch gilt für K6 diese Datei. Entscheidungen: `02` D43 (Parameter), D44 (Liquiditätsfilter). Evidenzstufen: [L1] Herstellerangabe, [L2] von Andi gemessen, [A] Annahme, [R] Recherche.
 
 ## 1 Gegenstand
 **K6 FLOW:** Kraken-USD-Paare, Stunden mit Volumenschock **und** starkem Aggressor-Ungleichgewicht. **Ein** Konto-Platz (Register-Index 7), zwei einseitige Tests auf denselben Ereignissen, je α = α_i/2 = 0,00125 (z = 3,023): **K6-C** (Position in Richtung der Imbalance = Fortsetzung), **K6-R** (entgegen = Umkehr). Beide können nicht gleichzeitig bestehen (Bruttovorzeichen entgegengesetzt). Offene Entdeckungs-Ausnahme analog D41: Prior der Netto-Kante −10 … +15 bp [A] liegt bei/unter der Nachweisgrenze; ein nicht signifikantes Ergebnis ist **kein** Nullbefund.
@@ -33,7 +33,13 @@ Wie 3A §5 mit α = 0,00125: C2 (Bootstrap über Kalenderwochen, Blocklänge 4, 
 *Referenz ungefilterter Pool (41 Paare, 3 553 Episoden, σ 241 bp, MDE80 13,5 bp): Fehlpass 1/200 (K6-R) bzw. 0,5 % zusammen; Gesamtregel bei MDE C 57,5 %, R 51 % – nicht Grundlage des Freezes (D44).* Grenzen wie 3A (Nullwelten ohne Mikrostruktur, Skalierung auf Streuung).
 
 ## 7 Paper
-Zulauf ≈ 500–700 Episoden/Jahr (gefiltert, Zählung 2022–2025: 552 / 698 / 549 / 485) ⇒ Vorwärtsbestätigung in Monaten bis wenigen Jahren: n = (2,487·σ/δ)² [R] mit σ ≈ 218 bp: δ = 20 bp ⇒ ≈ 735 Episoden ≈ 1,3 Jahre; δ = 40 bp ⇒ ≈ 184 Episoden ≈ 4 Monate (Rechnung gegenüber dem Vorentwurf, der 1 440 / 360 nannte, korrigiert). Säulen A–D wie Entwurf 3A §10, Looks bei n = 100 / 250 / 500 Episoden [A].
+Zulauf ≈ 500–700 Episoden/Jahr (gefiltert, Zählung 2022–2025: 552 / 698 / 549 / 485) ⇒ Vorwärtsbestätigung in Monaten bis wenigen Jahren: n = (2,487·σ/δ)² [R] mit σ ≈ 218 bp: δ = 20 bp ⇒ ≈ 735 Episoden ≈ 1,3 Jahre; δ = 40 bp ⇒ ≈ 184 Episoden ≈ 4 Monate (Rechnung gegenüber dem Vorentwurf, der 1 440 / 360 nannte, korrigiert). Säulen A–D (Entwurf `RUNDE3_SPEC_v0.1_ENTWURF.md` §10; werden vor Paper-Start separat gehasht), Looks bei n = 100 / 250 / 500 Episoden [A].
 
-## 8 Offen vor Freeze
-~~Kalibrierung C7~~ (bestanden, gefilterter Pool); Spec-Endfassung; Freeze-Paket (Manifest, Code-Hash `k6_test_v1.py`, Seeds); GO-Schablone Registry (Andi). K6 kann **gemeinsam mit 3A** (Register-Index 5, 6, 7) oder als eigener Freeze gesetzt werden.
+## 8 Code, Lauf und Vorwärtsfenster
+- **Code:** `code/tools/k6_test_v1.py` (Modus `final`, Pflichtargument `--spec-hash`), Lader/Hilfen `count_events_v2.py`, `count_cs_v1.py` (Pool-Konstante, wird für K6 durch die Namensliste ersetzt), Zählung `count_events_v4.py`; Voll-Hashes stehen im Freeze-Manifest.
+- **Lauf:** einmalig nach Freeze auf Andis PC: `python -u k6_test_v1.py final <agg> <34 Paare laut register/K6_POOL_LIQFILTER_20261025.txt> --spec-hash <Freeze-Hash>`; Ausgabe nur Aggregate; Registerzeile auch bei Abbruch. Reihenfolge der Läufe: K4, K4P, K6; kein Zwischenblick.
+- **Vorwärtsfenster** 2026-07-01 … 09-30: einmal nach dem Haupttest, gleiche Regel, Fensterargument, nur Aggregate.
+- **Veto-Prüfung Einsatzleiter (Stand 25.10.):** Beleg ✓ (C7, Zählung, Kostencheck L1), Protokoll ✓ (Spec vor Datenöffnung), Echtgeld nicht berührt ✓, Budget ✓ (0 EUR). Kein Veto; die offenen Annahmen sind in §4.8 und §6 offengelegt.
+
+## 9 Changelog
+- 25.10.2026 ≈ 17:30 Berlin: aus Entwurf v0.1 zum Freeze-Kandidaten v1 (Pool 34 nach D44, C7 mit gefiltertem Pool, Paper-Rechnung korrigiert, §8 neu).

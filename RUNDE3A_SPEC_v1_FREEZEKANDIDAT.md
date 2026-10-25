@@ -6,7 +6,7 @@
 ## 1 Gegenstand
 Zwei bestätigende Haupttests (α-Konto D37, je α_i = 0,0025 einseitig, w = 1; Register-Index 5 und 6):
 - **K4 AFTERSHOCK-LONG (XBT, ETH).**
-- **K4P AFTERSHOCK-LONG-ALTS (39 Paare).**
+- **K4P AFTERSHOCK-LONG-ALTS (32 Paare nach Liquiditätsfilter, D45).**
 Deskriptiv ohne α (HINWEIS): K1r FUND_CROWD, K5 WEEKEND-UMKEHR (Parameter in §9). Kein weiterer Test in dieser Welle. Offenlegung: lf1 H2 SHOCK_FADE (Nullbefund) ist ein verwandter Mechanismus; K4 zählt als eigener Test (D40/D41). Ausnahme von der HINWEIS-Regel: D41 (Prior-Kante 20–60 bp liegt teilweise unter MDE; nicht signifikant ⇒ **kein** Nullbefund).
 
 ## 2 Daten und Fenster
@@ -14,7 +14,7 @@ Deskriptiv ohne α (HINWEIS): K1r FUND_CROWD, K5 WEEKEND-UMKEHR (Parameter in §
 - **Haupttest-Fenster:** 2019-01-01 00:00 UTC … 2026-06-30 23:59:59 UTC. **Hartes Ende:** jeder Lader verwirft Zeilen mit `ts ≥ 2026-07-01 00:00 UTC` (`count_events_v2.load`).
 - **Vorwärtsfenster** 2026-07-01 … 2026-09-30 (im ZIP) bleibt unberührt und unaggregiert bis nach dem Haupttest; wird einmal je Test geöffnet (§8).
 - **Datenbereinigung:** Zeile entfernt, wenn `low ≤ 0` oder `low < 0,7·high` oder `low < 0,7·close_prev_roh` oder `high > 1,4·close_prev_roh` (Vergleich mit der unmittelbar vorherigen **Rohzeile**). Entfernte Zeilen je Paar liegen bei 1–50 (längste Serie ≤ 8) [L2].
-- **K4-Paare:** XBT, ETH. **K4P-Paare (ex ante, fest):** SOL, XRP, XDG, ADA, LTC, DOT, LINK, XMR, ZEC, XLM, BCH, ATOM, SUI, ALGO, PEPE, AVAX, TAO, FIL, UNI, TRX, AAVE, XTZ, FET, NEAR, SHIB, ETC, DASH, MANA, CRV, ICP, FARTCOIN, INJ, PENGU, ONDO, SEI, TIA, KAS, FLOW, TRUMP (Regel: USD-CSV ≥ 150 MB und gleichnamiger handelbarer Kraken-Perp am 25.10.2026 [L2, F6/F7]; ohne Stablecoins, Fiat, LUNA, MATIC). Paare mit später Historie tragen erst ab ihrem Startdatum und ab 30 Tagen σ₁₅-Vorlauf bei; es wird **nichts nachträglich** hinzugefügt oder entfernt.
+- **K4-Paare:** XBT, ETH. **K4P-Paare (ex ante, fest, 32):** SOL, XRP, XDG, ADA, LTC, DOT, LINK, XMR, ZEC, XLM, BCH, ATOM, SUI, PEPE, AVAX, TAO, FIL, UNI, TRX, AAVE, FET, NEAR, DASH, CRV, ICP, FARTCOIN, INJ, PENGU, ONDO, SEI, TIA, TRUMP. Regel: USD-CSV ≥ 150 MB und gleichnamiger handelbarer Kraken-Perp am 25.10.2026 [L2, F6/F7]; ohne Stablecoins, Fiat, LUNA, MATIC; **Liquiditätsfilter D45** (Perp-Median-Spread ≤ 12 bp **und** 24-h-Volumen ≥ 250 000 USD, Ticker-Momentaufnahme 25.10.2026 15:32 UTC; ausgeschlossen ALGO, XTZ, SHIB, ETC, MANA, KAS, FLOW; Liste `register/K4P_POOL_LIQFILTER_20261025.txt`, wird mitgehasht). Paare mit später Historie tragen erst ab ihrem Startdatum und ab 30 Tagen σ₁₅-Vorlauf bei; es wird **nichts nachträglich** hinzugefügt oder entfernt.
 
 ## 3 Zustandsvariable
 `RV30` = Standardabweichung der Tages-Log-Renditen (letzter Stundenschluss je UTC-Tag) von XBT über 30 Tage, ×√365. Zustandsperzentil `P` = Anteil der `RV30`-Werte der letzten 3 Jahre (1095 Tage, mindestens 365), die unter dem Wert des **Vortags** liegen. Zustand am Tag D: NIEDRIG (P < 1/3), MITTEL, HOCH (P > 2/3), berechnet nur aus Daten ≤ D−1. Gilt für K4 und K4P (Marktzustand über XBT). Kein Ereignis ohne Zustand.
@@ -35,17 +35,17 @@ Deskriptiv ohne α (HINWEIS): K1r FUND_CROWD, K5 WEEKEND-UMKEHR (Parameter in §
 - **C4 Stress** (je `m > 0`): (a) Kosten × 1,5; (b) Einstieg 1 Minute später; (c) Slippage × 2 im Zustand HOCH.
 - **C5 Konzentration:** die 3 größten Gewinn-Episoden ≤ 40 % des Bruttogewinns; kein Kalenderjahr > 50 % des Gesamtnetto (nur bei m > 0).
 - **C6 Konsistenz:** Mittelwert in beiden Zeithälften (nach Episodenzahl halbiert) > 0 **und** in ≥ 2 Zuständen mit je ≥ 20 Episoden > 0.
-- **C7 Kalibrierung** (bestanden, `01` 25.10. ≈ 16:30, D41): Fehlpass 0/200 je Test; Gesamtregel-Power bei ½·MDE / MDE / 2·MDE: K4 12 / 70 / 100 % (MDE 51 bp), K4P 15 / 77 / 100 % (MDE 40 bp); Annahme: Nullwelten auf gezählte Streuung skaliert (K4 310 bp, K4P 411 bp je Einstieg).
+- **C7 Kalibrierung** (bestanden): K4 `01` 25.10. ≈ 16:30 (D41), K4P mit gefiltertem Pool `01` 25.10. ≈ 17:10 (D45, `run_k4pf.ps1`, Skript-Kurzhash `43807483e7c93a77`): Fehlpass 0/200 je Test; Gesamtregel-Power bei ½·MDE / MDE / 2·MDE: K4 12 / 70 / 100 % (MDE 51 bp), **K4P 15,5 / 72 / 100 % (MDE 40 bp; 781 Episoden, Episoden-σ 303 bp)**; Annahme: Nullwelten auf gezählte Streuung skaliert (K4 310 bp, K4P 402 bp je Einstieg; Faktor 1,66 für K4P – die Skalierung ist die dominante Annahme [A]).
 - **Kategorien:** `BESTAETIGT` (C2 ∧ C3 ∧ C4 ∧ C5 ∧ C6); `NICHT BESTAETIGT` (C2 erfüllt, ein anderes Kriterium verfehlt, mit Angabe); `POSITIV-UNTERPOWERT` (m > 0, C2 verfehlt); `NICHT NACHWEISBAR` (m ≤ 0; **kein Nullbefund**, solange Prior-Kante < MDE). „0 Trades“ ist INSUFFICIENT.
 - **Beschreibende Ausgaben ohne Testanspruch:** Mittel je Zustand, je Zeithälfte, je Jahr, Anzahl Einstiege und Episoden, Anteil Trades mit Stop.
 
 ## 6 Code und Läufe
 - **Code:** `code/tools/k4_test_v1.py` (Modus `final`, Pflichtargument `--spec-hash`), `count_events_v2.py` (Lader), `count_events_v3.py` (σ₁₅-Funktion). Code-Hash (SHA256 der drei Dateien) und Skript-Hash der Ausgabe stehen im Freeze-Eintrag.
-- **Lauf:** einmalig je Test auf Andis PC: `python -u k4_test_v1.py final <agg> XBT,ETH --spec-hash <Hash>` und `… final <agg> <39 Paare> --spec-hash <Hash>`; Ausgabe nur Aggregate. Jeder Lauf erzeugt eine Registerzeile (`register/TESTREGISTER.jsonl`), auch Abbrüche.
+- **Lauf:** einmalig je Test auf Andis PC: `python -u k4_test_v1.py final <agg> XBT,ETH --spec-hash <Hash>` und `… final <agg> <32 Paare> --spec-hash <Hash>`; Ausgabe nur Aggregate. Jeder Lauf erzeugt eine Registerzeile (`register/TESTREGISTER.jsonl`), auch Abbrüche.
 - **Reihenfolge:** erst Freeze, dann Lauf K4, dann Lauf K4P; kein Zwischenblick, keine Änderung nach Lauf.
 
 ## 7 Ehrliche Erwartung (Evidenz)
-- Power des Haupttests bei wahrer Netto-Kante 25 / 40 / 60 bp: K4 ≈ 12 / 45 / 80–85 %; K4P ≈ 30 / 75 / 95 % [L2/A, interpoliert].
+- Power des Haupttests bei wahrer Netto-Kante 25 / 40 / 60 bp: K4 ≈ 12 / 45 / 80–85 %; K4P ≈ 30 / 72 / 86 % [L2/A, interpoliert aus dem Lauf mit gefiltertem Pool].
 - Literaturkante 100–180 bp [A, vermutlich optimistisch]; Prior des Einsatzleiters 20–60 bp [A]. Ein negatives oder nicht signifikantes Ergebnis ist **kein** Beleg für Abwesenheit.
 
 ## 8 Vorwärtsfenster und Paper
@@ -64,3 +64,4 @@ Nach dem Haupttest einmal je Test: Aggregation 2026-07-01 … 2026-09-30 mit dem
 ## 11 Changelog
 - 25.10.2026 ≈ 18:00 Berlin: Kandidat angelegt.
 - 25.10.2026 ≈ 18:30 Berlin: Manifest-Hash eingetragen, Punkt 4 erledigt (Delegation).
+- 25.10.2026 ≈ 17:15 Berlin (Ist-Zeit, Zeitangaben oben waren Vorabschätzungen): D45 – K4P-Pool auf 32 Paare (Liquiditätsfilter), C7 K4P neu gerechnet (Fehlpass 0/200, MDE 40 bp, Power bei MDE 72 %), Power-Zeile §7 aktualisiert.
