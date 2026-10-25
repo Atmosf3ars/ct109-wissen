@@ -1,6 +1,6 @@
-# CT109 – RUNDE-3-SPEZIFIKATION v0.1 (ENTWURF, NICHT FESTGESCHRIEBEN)
+# CT109 – RUNDE-3-SPEZIFIKATION v0.2 (ENTWURF, NICHT FESTGESCHRIEBEN; Dateiname bleibt v0.1)
 
-**Status:** ENTWURF des Einsatzleiters, Stand So 25.10.2026 ≈ 02:30 Berlin. **Nicht gehasht, nicht gültig**, bis der Freeze-Eintrag in `01_STATUS.md` steht (Ziel Do 29.10., spätestens Fr 30.10.). Bis dahin darf sich alles ändern; **danach nichts mehr** (Änderung nur als v2 vor dem ersten Öffnen der Daten).
+**Status:** ENTWURF des Einsatzleiters, Stand So 25.10.2026 ≈ 16:30 Berlin (v0.2: E2b/E2c-Zählungen, K4P, D40, C7-Kalibrierung eingearbeitet). **Nicht gehasht, nicht gültig**, bis der Freeze-Eintrag in `01_STATUS.md` steht (Ziel Do 29.10., spätestens Fr 30.10.). Bis dahin darf sich alles ändern; **danach nichts mehr** (Änderung nur als v2 vor dem ersten Öffnen der Daten).
 **Autor:** Einsatzleiter (Claude), Delegation Andi. **Wissensstand-Offenlegung:** Der Autor kennt die allgemeine Literatur (Funding als Kontraindikator, Liquidationskaskaden, Insider-Käufe, PEAD) und hat die Rohdaten **nicht** auf Renditen ausgewertet. Gesehen wurden nur: Zeilen-/Minutenzähler, Preis-Min/Max, Tick-Test (`01` T6), Funding-/SEC-Dateizähler. **Nachereignis-Renditen wurden nie berechnet.** Die E2-Zählung (Ereignisse je Jahr) steht noch aus und kalibriert nur Schwellen nach der Zählregel §6 (nicht nach Renditen).
 **Geltung:** ergänzt `GATE_SPEC_v1`/`RUNDE2_SPEC_v1` (unverändert, bereits gehasht). Gilt für **Welle 3a (Krypto-Ereignisse)** und **Welle 3b (Aktien-Ereignisse)**. Entscheidungen: `02` D28–D37.
 
@@ -52,6 +52,12 @@ Runde 3 prüft **sechs vorab festgelegte, ereignisbasierte Mechanismen** mit gro
 6. **C5 Konzentration:** die 3 größten Episoden tragen ≤ 40 % des Bruttogewinns (nur wenn `m > 0`); kein Kalenderjahr > 50 % des Gesamtnetto.
 7. **C6 Konsistenz (Zwei-Regime-Pflicht):** Vorzeichen von `m` in **beiden Zeithälften** (nach Episodenzahl halbiert) **und** in ≥ 2 Zuständen mit je ≥ 20 Episoden positiv; sonst `NICHT_BEWERTBAR im Zustand`.
 8. **C7 Kalibrierung der Gesamtregel (VOR dem Freeze, D31):** gesamte Regel (C1–C6) auf **≥ 200 Nullwelten** aus echten Daten ohne Kausalstruktur (Ereignisuhren blockverschoben + Renditen blockweise zyklisch verschoben): **Fehlpass-Rate ≤ 5 %**; Operationscharakteristik `P(bestanden | wahrer Edge δ)` für δ ∈ {0, ½MDE, MDE, 2MDE} wird **in der Spec** mit Zahl festgehalten. Fehlpass > 5 % ⇒ Regel verschärfen **vor** dem Freeze, nicht danach.
+   **C7-Ergebnis (Andi-Lauf 25.10. ≈ 15:20, Skript `k4_test_v1.py` SHA256-Kurzform `43807483e7c93a77`, 200 Nullwelten, 2000 zeitversetzte und 500 vol-gematchte Placebos, 10 000 Bootstrap-Ziehungen, Seed 20261025, α_i = 0,0025) [L2, Nullwelten auf gezählte Streuung skaliert = Annahme A]:**
+   | Test | σ je Einstieg (Annahme, aus Zählung) | n_ep | MDE80 analytisch | Fehlpass δ=0 | Gesamtregel bei δ = ½MDE / MDE / 2·MDE |
+   |---|---|---|---|---|---|
+   | K4 (XBT, ETH) | 310 bp (skaliert; Nullwelt roh 172) | 407 | 51 bp | 0/200 (obere 95-%-Grenze ≈ 1,9 %) | 12 % (25 bp) / 70 % (51 bp) / 100 % (102 bp) |
+   | K4P (39 Alts) | 411 bp (skaliert; Nullwelt roh 245) | 761 | 40 bp | 0/200 (≈ 1,9 %) | 15 % (20 bp) / 77 % (40 bp) / 100 % (80 bp) |
+   **Lesart:** Fehlpass ≤ 5 % erfüllt ⇒ C7 formal bestanden. Wegen C3–C6 erreicht die **Gesamtregel bei δ = analytischer MDE nur 70 % bzw. 77 % Power** (nicht 80 %); der 80-%-Punkt liegt per Interpolation bei ≈ 1,1–1,2 × MDE (K4 ≈ 57–60 bp, K4P ≈ 44–48 bp). Einzelkriterien bei δ=0: K4 C4 63, C5 21, C6 40 von 200 (C4 allein ist schwach, C2 trägt die Fehlerkontrolle). Grenzen: Nullwelten sind zeitversetzte Pseudo-Auslöser (ohne Schock-Mikrostruktur), die Skalierung bildet die Streuung nach, nicht Abhängigkeiten (Annahme); die Kalibrierung bestätigt Größe und Operationscharakteristik der Regel, **nicht** die Existenz eines Edges. Ein früherer Lauf ohne Skalierung (Streuung 156/181 bp) ist verworfen (`01`, 25.10. 16:00).
 9. **Kategorien:** `BESTAETIGT` (C1–C7 erfüllt), `POSITIV-UNTERPOWERT` (C2…C6 erfüllt, C1 nicht – nur wenn Hypothese **nicht** vorab als HINWEIS deklariert), `HINWEIS-…` (vorab deklariert, deskriptiv), `NULLBEFUND` (nur, wenn C1 erfüllt und `m` nicht signifikant; sonst `NICHT NACHWEISBAR`), `INSUFFICIENT` (zu wenig Episoden; „0 Trades“ ist nie Nullbefund).
 
 ## 6 Regel für Schwellen (Zählregel, statt Renditesuche)
@@ -115,8 +121,18 @@ Ereignisschwellen (θ, φ, k) werden **aus dem Raster {3 %, 4 %, 5 %} bzw. {3, 5
 | 150 | 87 | 61 | 50 | 39 | 27 |
 | 300 | 173 | 122 | 100 | 77 | 55 |
 | 500 | 288 | 204 | 167 | 129 | 91 |
-Erwartete Netto-Kante (A) je Kandidat: K4 100–180 bp; K1 30–70 bp; K5 ≈ 0–30 bp; S4/S5/S6: laut Bericht (offen). **Regel:** Kante ≥ MDE ⇒ α_i-Test; Kante zwischen ½MDE und MDE ⇒ `POSITIV-UNTERPOWERT möglich`, **HINWEIS** vorab deklarieren; Kante < ½MDE ⇒ nicht aufgenommen.
+Erwartete Netto-Kante (A) je Kandidat: K4 100–180 bp (Literatur/Autoren, **vermutlich zu optimistisch**; eigene Prior-Spanne 20–60 bp); K1 30–70 bp; K5 ≈ 0–30 bp; S4/S5/S6: laut Bericht. **Regel:** Kante ≥ MDE ⇒ α_i-Test; Kante zwischen ½MDE und MDE ⇒ `POSITIV-UNTERPOWERT möglich`, **HINWEIS** vorab deklarieren; Kante < ½MDE ⇒ nicht aufgenommen.
 
+**Power-Zeilen mit Zählung und Kalibrierung (v0.2):**
+| Kandidat | n_ep (Zählung) | σ je Einstieg (A) | MDE80 | Gesamtregel-Power bei 25 / 40 / 60 bp (interpoliert aus C7) | Einstufung |
+|---|---|---|---|---|---|
+| K4 AFTERSHOCK (XBT+ETH) | 409 (Engine 407) | 310 | 51 bp | ≈ 12 % / ≈ 45 % / ≈ 80–85 % | **α-Test (Ausnahme, s. u.)** |
+| K4P (39 Alts, Rundreise 26 bp) | 764 (Engine 761) | 411 | 40 bp | ≈ 30 % / ≈ 75 % / ≈ 95 % | **α-Test (Ausnahme, s. u.)** |
+| K1/K1r FUND_CROWD | 28–51 je Variante | – | > 120 bp | – | HINWEIS (N_min verfehlt) |
+| K5 WEEKEND-UMKEHR | 45–77 | – | > 130 bp | – | HINWEIS (N_min verfehlt) |
+| S4 INSIDER-CLUSTER, S5 8-K | – | – | – | – | HINWEIS (Literatur: Kante < MDE) |
+
+**Ausnahme von der Regel in §1 (offen deklariert, D41):** Bei der eigenen Prior-Spanne (20–60 bp) liegt die Erwartung für K4 teils unter 1,0 × MDE; strikt wäre K4 `HINWEIS`. K4 und K4P erhalten trotzdem je ein α_i, weil (i) das Konto nicht knapp ist (nach Welle 3a 6 von 20 verbraucht), (ii) die Literaturkante (100–180 bp) deutlich über MDE läge und nur Daten sie widerlegen können (Doktrin), (iii) beide Tests nach Freeze nur Rechenzeit kosten. **Preis:** Ein nicht signifikantes Ergebnis ist bei Kante < MDE **nicht** als Nullbefund lesbar; Kategorie dann `POSITIV-UNTERPOWERT` bzw. `NICHT NACHWEISBAR` (Power wird mit ausgewiesen), und das Fenster ≤ 2026-06-30 ist für K4/K4P verbraucht (Fortsetzung nur über Vorwärtsdaten).
 ## 10 Paper und Echtgeld
 Säulen A–D (`03` §8.9, `02` D32) werden **vor Paper-Start des jeweiligen Signals** gehasht (nicht nach der Bilanz 02.11.). Echtgeld nur nach `BESTAETIGT` **und** bewährtem vollautomatischem Paper mit zwei Schlüsseln (D27), innerhalb Verlustdeckel D34 (Position ≤ 100 EUR Worst Case; Krypto-Notional ≤ 600 EUR; Aktien-Ticket ≤ 1 500 EUR mit hartem Stop). Der Stop in den Hypothesen oben ist **Teil der Hypothese** (Krypto −5 %/+8 %/−4 %) und deckt D34 (Notional 600 EUR × 5 % = 30 EUR).
 

@@ -956,3 +956,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 25.10. ≈ 15:00:** E2c-Neulauf (Filter repariert) läuft bei Andi; danach Entscheid, ob K4P als gekettete Replikation tragfähig ist (Abhängigkeit zu BTC/ETH beachten: Markt-Cluster ⇒ effektive unabhängige Zahl < Episodenzahl; Inferenz nur über Wochenblöcke).
 
 **Stand 25.10. ≈ 15:30:** D40 (K4/K4P getrennte Tests). **Läuft/ansteht:** Kalibrierläufe C7 (K4: ≈ 30 Min, K4P: ≈ 1–2 h) bei Andi; danach Spec v0.2 (Operationscharakteristik + Power), Paper-Säulen, Freeze Ziel Do 29.10.
+
+**Stand 25.10. ≈ 16:30:** C7 bestanden (D41). **Bis Freeze (Ziel Do 29.10.):** (1) Paper-Säulen A–D für K4/K4P entwerfen und in die Spec (wenige Episoden/Jahr ⇒ realistische Dauer), (2) Vorwärts-Aggregation Jul–Sep 2026 (Skript mit Fenstergrenzen, einmalig öffnen), (3) Daten-Manifest-Hash der benutzten Aggregate, (4) Seeds/Code-Hash/Spec-Hash festlegen, unabhängige Nachrechnung, (5) Registerzeile. Parallel Forschung Runde 4 (Aktien: Tageskerzen-Quelle Alpaca, Survivorship-Zählung).
