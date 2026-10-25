@@ -1,5 +1,5 @@
 # fut_spread_v1.py - Kostencheck K6: oeffentliche Kraken-Futures-Ticker (nur Lesen, keine Schluessel, keine Orders)
-# Aufruf:  python fut_spread_v1.py [Anzahl_Schnappschuesse=15] [Abstand_s=20]  > fut_spread_out.txt
+# v1.1 (Alias DOGE->XDG ergaenzt). Aufruf:  python fut_spread_v1.py [Anzahl_Schnappschuesse=15] [Abstand_s=20]  > fut_spread_out.txt
 # Gibt je Perp-Symbol aus: Median Spread (bp), Median Top-of-Book-Tiefe (USD, kleinere Seite), Volumen 24h (USD),
 # offenes Interesse (USD), Funding (annualisiert, Betrag). Nur Aggregate, keine Rohdaten-Ausgabe.
 import sys, json, time, statistics, urllib.request
@@ -14,7 +14,7 @@ EV = {"XBT":3,"ETH":6,"SOL":4,"XRP":39,"XDG":428,"ADA":206,"LTC":44,"DOT":72,"LI
       "INJ":595,"PENGU":4,"ONDO":23,"SEI":209,"TIA":86,"KAS":4,"FLOW":587,"TRUMP":20}
 def alias(sym):
     s = sym[3:-3] if sym.startswith("PF_") and sym.endswith("USD") else None
-    return {"XBT":"XBT","BTC":"XBT"}.get(s, s)
+    return {"XBT":"XBT","BTC":"XBT","DOGE":"XDG"}.get(s, s)
 def snap():
     req = urllib.request.Request(URL, headers={"User-Agent": "ct109-spread-check/1"})
     with urllib.request.urlopen(req, timeout=30) as r:
