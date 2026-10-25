@@ -327,6 +327,7 @@ def calib(agg, names, nnull, nplac, B, alpha, seed, sigma):
     print("Hinweis: bei delta=0 ist die erwartete Fehlpass-Rate durch C2 (alpha_i) und C3 begrenzt; Soll <= 5 %.")
 
 def final(agg, names, spec_hash, B, alpha, seed, nplac):
+    import hashlib
     rng = np.random.default_rng(seed)
     world = World(agg, names)
     T, S, X = episodes_from(world.real_events())
@@ -334,11 +335,25 @@ def final(agg, names, spec_hash, B, alpha, seed, nplac):
     plac = placebo_means(world, make_shifts(rng, nplac))
     vm = np.array([episodes_from(world.vol_matched_events(rng))[2].mean() for _ in range(500)])
     v = variants(world)
+    m = float(X.mean())
+    q1 = float(np.quantile(plac, 0.975)); q2 = float(np.quantile(vm, 0.975))
+    ok3 = (m > q1) and (m > q2); ok4 = all(x > 0 for x in v.values()); ok5 = c5(T, X); ok6 = c6(T, S, X)
+    print("Skript-SHA256 %s" % hashlib.sha256(open(__file__, "rb").read()).hexdigest()[:16])
     print("SPEC-HASH %s" % spec_hash)
-    print("Episoden %d; m = %.1f bp; p = %.5f; LCB = %.1f bp; C2 %s" % (len(X), X.mean(), p, lcb, ok2))
-    print("C3a Quantil97.5 %.1f, C3b %.1f -> %s" % (np.quantile(plac, 0.975), np.quantile(vm, 0.975), (X.mean() > np.quantile(plac, 0.975)) and (X.mean() > np.quantile(vm, 0.975))))
-    print("C4 a/b/c: %s -> %s" % (v, all(x > 0 for x in v.values())))
-    print("C5 %s; C6 %s" % (c5(T, X), c6(T, S, X)))
+    print("Paare %s; Episoden %d; Zustaende %s" % (",".join(names), len(X), [int((S == s).sum()) for s in (0, 1, 2)]))
+    print("m = %.1f bp; p = %.5f; LCB(alpha) = %.1f bp; C2 %s" % (m, p, lcb, ok2))
+    print("C3a Placebo-Quantil97.5 %.1f bp, C3b %.1f bp -> %s" % (q1, q2, ok3))
+    print("C4 a/b/c: %s -> %s" % ({k: round(x, 1) for k, x in v.items()}, ok4))
+    print("C5 %s; C6 %s" % (ok5, ok6))
+    n = len(X); a_ = np.argsort(T)
+    print("Haelften: %.1f / %.1f bp" % (X[a_][: n // 2].mean(), X[a_][n // 2:].mean()))
+    print("je Zustand (n, Mittel bp): %s" % [(int((S == s).sum()), round(float(X[S == s].mean()), 1) if (S == s).any() else None) for s in (0, 1, 2)])
+    allok = ok2 and ok3 and ok4 and ok5 and ok6
+    if allok: cat = "BESTAETIGT"
+    elif ok2: cat = "NICHT BESTAETIGT (C2 erfuellt, verfehlt: %s)" % ",".join(k for k, x in (("C3", ok3), ("C4", ok4), ("C5", ok5), ("C6", ok6)) if not x)
+    elif m > 0: cat = "POSITIV-UNTERPOWERT (m > 0, C2 verfehlt; kein Nullbefund)"
+    else: cat = "NICHT NACHWEISBAR (m <= 0; kein Nullbefund bei Kante < MDE)"
+    print("KATEGORIE: %s" % cat)
 
 if __name__ == "__main__":
     mode, agg, names = sys.argv[1], sys.argv[2], sys.argv[3].split(",")
