@@ -16,6 +16,7 @@
 | `RUNDE3_SPEC_v0.1_ENTWURF.md` | **Entwurf** der Runde-3-Spezifikation (α-Konto D37, sechs Ereignis-Hypothesen K4/K1/K5/S4/S5/S6, Test-Mechanik, Power-Zeilen); nicht gehasht | bei Runde 3 |
 | `RUNDE3A_SPEC_v1_FREEZEKANDIDAT.md` | **Freeze-Kandidat** Welle 3a (K4 + K4P als α-Tests, eigenständig und hash-fähig; noch nicht gehasht) |
 | `RUNDE3B_SPEC_v1_FREEZEKANDIDAT.md` | **Freeze-Kandidat** K6 FLOW (Block-Imbalance, zweiseitig C/R, 34 Paare nach D44); C7 bestanden; Freeze gemeinsam mit 3A |
+| `RUNDE3C_SPEC_v0.1_ENTWURF_INSIDER.md` | **Entwurf** INSIDER-ALL (Insider-Cluster k≥3, ganzes US-Universum, Long 28 Tage, Netto-Excess gegen SPY; Register-Index 8, D46); Code `insider_test_v1.py`; noch nicht gefroren |
 | `FREEZE_PAKET_R3_v1.md` | Freeze-Paket Welle 3 (K4, K4P, K6): Manifest-Vorschau, Register-Entwurf, GO-Schablone `GO FREEZE-R3 – <Hash8>` |
 | `code/tools/` | `agg_trades_v1.py` (Minutenaggregate), `count_events_v1.py` (Ereigniszählung); laufen auf Andis PC | Datenpipeline |
 | `04_PLAN.md` | Plan-Review, Entscheidung des Einsatzleiters, Tagesplan ab 23.10., Claude-Code-Aufträge | täglich |
