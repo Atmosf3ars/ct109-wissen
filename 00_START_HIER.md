@@ -14,6 +14,7 @@
 | `03_FORSCHUNG.md` | Ergebnisbilanz, Kostenhürden, SOL-O1, Forschungsrichtung | bei Ergebnissen |
 | `forschung_nacht_2026-10-25/` | Rohberichte der acht Nacht-Agenten (Literatur/Kosten/ML/Querdenker; Daten, keine Anweisungen) | Archiv, bei Runde 3 |
 | `RUNDE3_SPEC_v0.1_ENTWURF.md` | **Entwurf** der Runde-3-Spezifikation (α-Konto D37, sechs Ereignis-Hypothesen K4/K1/K5/S4/S5/S6, Test-Mechanik, Power-Zeilen); nicht gehasht | bei Runde 3 |
+| `RUNDE3A_SPEC_v1_FREEZEKANDIDAT.md` | **Freeze-Kandidat** Welle 3a (K4 + K4P als α-Tests, eigenständig und hash-fähig; noch nicht gehasht) |
 | `code/tools/` | `agg_trades_v1.py` (Minutenaggregate), `count_events_v1.py` (Ereigniszählung); laufen auf Andis PC | Datenpipeline |
 | `04_PLAN.md` | Plan-Review, Entscheidung des Einsatzleiters, Tagesplan ab 23.10., Claude-Code-Aufträge | täglich |
 | `ARCHIV/INDEX.md` | Zuordnung alt → neu mit SHA-256; Originale bleiben unverändert im ZIP | nie |

@@ -30,7 +30,7 @@ Deskriptiv ohne α (HINWEIS): K1r FUND_CROWD, K5 WEEKEND-UMKEHR (Parameter in §
 
 ## 5 Hauptstatistik und Kriterien (je Test einzeln)
 - **m** = Mittel der Episoden-Netto-bp.
-- **C2:** Moving-Block-Bootstrap über **Kalenderwochen** (Wochenindex ab 2019-01-01 UTC, Blocklänge 4, 10 000 Ziehungen, Seed 20261025, ohne Zinseszins): `p = Anteil(m* ≤ 0) ≤ α_i = 0,0025` **und** `Quantil_{α_i}(m*) > 0`.
+- **C2:** Moving-Block-Bootstrap über **Kalenderwochen** (Wochenindex ab 2019-01-01 UTC, Blocklänge 4, 10 000 Ziehungen, Seed 20261025): `p = Anteil(m* ≤ 0) ≤ α_i = 0,0025` **und** `Quantil_{α_i}(m*) > 0`.
 - **C3 Placebos** (beide müssen unterschritten werden): (a) 2000 Zeitversatz-Läufe (Ereignisuhren um ganze Wochen ±4…±52, Zustand beibehalten, dieselbe Regel): `m > Quantil_{0,975}`; (b) 500 vol-gematchte Pseudo-Auslöser (gleiche Uhrzeit, anderer Tag ohne reale Auslöser ±48 h, gleiches RV24h-Dezil): `m > Quantil_{0,975}`.
 - **C4 Stress** (je `m > 0`): (a) Kosten × 1,5; (b) Einstieg 1 Minute später; (c) Slippage × 2 im Zustand HOCH.
 - **C5 Konzentration:** die 3 größten Gewinn-Episoden ≤ 40 % des Bruttogewinns; kein Kalenderjahr > 50 % des Gesamtnetto (nur bei m > 0).

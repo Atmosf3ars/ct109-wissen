@@ -958,3 +958,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 25.10. ≈ 15:30:** D40 (K4/K4P getrennte Tests). **Läuft/ansteht:** Kalibrierläufe C7 (K4: ≈ 30 Min, K4P: ≈ 1–2 h) bei Andi; danach Spec v0.2 (Operationscharakteristik + Power), Paper-Säulen, Freeze Ziel Do 29.10.
 
 **Stand 25.10. ≈ 16:30:** C7 bestanden (D41). **Bis Freeze (Ziel Do 29.10.):** (1) Paper-Säulen A–D für K4/K4P entwerfen und in die Spec (wenige Episoden/Jahr ⇒ realistische Dauer), (2) Vorwärts-Aggregation Jul–Sep 2026 (Skript mit Fenstergrenzen, einmalig öffnen), (3) Daten-Manifest-Hash der benutzten Aggregate, (4) Seeds/Code-Hash/Spec-Hash festlegen, unabhängige Nachrechnung, (5) Registerzeile. Parallel Forschung Runde 4 (Aktien: Tageskerzen-Quelle Alpaca, Survivorship-Zählung).
+
+**Stand 25.10. ≈ 18:00:** Freeze-Kandidat steht. **Vor Freeze (Do 29.10.):** Andi-Endlektüre (Ausnahme D41), Manifest-Hash der 41 Aggregatdateien (Get-FileHash), Code-Hash, unabhängige Hash-Nachrechnung, GO-Schablone für Registry-Schreiben. **Forschung bis dahin:** Runde-4-Kandidaten (Order-Flow aus vol_b/vol_s, Aktien-Tageskerzen via Alpaca).
