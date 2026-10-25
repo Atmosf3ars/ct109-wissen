@@ -952,3 +952,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 25.10. ≈ 13:00:** D39. **Nächste Blöcke (Andi):** T7 (≈ 38 Alt-USD-CSVs entpacken und zu 1-Min-Aggregaten rechnen, ≈ 16 GB, ca. 25 Min), danach E2c (K4P-Zählung, von mir). **Ich:** E2c-Skript, Spec v0.2, Kalibrierungs-Entwurf C7 (Nullwelten aus blockverschobenen Ereignisuhren), Paper-Säulen A–D für K4 (wenige Episoden/Jahr ⇒ ehrliche Dauer).
 
 **Stand 25.10. ≈ 14:00:** `k4_test_v1.py` fertig (Funktionstest synthetisch). **Reihenfolge nach T7:** (1) E2c-Zählung K4P (Andi-Lauf), (2) Kalibrierlauf C7 für K4 (XBT,ETH) und K4P (nur Zählung/Raten, keine echten Kennzahlen), (3) Spec v0.2 mit Power-Zeile + Operationscharakteristik, (4) Hash/Freeze Ziel Do 29.10.
+
+**Stand 25.10. ≈ 15:00:** E2c-Neulauf (Filter repariert) läuft bei Andi; danach Entscheid, ob K4P als gekettete Replikation tragfähig ist (Abhängigkeit zu BTC/ETH beachten: Markt-Cluster ⇒ effektive unabhängige Zahl < Episodenzahl; Inferenz nur über Wochenblöcke).

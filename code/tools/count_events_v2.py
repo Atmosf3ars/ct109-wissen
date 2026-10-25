@@ -12,7 +12,13 @@ CUT = datetime(2026, 7, 1, tzinfo=timezone.utc).timestamp()
 
 def yr(ts): return datetime.fromtimestamp(ts, tz=timezone.utc).year
 
+FLAGGED = {}   # Pfad -> (Zeilen, markiert, laengste Serie)
+
 def load(path):
+    """liest 1-Min-Aggregate (nur < CUT) und entfernt Fehldrucke: Zeile markiert, wenn sie gegenueber dem Schluss der
+    unmittelbar vorherigen ROHZEILE um > 30 % abweicht (low < 0,7*prev, high > 1,4*prev) oder low < 0,7*high oder low <= 0.
+    Vergleich immer mit der Rohzeile davor (nicht mit der letzten akzeptierten): kein Haengenbleiben auf falschem Niveau (dq_v1, 25.10.)."""
+    import numpy as np
     ts = array("q"); op = array("d"); hi = array("d"); lo = array("d"); cl = array("d")
     with open(path, newline="") as f:
         r = csv.reader(f); next(r)
@@ -20,6 +26,22 @@ def load(path):
             t = int(row[0])
             if t >= CUT: break
             ts.append(t); op.append(float(row[1])); hi.append(float(row[2])); lo.append(float(row[3])); cl.append(float(row[4]))
+    n = len(ts)
+    if n == 0: return ts, op, hi, lo, cl
+    H = np.frombuffer(hi, dtype=np.float64); L = np.frombuffer(lo, dtype=np.float64); C = np.frombuffer(cl, dtype=np.float64)
+    prev = np.concatenate(([np.nan], C[:-1]))
+    with np.errstate(invalid="ignore"):
+        bad = (L <= 0) | (L < 0.7 * H) | (L < 0.7 * prev) | (H > 1.4 * prev)
+    run = best = 0
+    for b in bad:
+        run = run + 1 if b else 0
+        if run > best: best = run
+    FLAGGED[path] = (n, int(bad.sum()), best)
+    if bad.any():
+        keep = ~bad
+        def f(a, code):
+            out = array(code); out.frombytes(np.frombuffer(a, dtype=np.int64 if code == "q" else np.float64)[keep].tobytes()); return out
+        ts, op, hi, lo, cl = f(ts, "q"), f(op, "d"), f(hi, "d"), f(lo, "d"), f(cl, "d")
     return ts, op, hi, lo, cl
 
 def hourly(ts, cl):
@@ -79,9 +101,8 @@ def sim_k4(name, data, st, theta=0.03):
     i = 0
     while i < n:
         t = ts[i]; h = hi[i]; l = lo[i]
-        if l <= 0 or l / h < 0.7 or (prev_close is not None and (l / prev_close < 0.7 or h / prev_close > 1.4)):
+        if l <= 0:
             i += 1; continue
-        prev_close = cl[i]
         while dq and dq[0][0] < t - WIN + 60: dq.popleft()
         while dq and dq[-1][1] <= h: dq.pop()
         dq.append((t, h))

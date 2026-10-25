@@ -27,7 +27,7 @@ def sigma15_by_day(ts, cl):
             cur_key, cur_c = k, c; continue
         if k != cur_key:
             if prev_key is not None and cur_key == prev_key + 1 and prev_c > 0 and cur_c > 0:
-                r = math.log(cur_c / prev_c)
+                r = max(-0.15, min(0.15, math.log(cur_c / prev_c)))
                 d = (cur_key * 900) // 86400
                 sq[d] += r * r; cnt[d] += 1
             prev_key, prev_c = cur_key, cur_c
@@ -55,9 +55,8 @@ def sim_k4g(data, st, sig, floor=0.03, mult=6.0):
     i = 0
     while i < n:
         t = ts[i]; h = hi[i]; l = lo[i]
-        if l <= 0 or l / h < 0.7 or (prev_close is not None and (l / prev_close < 0.7 or h / prev_close > 1.4)):
+        if l <= 0:
             glitch += 1; i += 1; continue
-        prev_close = cl[i]
         while dq and dq[0][0] < t - WIN + 60: dq.popleft()
         while dq and dq[-1][1] <= h: dq.pop()
         dq.append((t, h))
@@ -94,8 +93,10 @@ def sim_k4g(data, st, sig, floor=0.03, mult=6.0):
 def iso(t): return datetime.fromtimestamp(t, tz=timezone.utc).strftime("%Y-%m-%d")
 
 def main(agg, pairs):
+    st, _hc = v2.k4(agg)      # K4-Referenz XBT/ETH mit bereinigten Daten (druckt Zaehlungen je Paar/Zustand)
+    for nm in ("XBTUSD", "ETHUSD"):
+        print("Bereinigung %s: Zeilen, entfernt, laengste Serie = %s" % (nm, v2.FLAGGED.get(os.path.join(agg, nm + "_1m.csv"))))
     xbt = v2.load(os.path.join(agg, "XBTUSD_1m.csv"))
-    st = v2.state_table(v2.hourly(xbt[0], xbt[4]))
     # K4-Referenzepisoden (XBT+ETH, theta 3 %) fuer die Ueberlappungsangabe
     ref = []
     for nm in ("XBTUSD", "ETHUSD"):
@@ -123,8 +124,9 @@ def main(agg, pairs):
             "/".join(str(len(v2.episodes([e[0] for e in ent if e[1] == s], 86400))) for s in (0, 1, 2)))
         print(line)
         if len(r) > 1:
-            print("   theta Median %.1f %%, Streuung 4-h (zentriert) %.0f bp, Mittel |r| %.0f bp, Glitch-Minuten %d, ohne sigma15 %d" % (
-                100 * sorted(th)[len(th) // 2], v2.sd(r), sum(abs(x) for x in r) / len(r), gl, nt))
+            fl = v2.FLAGGED.get(path, (0, 0, 0))
+            print("   theta Median %.1f %%, Streuung 4-h (zentriert) %.0f bp, Mittel |r| %.0f bp, entfernte Zeilen %d von %d (laengste Serie %d), ohne sigma15 %d" % (
+                100 * sorted(th)[len(th) // 2], v2.sd(r), sum(abs(x) for x in r) / len(r), fl[1], fl[0], fl[2], nt))
         allev += [(e[0], e[1], e[2], p) for e in ent]
     if not allev:
         print("keine Ereignisse"); return

@@ -39,9 +39,8 @@ class Pair:
         ts, hi, lo, cl = self._ts, self._hi, self._lo, self._cl
         for i in range(len(ts)):
             t = ts[i]; h = hi[i]; l = lo[i]
-            if l <= 0 or l / h < 0.7 or (prev is not None and (l / prev < 0.7 or h / prev > 1.4)):
+            if l <= 0:
                 continue
-            prev = cl[i]
             while dq and dq[0][0] < t - WIN + 60: dq.popleft()
             while dq and dq[-1][1] <= h: dq.pop()
             dq.append((t, h))
