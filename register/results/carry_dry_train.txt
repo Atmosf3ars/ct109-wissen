@@ -1,0 +1,5 @@
+carry_test_v1.py dry (Trainingsfenster 2019-09-09..2023-12-31; SHA-short 025e2d188d8dd948; Geraetesitzung 26.10.2026 ~00:30) - zur Codepruefung, kein Freeze
+Wochen 225 | BTC: Phasen 15, Tage in Pos 867, netto 17.82 bp/Woche | ETH: Phasen 10, Tage in Pos 957, netto 27.04 bp/Woche
+Portfolio netto m = 22.43 bp/Woche (11.7 % p. a. auf Notional); sigma_Woche 52.0; Bootstrap-SE (Bloecke 8) 7.51; z_adj = m/(1.5*SE) = 1.99 (Kriterium >= 1.645)
+Haelften 40.91 / 4.12 | Zustand RV30 hoch 36.20 (n=86) / niedrig 15.96 (n=127) | Stresskosten m = 17.99 | immer-an m = 28.80 | Placebo (zufaellige Phasenlage gleicher Laengen): q97.5 16.41, Rang des Ergebnisses 1.00
+KATEGORIE: HINWEIS-POSITIV (nur Vorwaertsbeobachtung/Paper, kein BESTAETIGT)
