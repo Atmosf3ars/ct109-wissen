@@ -1,6 +1,6 @@
 # k4_test_v1.py - Testmechanik C1-C7 der Runde-3-Spec (K4 AFTERSHOCK, K4P) + Nullwelt-Kalibrierung
 # Aufruf (im Ordner tools):
-#   python k4_test_v1.py calib <agg-Ordner> <Paar1,Paar2,...> [--nnull 200] [--nplac 2000] [--boot 10000] [--alpha 0.0025] [--seed 20261025]
+#   python k4_test_v1.py calib <agg-Ordner> <Paar1,Paar2,...> --sigma <bp> [--nnull 200] [--nplac 2000] [--boot 10000] [--alpha 0.0025] [--seed 20261025]
 #   python k4_test_v1.py final <agg-Ordner> <Paare> --spec-hash <64 hex>      (NUR nach Freeze; gibt Ergebnis des echten Tests aus)
 # Paarangabe: XBT oder ETH (theta fest 3 %, Rundreise 16 bp) bzw. beliebige Alt-Namen (theta adaptiv, Rundreise 26 bp).
 # calib gibt NUR Kennzahlen der Gesamtregel aus (Fehlpass-Raten, Operationscharakteristik, Streuung), keine Mittelwerte
@@ -264,7 +264,7 @@ def variants(world, shift=None):
         res[key] = mean_or_nan(X)
     return res
 
-def calib(agg, names, nnull, nplac, B, alpha, seed):
+def calib(agg, names, nnull, nplac, B, alpha, seed, sigma):
     rng = np.random.default_rng(seed)
     world = World(agg, names)
     log("Welt geladen")
@@ -283,37 +283,45 @@ def calib(agg, names, nnull, nplac, B, alpha, seed):
     # Nullwelten (andere Verschiebungen als die Placebo-Menge)
     shifts = make_shifts(rng, nnull * 2)
     nulls = []
+    sd_entry = []
     for dw in shifts:
-        T, S, X = episodes_from(world.shifted_events(dw))
+        ev = world.shifted_events(dw)
+        T, S, X = episodes_from(ev)
         if len(X) < 20: continue
+        allx = [x for lst in ev.values() for (_, _, x) in lst]
+        sd_entry.append(float(np.std(allx, ddof=1)))
         v = variants(world, dw)
         nulls.append((T, S, X, v))
         if len(nulls) >= nnull: break
     k = len(nulls)
     log("Nullwelten fertig")
-    mean_null = float(np.mean([x[2].mean() for x in nulls]))
-    c0 = -mean_null
-    sd_ep = float(np.mean([x[2].std(ddof=1) for x in nulls]))
-    n_ep = float(np.mean([len(x[2]) for x in nulls]))
+    M = float(np.mean([x[2].mean() for x in nulls]))
+    Mk = {key: float(np.mean([x[3][key] for x in nulls])) for key in "abc"}
+    sd_ep_null = float(np.mean([x[2].std(ddof=1) for x in nulls]))
+    sd_ent_null = float(np.mean(sd_entry))
+    f = sigma / sd_ent_null          # Skalierung: Nullwelt-Streuung auf die gezaehlte Streuung der Nachereignis-Renditen (nur Betragsgroesse)
+    sd_ep = f * sd_ep_null
+    n_ep = float(len(Tr))            # echte Episodenzahl (Zaehlung)
     mde = (2.807 + 0.842) * sd_ep / math.sqrt(n_ep)
-    print("Nullwelten %d (von %d versucht); mittlere Episodenzahl %.0f; Episoden-Streuung %.0f bp; MDE(80 %%) %.0f bp (analytisch)" % (k, len(shifts), n_ep, sd_ep, mde))
-    q_plac = np.quantile(plac - plac.mean(), 0.975); q_vm = np.quantile(vm - vm.mean(), 0.975)
+    print("Nullwelten %d (von %d versucht); Streuung je Einstieg in Nullwelt %.0f bp -> Skalierung auf %.0f bp (Faktor %.2f, Annahme [A]); Episoden-Streuung skaliert %.0f bp; echte Episoden %d; MDE(80 %%) %.0f bp (analytisch)" % (
+        k, len(shifts), sd_ent_null, sigma, f, sd_ep, int(n_ep), mde), flush=True)
+    q_plac = f * np.quantile(plac - plac.mean(), 0.975); q_vm = f * np.quantile(vm - vm.mean(), 0.975)
     print("Placebo-Mengen: zeitversetzt %d, vol-gematcht %d" % (len(plac), len(vm)))
-    print("Operationscharakteristik der Gesamtregel (alle C2..C6; wahre Netto-Kante delta, Nullwelten rezentriert):")
+    print("Operationscharakteristik der Gesamtregel (alle C2..C6; wahre Netto-Kante delta, Nullwelten rezentriert und auf die gezaehlte Streuung skaliert):")
     for lab, d in (("0", 0.0), ("0.5*MDE", 0.5 * mde), ("MDE", mde), ("2*MDE", 2 * mde)):
         cnt = dict(c2=0, c3=0, c4=0, c5=0, c6=0, all=0)
         for T, S, X, v in nulls:
-            Xa = X + c0 + d
+            Xa = f * (X - M) + d
             ok2, p, lcb = c2(T, Xa, world.W, B, rng, alpha)
             m = Xa.mean()
-            ok3 = (m - 0.0 > q_plac) and (m > q_vm)
-            ok4 = all((v[key] + c0 + d) > 0 for key in "abc")
+            ok3 = (m > q_plac) and (m > q_vm)
+            ok4 = all((f * (v[key] - Mk[key]) + d + (Mk[key] - M)) > 0 for key in "abc")
             ok5 = c5(T, Xa); ok6 = c6(T, S, Xa)
             for key, val in (("c2", ok2), ("c3", ok3), ("c4", ok4), ("c5", ok5), ("c6", ok6)):
                 cnt[key] += int(val)
             cnt["all"] += int(ok2 and ok3 and ok4 and ok5 and ok6)
         print("  delta=%-8s (%.0f bp): bestanden gesamt %d/%d = %.1f %%; einzeln C2 %d, C3 %d, C4 %d, C5 %d, C6 %d" % (
-            lab, d, cnt["all"], k, 100.0 * cnt["all"] / k, cnt["c2"], cnt["c3"], cnt["c4"], cnt["c5"], cnt["c6"]))
+            lab, d, cnt["all"], k, 100.0 * cnt["all"] / k, cnt["c2"], cnt["c3"], cnt["c4"], cnt["c5"], cnt["c6"]), flush=True)
     print("Hinweis: bei delta=0 ist die erwartete Fehlpass-Rate durch C2 (alpha_i) und C3 begrenzt; Soll <= 5 %.")
 
 def final(agg, names, spec_hash, B, alpha, seed, nplac):
@@ -336,7 +344,8 @@ if __name__ == "__main__":
     def opt(k, d, f=float):
         return f(a[a.index(k) + 1]) if k in a else d
     if mode == "calib":
-        calib(agg, names, opt("--nnull", 200, int), opt("--nplac", 2000, int), opt("--boot", 10000, int), opt("--alpha", 0.0025), opt("--seed", 20261025, int))
+        if "--sigma" not in a: sys.exit("calib braucht --sigma <gezaehlte Streuung der 4-h-Rendite je Einstieg in bp> (K4: 310, K4P: 411)")
+        calib(agg, names, opt("--nnull", 200, int), opt("--nplac", 2000, int), opt("--boot", 10000, int), opt("--alpha", 0.0025), opt("--seed", 20261025, int), opt("--sigma", 0.0))
     elif mode == "final":
         h = opt("--spec-hash", "", str)
         if not re.fullmatch(r"[0-9a-f]{64}", h):
