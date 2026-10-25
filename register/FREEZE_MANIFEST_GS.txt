@@ -1,0 +1,9 @@
+CT109-FREEZE-GS-v1
+spec RUNDE3D_SPEC_v1_GS_FREEZEKANDIDAT.md 6f12edc071e7790ffed48d9d1b319b1ac18a795e677ce5a7a684002e2f728b27
+code code/tools/gs_test_v1.py 008b120b1e763a6e942614fa0621f8fd64aaffaba4691d15937a62bb6009f330
+code code/tools/count_gs_v1.py 1af5deb5a5cd8b3605100d3ae1c3cc203d786d465ed8a44634830f73d4f6db3f
+data register/MANIFEST_GS_DATA_SHA256.txt fc32741669a8e8fc34f83ce44c26d90bd495abdd593ca9886cbbefbeae0c025f
+param klasse HINWEIS kein alpha_konto; alpha_konto bleibt 7/20 (D37)
+param GS-C und GS-R wochenweise, kosten=6bp je Woche, beta=OLS 52 Wochen, signal=sign(Spread Vorwoche)
+param fenster 2016-01-04 .. 2026-06-30 (hartes Ende ab 2026-07-01 gesperrt)
+param bootstrap blocklaenge=4 ziehungen=10000 seed=20261025 einseitig p<=0.05; placebos zeitversatz=2000 quantil=0.975

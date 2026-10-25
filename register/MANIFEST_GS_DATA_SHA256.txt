@@ -1,0 +1,3 @@
+# CT109 GOLD-SILBER Datenmanifest (Alpaca-Tageskerzen SIP, adjustment=all, Andis PC D:\CT109-Data\alpaca-daily; gemessen 25.10.2026 per sha256sum)
+b9adc93e9faafa0e86b56f4fcd625a307dc80fd769efd6e164fdff4b6c0a9df7  GLD.csv
+366d33c6987a17eeef9bb0151fb61854abb325b6e954e51980a40e49cc5022e5  SLV.csv
