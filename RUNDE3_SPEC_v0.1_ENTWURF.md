@@ -136,6 +136,15 @@ Erwartete Netto-Kante (A) je Kandidat: K4 100–180 bp (Literatur/Autoren, **ver
 ## 10 Paper und Echtgeld
 Säulen A–D (`03` §8.9, `02` D32) werden **vor Paper-Start des jeweiligen Signals** gehasht (nicht nach der Bilanz 02.11.). Echtgeld nur nach `BESTAETIGT` **und** bewährtem vollautomatischem Paper mit zwei Schlüsseln (D27), innerhalb Verlustdeckel D34 (Position ≤ 100 EUR Worst Case; Krypto-Notional ≤ 600 EUR; Aktien-Ticket ≤ 1 500 EUR mit hartem Stop). Der Stop in den Hypothesen oben ist **Teil der Hypothese** (Krypto −5 %/+8 %/−4 %) und deckt D34 (Notional 600 EUR × 5 % = 30 EUR).
 
+**Entwurf Säulen für K4 / K4P (v0.2, Zahlen Annahme [A], vor Paper-Start zu hashen):**
+- **Zulaufrate (Zählung, Episoden/Jahr):** K4 2022–2025: 51 / 37 / 34 / 49 (≈ 35–50); K4P ≈ 95–113. Vorwärtsfenster 01.07.–30.09.2026 enthält erwartungsgemäß nur ≈ 8–12 (K4) bzw. ≈ 25 (K4P) Episoden.
+- **Ehrliche Dauer:** Eine Kante δ ist vorwärts mit n = (2,487·σ/δ)² Episoden bei α=0,0025/Power 0,8 nachweisbar [R, Formel nachgerechnet]: K4 (σ ≈ 280): δ=50 bp ⇒ ≈ 195 Episoden ≈ **4–5 Jahre**; K4P (σ ≈ 300): δ=40 bp ⇒ ≈ 350 Episoden ≈ **3–4 Jahre**. Paper kann diese Kanten deshalb **nicht** innerhalb Monaten bestätigen; die Bestätigung trägt der Haupttest (Fenster ≤ 30.06.2026), Paper liefert Betrieb, Kosten und Vorzeichenkontrolle.
+- **Säule A Betrieb:** ≥ 98 % Minutenkerzen je Instrument und Tag; Eingriffe nur protokollierter Kill-Switch (ungültig ab dort); Zeitstempel UTC.
+- **Säule B Kosten/Fill:** ≥ 30 gemessene Ausführungen je Klasse (XBT/ETH; Alt-Pool); obere 90-%-Grenze der realen Rundreise ≤ 1,25 × Modell (16 bp bzw. 26 bp); Funding als gemessener Cashflow.
+- **Säule C Futility (nur Abbruch):** feste Looks bei n = 20 / 40 / 80 Vorwärtsepisoden; Abbruch, wenn die obere 80-%-Grenze (n=40) bzw. 90-%-Grenze (n=80) des Episodenmittels < 0 liegt; kein Erfolgsurteil aus C.
+- **Säule D Freigabe zum Echtgeld-Experiment:** Haupttest `BESTAETIGT` ∧ Vorwärtsmittel > 0 bei n ≥ 30 ∧ A ∧ B ∧ C nicht abgebrochen ∧ zwei Schlüssel; Zustände mit < 20 Episoden „nicht bewertbar“.
+- **Umsetzbarkeit K4P (offener Punkt):** im Mittel ≈ 13 gleichzeitige Paar-Einstiege je Episode (10 386 Einstiege / 764 Episoden) — Paper (virtuell) handelt alle; **Echtgeld** (Notional ≤ 600 EUR je Position, Verlustdeckel D34) erlaubt das nicht. Eine Echtgeld-Teilmenge (z. B. höchstens 2 Paare je Episode, Auswahlregel ex ante) wäre eine **eigene Hypothese** (K4P-live) mit eigenem Test und eigener Power — nicht stillschweigend aus K4P ableitbar.
+
 ## 11 Prozess (Reihenfolge verbindlich, je Welle)
 1. Zählungen (E2/E3) → Schwellen (§6) → Power-Zeilen (§9) → HINWEIS-Deklaration.
 2. Kalibrierung C7 (≥ 200 Nullwelten), Operationscharakteristik in die Spec.
