@@ -1000,3 +1000,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 25.10. ≈ 23:05:** CARRY-HOLD Phase 0: Andi führt `basis_probe_v1.py` aus ⇒ σ(Basis-Änderung) und σ(Funding) je Fenster ⇒ Power-Zeile (MDE gegen Erwartung 6–14 bp/Woche). Schwellen für Ein-/Ausstieg erst in der Spec aus dem Trainingsfenster (Discovery), Testfenster bleibt ungeöffnet.
 
 **Stand 25.10. ≈ 23:20 (D56):** CARRY-HOLD: (a) Nullwelt-SE-Tool (Blockbootstrap, sd(z), ≥ 1 200 Welten) für die Primärregel bauen, (b) Spec `RUNDE3E_SPEC_v0.1_ENTWURF_CARRYHOLD` schreiben, (c) Andi prüft Kraken-Futures-Kontoumfang (Short mit Spot-Sicherheit/Multi-Collateral, Margin, Abschlag, ESMA), (d) danach Entscheidung α oder HINWEIS und Freeze-Paket (GO-Satz von Andi nötig).
+
+**Stand 25.10. ≈ 23:40 (D57):** (a) Andi: Transfer-Dialog im Futures-Konto nur ansehen (zulässige Sicherheiten) und Screenshot, nichts bestätigen; (b) Phase 0 CARRY-DATED: Verteilung des annualisierten Aufschlags datierter Kontrakte (Binance-Vision-Lieferkontrakte) als Gelegenheitszählung; (c) CARRY-HOLD-Spec (D56) bleibt Vorrang für den Nachweis im Niedrig-Funding-Regime.
