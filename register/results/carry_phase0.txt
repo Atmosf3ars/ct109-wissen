@@ -1,0 +1,11 @@
+CARRY-HOLD Phase 0 (25.10.2026) - Roh-Ausgaben (nur Anzahlen / zentrierte Streuungen; Training offen, Test ungeoeffnet)
+[1] basis_probe_v1.py (SHA-short a34bae005d8b6fde), Andi-Lauf ~22:46
+BTCUSDT: Tage spot 2495, perp 2373, fehlende Monatsdateien 4
+BTCUSDT | Training 2019-09..2023-12 | Wochen 226 | Basis-Aenderungen 208, sigma 4.3 bp/Woche | Funding-Wochensumme n 209, sigma 43.9 bp/Woche
+BTCUSDT | Test 2024-01..2026-06 | Wochen 130 | Basis-Aenderungen 129, sigma 2.5 bp/Woche | Funding-Wochensumme n 130, sigma 16.2 bp/Woche
+ETHUSDT: Tage spot 2495, perp 2373, fehlende Monatsdateien 4
+ETHUSDT | Training 2019-09..2023-12 | Wochen 226 | Basis-Aenderungen 208, sigma 5.0 bp/Woche | Funding-Wochensumme n 209, sigma 56.9 bp/Woche
+ETHUSDT | Test 2024-01..2026-06 | Wochen 130 | Basis-Aenderungen 129, sigma 2.8 bp/Woche | Funding-Wochensumme n 130, sigma 16.9 bp/Woche
+[2] carry_train_v1.py (SHA-short 5e7902abcd414634), Trainingsfenster 2019-09-08..2023-12-31, Lauf Geraetesitzung
+Vollstaendige Tabelle liegt auf Andis PC: D:\CT109-Data\kraken-trades\tools\carry_train_out.txt (Kernzahlen in 03_FORSCHUNG.md §8.22).
+

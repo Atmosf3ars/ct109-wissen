@@ -998,3 +998,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 25.10. ≈ 22:50 (D55):** 8-K erledigt (kein Lauf). Jetzt **CARRY-HOLD Phase 0:** Datenlage (Binance 2019–2026 vorhanden, Kraken-Spot-OHLCVT), Anzahl Wochen/Haltephasen, zentrierte Basis-σ, Kosten (Spot 0,40/0,80 % Tier 1 ⇒ Spot-Bein einmal je Phase), Kraken-Kontoumfang (Short-Perp mit Spot-Sicherheit, Margin). Danach TOM-7 (Limit-Reset November), 13D-Zählung.
 
 **Stand 25.10. ≈ 23:05:** CARRY-HOLD Phase 0: Andi führt `basis_probe_v1.py` aus ⇒ σ(Basis-Änderung) und σ(Funding) je Fenster ⇒ Power-Zeile (MDE gegen Erwartung 6–14 bp/Woche). Schwellen für Ein-/Ausstieg erst in der Spec aus dem Trainingsfenster (Discovery), Testfenster bleibt ungeöffnet.
+
+**Stand 25.10. ≈ 23:20 (D56):** CARRY-HOLD: (a) Nullwelt-SE-Tool (Blockbootstrap, sd(z), ≥ 1 200 Welten) für die Primärregel bauen, (b) Spec `RUNDE3E_SPEC_v0.1_ENTWURF_CARRYHOLD` schreiben, (c) Andi prüft Kraken-Futures-Kontoumfang (Short mit Spot-Sicherheit/Multi-Collateral, Margin, Abschlag, ESMA), (d) danach Entscheidung α oder HINWEIS und Freeze-Paket (GO-Satz von Andi nötig).
