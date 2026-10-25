@@ -77,7 +77,7 @@ def main(agg, pairs, nsim=200, seed=7):
     mde_w = 3.649 * sd / math.sqrt(n)
     print("Querschnittsstreuung der Wochenrendite (Median): %.1f %%" % (100 * sorted(disp)[len(disp) // 2]))
     print("Zufalls-L/S-Quintil (Nullwelt): Streuung je Woche %.1f %%; n = %d Wochen" % (100 * sd, n))
-    print("MDE je Woche (alpha 0,0025, Power 0,8, ohne Kosten): %.0f bp; annualisiert (x52): %.0f %%; SR-MDE ≈ %.2f" % (1e4 * mde_w, 100 * 52 * mde_w, (mde_w * 52) / (sd * math.sqrt(52))))
+    print("MDE je Woche (alpha 0,0025, Power 0,8, ohne Kosten): %.0f bp; annualisiert (x52): %.0f %%; SR-MDE ~ %.2f" % (1e4 * mde_w, 100 * 52 * mde_w, (mde_w * 52) / (sd * math.sqrt(52))))
     print("Hinweis: Pool = heute handelbare Coins mit Perp und >= 150 MB T&S (Survivorship: ausgeschiedene Coins fehlen); Kosten Rundreise 26 bp je Position nicht abgezogen.")
 
 if __name__ == "__main__":
