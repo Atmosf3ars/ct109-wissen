@@ -962,3 +962,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 25.10. ≈ 18:00:** Freeze-Kandidat steht. **Vor Freeze (Do 29.10.):** Andi-Endlektüre (Ausnahme D41), Manifest-Hash der 41 Aggregatdateien (Get-FileHash), Code-Hash, unabhängige Hash-Nachrechnung, GO-Schablone für Registry-Schreiben. **Forschung bis dahin:** Runde-4-Kandidaten (Order-Flow aus vol_b/vol_s, Aktien-Tageskerzen via Alpaca).
 
 **Stand 25.10. ≈ 16:00:** D42 (Krypto-Querschnitt HINWEIS). **Runde-4-Kandidaten mit Power ≥ 0,5 gesucht:** Order-Flow-/Ereignis-Mechanismen mit Kante pro Ereignis deutlich über Kosten (Kryptoschocks sind gezählt); Aktien-Ereignisse (S4/S5 HINWEIS laut Literatur). Offen: lohnende Struktur-/Zwangsflüsse (Index-Rebalancing, Listings, Token-Unlocks, Expiry-Effekte) auf Datenverfügbarkeit prüfen.
+
+**Stand 25.10. ≈ 16:45:** D43 (K6). **Jetzt:** `k6_test_v1.py` (Engine mit Richtung, Stop, Cooldown je Paar; Placebos; C7), Spec Welle 4a (K6) als eigener Freeze-Kandidat; Kalibrierlauf bei Andi (ca. 1–2 h).
