@@ -1,6 +1,6 @@
 # CT109 – RUNDE-3B-SPEZIFIKATION v1 (FREEZE-KANDIDAT K6 FLOW, NICHT GEHASHT)
 
-**Status:** Kandidat des Einsatzleiters, Stand So 25.10.2026 ≈ 17:30 Berlin (früher `RUNDE4A_SPEC_v0.1_ENTWURF_K6.md`, umbenannt: K6 geht gemeinsam mit 3A in **einen** Freeze). Wird erst mit dem Freeze-Eintrag in `01` (Datum, Freeze-Hash) **gültig**; nach dem Freeze keine Änderung. Ergänzt `RUNDE3A_SPEC_v1_FREEZEKANDIDAT.md` **in der gemeinsam gefrorenen Fassung** (gleiche Datenbasis, Zustandsvariable und Test-Mechanik C2–C7); bei Widerspruch gilt für K6 diese Datei. Entscheidungen: `02` D43 (Parameter), D44 (Liquiditätsfilter). Evidenzstufen: [L1] Herstellerangabe, [L2] von Andi gemessen, [A] Annahme, [R] Recherche.
+**Status:** Kandidat des Einsatzleiters, Stand So 25.10.2026 (Endlektüre ≈ 17:15 Berlin) (früher `RUNDE4A_SPEC_v0.1_ENTWURF_K6.md`, umbenannt: K6 geht gemeinsam mit 3A in **einen** Freeze). Wird erst mit dem Freeze-Eintrag in `01` (Datum, Freeze-Hash) **gültig**; nach dem Freeze keine Änderung. Ergänzt `RUNDE3A_SPEC_v1_FREEZEKANDIDAT.md` **in der gemeinsam gefrorenen Fassung** (gleiche Datenbasis, Zustandsvariable und Test-Mechanik C2–C7); bei Widerspruch gilt für K6 diese Datei. Entscheidungen: `02` D43 (Parameter), D44 (Liquiditätsfilter). Evidenzstufen: [L1] Herstellerangabe, [L2] von Andi gemessen, [A] Annahme, [R] Recherche.
 
 ## 1 Gegenstand
 **K6 FLOW:** Kraken-USD-Paare, Stunden mit Volumenschock **und** starkem Aggressor-Ungleichgewicht. **Ein** Konto-Platz (Register-Index 7), zwei einseitige Tests auf denselben Ereignissen, je α = α_i/2 = 0,00125 (z = 3,023): **K6-C** (Position in Richtung der Imbalance = Fortsetzung), **K6-R** (entgegen = Umkehr). Beide können nicht gleichzeitig bestehen (Bruttovorzeichen entgegengesetzt). Offene Entdeckungs-Ausnahme analog D41: Prior der Netto-Kante −10 … +15 bp [A] liegt bei/unter der Nachweisgrenze; ein nicht signifikantes Ergebnis ist **kein** Nullbefund.
@@ -42,4 +42,4 @@ Zulauf ≈ 500–700 Episoden/Jahr (gefiltert, Zählung 2022–2025: 552 / 698 /
 - **Veto-Prüfung Einsatzleiter (Stand 25.10.):** Beleg ✓ (C7, Zählung, Kostencheck L1), Protokoll ✓ (Spec vor Datenöffnung), Echtgeld nicht berührt ✓, Budget ✓ (0 EUR). Kein Veto; die offenen Annahmen sind in §4.8 und §6 offengelegt.
 
 ## 9 Changelog
-- 25.10.2026 ≈ 17:30 Berlin: aus Entwurf v0.1 zum Freeze-Kandidaten v1 (Pool 34 nach D44, C7 mit gefiltertem Pool, Paper-Rechnung korrigiert, §8 neu).
+- 25.10.2026 (Nachmittag): aus Entwurf v0.1 zum Freeze-Kandidaten v1 (Pool 34 nach D44, C7 mit gefiltertem Pool, Paper-Rechnung korrigiert, §8 neu).

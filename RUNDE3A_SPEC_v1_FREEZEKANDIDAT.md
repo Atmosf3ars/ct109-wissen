@@ -1,13 +1,13 @@
 # CT109 – RUNDE-3A-SPEZIFIKATION v1 (FREEZE-KANDIDAT, NICHT GEHASHT)
 
-**Status:** Kandidat des Einsatzleiters, Stand So 25.10.2026 ≈ 18:00 Berlin. Wird erst mit dem Freeze-Eintrag in `01_STATUS.md` (Datum, SHA256) **gültig**; bis dahin nur Änderungen mit Changelog unten. **Nach dem Freeze keine Änderung** (Änderung nur als v2 vor dem ersten Öffnen der Haupttest-Daten). Diese Datei ist **eigenständig**; Herleitung und Alternativen stehen in `RUNDE3_SPEC_v0.1_ENTWURF.md` (v0.2), Entscheidungen in `02` D28–D41. Bei Widerspruch gilt diese Datei.
+**Status:** Kandidat des Einsatzleiters, Stand So 25.10.2026 (Endlektüre ≈ 17:15 Berlin; frühere Uhrzeiten in diesem Dokument waren Vorabschätzungen und zu spät angesetzt). Wird erst mit dem Freeze-Eintrag in `01_STATUS.md` (Datum, SHA256) **gültig**; bis dahin nur Änderungen mit Changelog unten. **Nach dem Freeze keine Änderung** (Änderung nur als v2 vor dem ersten Öffnen der Haupttest-Daten). Diese Datei ist **eigenständig**; Herleitung und Alternativen stehen in `RUNDE3_SPEC_v0.1_ENTWURF.md` (v0.2), Entscheidungen in `02` D28–D41. Bei Widerspruch gilt diese Datei.
 **Evidenzstufen:** [L1] Herstellerangabe, [L2] von Andi gemessen und im Chat berichtet, [A] Annahme, [R] Recherche/Agent.
 
 ## 1 Gegenstand
 Zwei bestätigende Haupttests (α-Konto D37, je α_i = 0,0025 einseitig, w = 1; Register-Index 5 und 6):
 - **K4 AFTERSHOCK-LONG (XBT, ETH).**
 - **K4P AFTERSHOCK-LONG-ALTS (32 Paare nach Liquiditätsfilter, D45).**
-Deskriptiv ohne α (HINWEIS): K1r FUND_CROWD, K5 WEEKEND-UMKEHR (Parameter in §9). Kein weiterer Test in dieser Welle. Offenlegung: lf1 H2 SHOCK_FADE (Nullbefund) ist ein verwandter Mechanismus; K4 zählt als eigener Test (D40/D41). Ausnahme von der HINWEIS-Regel: D41 (Prior-Kante 20–60 bp liegt teilweise unter MDE; nicht signifikant ⇒ **kein** Nullbefund).
+Deskriptiv ohne α (HINWEIS): K1r FUND_CROWD, K5 WEEKEND-UMKEHR (Parameter in §9). Kein weiterer Test in dieser Welle außer K6 FLOW (Register-Index 7), das in `RUNDE3B_SPEC_v1_FREEZEKANDIDAT.md` steht und **im selben Freeze** gefroren wird. Offenlegung: lf1 H2 SHOCK_FADE (Nullbefund) ist ein verwandter Mechanismus; K4 zählt als eigener Test (D40/D41). Ausnahme von der HINWEIS-Regel: D41 (Prior-Kante 20–60 bp liegt teilweise unter MDE; nicht signifikant ⇒ **kein** Nullbefund).
 
 ## 2 Daten und Fenster
 - **Quelle:** Kraken Time & Sales, 1-Minuten-Aggregate `agg_trades_v1.py` je Paar (`<NAME>USD_1m.csv`, Spalten minute_utc_epoch, open, high, low, close, vol, vol_b, vol_s, vol_m, n, notional). Die Rohdatei `Kraken_Trades_Full.zip` ist hashverifiziert (`01` T3); das **Manifest** der 41 verwendeten Aggregatdateien (SHA256 je Datei + Gesamt-Hash) wird im Freeze-Eintrag festgehalten.
@@ -56,12 +56,12 @@ Nach dem Haupttest einmal je Test: Aggregation 2026-07-01 … 2026-09-30 mit dem
 - **K5:** Wochenend-Umkehr XBT (|R_W| ≥ k·σ_W, k ∈ {1,0; 1,5; 2,0}); Anzahl und Mittel, kein Testanspruch.
 
 ## 10 Offene Punkte vor dem Freeze
-1. ~~Manifest-Hash der 41 Aggregatdateien~~ **erledigt 25.10. ≈ 18:30:** `register/MANIFEST_AGG_SHA256.txt`, SHA256 der Manifestdatei `d40d9b9b0c5a595b9ca7be6ef0c27011036e257056a6f29b432d95e856cfcba6` [L2]. Code-Hashes (Kurzform): `k4_test_v1.py` 43807483e7c93a77 (Änderung nur mit Changelog), `count_events_v2.py` a2588ea0c3d3a856, `count_events_v3.py` 6a93ec86fbfd8461; endgültige Voll-Hashes im Freeze-Eintrag.
-2. Unabhängige Nachrechnung des Spec-Hashs durch den Einsatzleiter (anderes Werkzeug).
-3. Registerzeilen 5/6 vorbereiten; **GO-Schablone** für den Registry-Schreibakt (Andi).
+1. ~~Manifest-Hash der 41 Aggregatdateien~~ **erledigt 25.10. (Nachmittag):** `register/MANIFEST_AGG_SHA256.txt`, SHA256 der Manifestdatei `d40d9b9b0c5a595b9ca7be6ef0c27011036e257056a6f29b432d95e856cfcba6` [L2]. Code-Hashes: siehe Freeze-Manifest (`register/FREEZE_MANIFEST_R3.txt`, Voll-Hashes). **Hinweis zur Version:** die C7-Kalibrierungen liefen mit `k4_test_v1.py` Kurzhash `43807483e7c93a77` (Commit `ba78f2d`); gefroren wird die Version Kurzhash `d253f1a66c390037` (Commit `41f4db5`). Der Unterschied liegt **ausschließlich** in der Ausgabefunktion `final()` (Kategorie, Aufschlüsselung; Diff geprüft, `calib` und Testmechanik unverändert). Trockenläufe von `final` auf synthetischen Daten (K4 und K6) sind fehlerfrei durchgelaufen [L3, Sandbox]. `count_events_v2.py` a2588ea0c3d3a856, `count_events_v3.py` 6a93ec86fbfd8461.
+2. ~~Unabhängige Nachrechnung des Freeze-Hashs~~ Verfahren steht (`verify_freeze_r3.sh`: sha256sum, openssl, node); wird am Freeze-Tag auf dem endgültigen Manifest ausgeführt.
+3. ~~Registerzeilen~~ Entwurf mit 7 Zeilen steht (`register/TESTREGISTER_ENTWURF.jsonl`); **GO-Schablone** in `FREEZE_PAKET_R3_v1.md` (Andi, Satz `GO FREEZE-R3 – <Hash8>`).
 4. ~~Endlektüre durch Andi / D41~~ **entschieden 25.10. 15:32 Berlin:** Andi delegiert („du entscheidest anhand doktrin“); Einsatzleiter bestätigt D41 (Begründung `02`). Veto-Prüfung: kein Veto (Beleg: C7; Kosten: nur Rechenzeit; Echtgeld nicht berührt).
 
 ## 11 Changelog
-- 25.10.2026 ≈ 18:00 Berlin: Kandidat angelegt.
-- 25.10.2026 ≈ 18:30 Berlin: Manifest-Hash eingetragen, Punkt 4 erledigt (Delegation).
+- 25.10.2026 (Nachmittag): Kandidat angelegt.
+- 25.10.2026 (Nachmittag): Manifest-Hash eingetragen, Punkt 4 erledigt (Delegation).
 - 25.10.2026 ≈ 17:15 Berlin (Ist-Zeit, Zeitangaben oben waren Vorabschätzungen): D45 – K4P-Pool auf 32 Paare (Liquiditätsfilter), C7 K4P neu gerechnet (Fehlpass 0/200, MDE 40 bp, Power bei MDE 72 %), Power-Zeile §7 aktualisiert.
