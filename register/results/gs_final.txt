@@ -1,0 +1,6 @@
+Skript-SHA256 008b120b1e763a6e
+SPEC-HASH 405f212563447712aec313b8cf659bbc8b29208bd2924b9e33595ebb014f1b0a
+GS-C Fortsetzung (Spread-Richtung der Vorwoche): Wochen 495 (2017-01-09 .. 2026-06-29); brutto 12.3 bp/Woche; netto m = 6.3 bp/Woche (3.3 % p. a.); p(einseitig) = 0.2847; LCB95 = -11.0; Placebo-q97.5 = 27.3; Haelften 3.5 / 9.1; Kosten x1,5: 3.3
+  KATEGORIE: NICHT NACHWEISBAR (m <= 0 oder Kriterien verfehlt; kein Nullbefund bei Kante < MDE)
+GS-R Umkehr: Wochen 495 (2017-01-09 .. 2026-06-29); brutto -12.3 bp/Woche; netto m = -18.3 bp/Woche (-9.5 % p. a.); p(einseitig) = 0.9591; LCB95 = -35.5; Placebo-q97.5 = 16.2; Haelften -15.5 / -21.1; Kosten x1,5: -21.3
+  KATEGORIE: NICHT NACHWEISBAR (m <= 0 oder Kriterien verfehlt; kein Nullbefund bei Kante < MDE)
