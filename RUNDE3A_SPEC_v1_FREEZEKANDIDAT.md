@@ -56,10 +56,11 @@ Nach dem Haupttest einmal je Test: Aggregation 2026-07-01 … 2026-09-30 mit dem
 - **K5:** Wochenend-Umkehr XBT (|R_W| ≥ k·σ_W, k ∈ {1,0; 1,5; 2,0}); Anzahl und Mittel, kein Testanspruch.
 
 ## 10 Offene Punkte vor dem Freeze
-1. Manifest-Hash der 41 Aggregatdateien (Andi, Get-FileHash) und Code-Hash.
+1. ~~Manifest-Hash der 41 Aggregatdateien~~ **erledigt 25.10. ≈ 18:30:** `register/MANIFEST_AGG_SHA256.txt`, SHA256 der Manifestdatei `d40d9b9b0c5a595b9ca7be6ef0c27011036e257056a6f29b432d95e856cfcba6` [L2]. Code-Hashes (Kurzform): `k4_test_v1.py` 43807483e7c93a77 (Änderung nur mit Changelog), `count_events_v2.py` a2588ea0c3d3a856, `count_events_v3.py` 6a93ec86fbfd8461; endgültige Voll-Hashes im Freeze-Eintrag.
 2. Unabhängige Nachrechnung des Spec-Hashs durch den Einsatzleiter (anderes Werkzeug).
 3. Registerzeilen 5/6 vorbereiten; **GO-Schablone** für den Registry-Schreibakt (Andi).
-4. Endlektüre durch Andi (Ausnahme D41 ablehnen oder bestätigen).
+4. ~~Endlektüre durch Andi / D41~~ **entschieden 25.10. 15:32 Berlin:** Andi delegiert („du entscheidest anhand doktrin“); Einsatzleiter bestätigt D41 (Begründung `02`). Veto-Prüfung: kein Veto (Beleg: C7; Kosten: nur Rechenzeit; Echtgeld nicht berührt).
 
 ## 11 Changelog
 - 25.10.2026 ≈ 18:00 Berlin: Kandidat angelegt.
+- 25.10.2026 ≈ 18:30 Berlin: Manifest-Hash eingetragen, Punkt 4 erledigt (Delegation).
