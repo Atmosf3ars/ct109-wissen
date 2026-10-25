@@ -954,3 +954,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 25.10. ≈ 14:00:** `k4_test_v1.py` fertig (Funktionstest synthetisch). **Reihenfolge nach T7:** (1) E2c-Zählung K4P (Andi-Lauf), (2) Kalibrierlauf C7 für K4 (XBT,ETH) und K4P (nur Zählung/Raten, keine echten Kennzahlen), (3) Spec v0.2 mit Power-Zeile + Operationscharakteristik, (4) Hash/Freeze Ziel Do 29.10.
 
 **Stand 25.10. ≈ 15:00:** E2c-Neulauf (Filter repariert) läuft bei Andi; danach Entscheid, ob K4P als gekettete Replikation tragfähig ist (Abhängigkeit zu BTC/ETH beachten: Markt-Cluster ⇒ effektive unabhängige Zahl < Episodenzahl; Inferenz nur über Wochenblöcke).
+
+**Stand 25.10. ≈ 15:30:** D40 (K4/K4P getrennte Tests). **Läuft/ansteht:** Kalibrierläufe C7 (K4: ≈ 30 Min, K4P: ≈ 1–2 h) bei Andi; danach Spec v0.2 (Operationscharakteristik + Power), Paper-Säulen, Freeze Ziel Do 29.10.

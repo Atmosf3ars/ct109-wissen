@@ -5,11 +5,15 @@
 # Paarangabe: XBT oder ETH (theta fest 3 %, Rundreise 16 bp) bzw. beliebige Alt-Namen (theta adaptiv, Rundreise 26 bp).
 # calib gibt NUR Kennzahlen der Gesamtregel aus (Fehlpass-Raten, Operationscharakteristik, Streuung), keine Mittelwerte
 # der Nullwelten und keine echte Kennzahl. Alle Kosten sind Annahmen [A] (Spec §4).
-import sys, os, math, re
+import sys, os, math, re, time
 import numpy as np
 from collections import deque
 import count_events_v2 as v2
 import count_events_v3 as v3
+
+T0 = time.time()
+def log(msg):
+    print("[%5.0f s] %s" % (time.time() - T0, msg), flush=True)
 
 START = v2.START
 CUT = v2.CUT
@@ -57,6 +61,7 @@ class Pair:
             if l / dq[0][1] - 1.0 <= -theta:
                 out.append((int(t), s))
         self.trig = out
+        self._hi = self._lo = self._cl = self._ts = None
         return out
 
 def cost_rt(p, state, mult=1.0, hslip=1.0):
@@ -262,16 +267,19 @@ def variants(world, shift=None):
 def calib(agg, names, nnull, nplac, B, alpha, seed):
     rng = np.random.default_rng(seed)
     world = World(agg, names)
+    log("Welt geladen")
     print("Welt: Paare %s; Ausloeser je Paar %s" % (",".join(names), [len(p.trig) for p in world.pairs]))
     Tr, Sr, Xr = episodes_from(world.real_events())
     print("echte Episoden (nur Anzahl): %d; Zustaende %s" % (len(Xr), [int((Sr == s).sum()) for s in (0, 1, 2)]))
     # Placebo-Verteilung (zeitversetzt) und vol-gematchte Verteilung
     plac = placebo_means(world, make_shifts(rng, nplac))
+    log("Zeitversatz-Placebos fertig")
     vm = []
     for _ in range(min(500, nplac)):
         T, S, X = episodes_from(world.vol_matched_events(rng))
         if len(X) >= 5: vm.append(X.mean())
     vm = np.array(vm)
+    log("vol-gematchte Placebos fertig")
     # Nullwelten (andere Verschiebungen als die Placebo-Menge)
     shifts = make_shifts(rng, nnull * 2)
     nulls = []
@@ -282,6 +290,7 @@ def calib(agg, names, nnull, nplac, B, alpha, seed):
         nulls.append((T, S, X, v))
         if len(nulls) >= nnull: break
     k = len(nulls)
+    log("Nullwelten fertig")
     mean_null = float(np.mean([x[2].mean() for x in nulls]))
     c0 = -mean_null
     sd_ep = float(np.mean([x[2].std(ddof=1) for x in nulls]))
