@@ -67,7 +67,7 @@ Ereignisschwellen (θ, φ, k) werden **aus dem Raster {3 %, 4 %, 5 %} bzw. {3, 5
 - **K4 (θ = 3 %, Einstiegsregel §7 simuliert, ab 2019-01-01):** XBT 337 Einstiege/251 Episoden, ETH 509/369; **vereinigt 409 unabhängige Episoden** (24-h-Cluster; je Jahr 85/75/66/51/37/34/49/12); je Zustand NIEDRIG 151, MITTEL 162, HOCH 111 (alle ≥ 20 ✓). Streuung der 4-h-Rendite (zentriert, ohne Stop, nur Betrag): XBT 268 bp, ETH 337 bp; Mittelwert des Betrags 166/215 bp; je Zustand NIEDRIG 161–212, MITTEL 270–397, HOCH 313–357 bp. ⇒ **α-Test zulässig.**
 - **K1 absolut:** BTC ≥ 5 bp nur 32 Episoden (2020/21 geklumpt) ⇒ INSUFFICIENT. **K1r relativ** (≥ max(2 bp, P97,5 der letzten 90 Tage)): positiv BTC 30, ETH 33, SOL 28 Episoden (2022/2025/2026 praktisch leer), negativ BTC 31, ETH 41, SOL 51 ⇒ **N_min 80 verfehlt, HINWEIS** (auch beidseitig gepoolt MDE ≈ 185 bp ≫ erwartete 30–70 bp).
 - **K5:** 390 Wochenenden; |R_W| ≥ 1,0σ: 77, ≥ 1,5σ: 45, ≥ 2σ: 27 Ereignisse (je ≈ 50 % Auf/Ab) ⇒ **N_min 100 verfehlt, HINWEIS**.
-- **Folge:** Welle 3a hat **genau einen α-Test: K4** (plus gekettete Replikation K4P auf unabhängigen Coins, §7). K1r und K5 laufen deskriptiv.
+- **Folge (v0.2, D40):** Welle 3a hat **zwei α-Tests: K4 (XBT+ETH) und K4P (39 Alt-Paare)**, getrennt mit je α_i = 0,0025. K1r und K5 laufen deskriptiv.
 - **Paper:** BTC/ETH-Schocks seit 2023 nur ≈ 35–50 vereinigte Episoden/Jahr ⇒ Vorwärtsbestätigung dauert Jahre.
 
 ## 7 Hypothesen Welle 3a (Krypto; Daten vorhanden)
