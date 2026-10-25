@@ -992,3 +992,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 25.10. ≈ 21:50:** Phase 0 (a) 8-K-Zählung (Andi: `edgar_8k_count_v1.py download/count`), (b) Basis FM vs. Perp (Binance-Quartale, Kraken-Kontraktliste), Faktor-Residuen-Nullwelt in den Test-Werkzeugen ergänzen (Sektor-ETF-Residuum). Sympathie zurückgestellt.
 
 **Stand 25.10. ≈ 22:10 (D53):** Reihenfolge Phase 0: (1) **CARRY-HOLD** (Spec-Entwurf: Schwellen aus Binance 2019–2023, Test 2024–2026H1 + Kraken; Kraken-Kontoumfang für Short-Perp mit Spot-Sicherheit, Abschlag, Margin prüfen), (2) 8-K-Zählung (Andi), (3) TOM-7 (Tiingo-Altfenster nach Limit-Reset), (4) 13D-Zählung. Werkzeugpflege: sd(z) in alle Kalibrierungen, Vol-Gewichtung und firmen-gematchte Placebos als Option.
+
+**Stand 25.10. ≈ 22:30 (D54):** 8-K: v2-Zählung (Andi) abwarten, dann Power-Zeile je Item mit Episoden; EAR-DRIFT-Nullwelt-SE prüfen. Danach CARRY-HOLD-Spec (D53, Vorrang), TOM-7 (Limit-Reset November), 13D-Zählung.
