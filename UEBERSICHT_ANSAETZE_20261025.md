@@ -15,8 +15,8 @@ Eigenständiges kurzfristiges Handelssignal-System (CT109) für **US-Aktien** (B
 7. Paper-Trading vollautomatisch ist Pflicht vor Echtgeld; Echtgeld nur mit zwei Schlüsseln (Andi + Einsatzleiter). Orders, Echtgeld, Registry-Schreiben, Secrets, Käufe, Host-Aktionen nur nach förmlichem GO-Satz „GO <Kurzname> – <Hash>“.
 
 ## 3 Gemessene Fakten (Basis aller Rechnungen)
-- **Kosten Kraken [L2, Andis Konto]:** Spot Tier 1 **0,40 % Maker / 0,80 % Taker** (Tier 2 ab 2 501 USD: 0,30/0,60; Tier 3: 0,22/0,38); Futures Tier 1 **0,02 % / 0,05 %**. Futures-Spreads im liquiden Pool ≈ 5–8 bp, Top-of-Book-Tiefe in Alts nur ≈ 100–400 USD [L2/A]; Preiswirkung über Level 1 hinaus **ungemessen**.
-- **Aktien-Kosten [A]:** liquide ETFs ≈ 1–2 bp je Seite; Small Caps 25–100 bp Rundreise je Dollarvolumen-Klasse; IBKR-Gebührenseite nicht verifiziert.
+- **Kosten Kraken [L2, Andis Konto; Spot-Tier-1 im Juli 2026 von 0,25/0,40 % auf 0,40/0,80 % angehoben [R]]:** Spot Tier 1 **0,40 % Maker / 0,80 % Taker** (Tier 2 ab 2 501 USD: 0,30/0,60; Tier 3: 0,22/0,38); Futures Tier 1 **0,02 % / 0,05 %**. Futures-Spreads im liquiden Pool ≈ 5–8 bp, Top-of-Book-Tiefe in Alts nur ≈ 100–400 USD [L2/A]; Preiswirkung über Level 1 hinaus **ungemessen**.
+- **Aktien-Kosten [A/R]:** IBKR Tiered 0,0035 USD/Aktie, Mindestprovision 0,35 USD/Order ⇒ bei 1 500-USD-Tickets ≥ 2,3 bp/Seite, bei 750 USD ≥ 4,7 bp, zuzüglich Börsen-/Regulierungsgebühren und Spread (Prüfung Modell C; unsere frühere Annahme „1–2 bp“ war zu niedrig); Small Caps 25–100 bp Rundreise je Dollarvolumen-Klasse; IBKR-Gebührenseite nicht verifiziert.
 - **Daten [L2]:** Kraken Time & Sales (jeder Trade, bis 2026-06-30, 1-Minuten-Aggregate für ~41 Paare 2019–2026), Kraken-Funding nur 2025-10-15 … (API-Deckel ≈ 9 000 Stundenwerte), Binance-Funding 2019–2026-06 für alle 34 Pool-Coins, Alpaca-Tageskerzen (SIP) 2016–2026-06 für ≈ 2 600 Symbole inkl. Delistings, SEC Form 3/4/5 2006–2026 Q2, Tiingo-Tageskerzen (Lizenz „Internal Use“, Tageslimit), eigene L2-Aufzeichnung auf Server CT109 (SOL 14 Tage versiegelt; BTC/ETH Spot-L2 seit 23.09.2026; wächst).
 - **Auflösungswand [L2+Rechnung]:** nachweisbar ist bei ~6,5 Jahren Daten nur ein **Netto-Sharpe ≳ 1,3** (SR_MDE = 3,34/√T). Bei geklumpten Ereignissen unterschätzt die analytische MDE die wirksame Nachweisgrenze um ≈ Faktor 3 (Nullwelt-SE 80 bp statt 27 bp bei INSIDER-ALL).
 
@@ -37,7 +37,7 @@ Eigenständiges kurzfristiges Handelssignal-System (CT109) für **US-Aktien** (B
 | Ansatz | Grund | Entscheidung |
 |---|---|---|
 | **INSIDER-ALL** (Form-4-Käufe-Cluster, ≥ 3 Insider, ganzes US-Universum, Long 28 Tage, Netto-Excess gegen SPY/IWM; n = 3 752, σ 1 658 bp) | Nullwelt-SE 80 bp ⇒ wirksame MDE ≈ 230–290 bp ≫ erwartete Kante 0–150 bp; Hedge-Wechsel (SPY/IWM/Beta/Mix) ändert fast nichts | D47 |
-| **Spot/Perp-Funding-Carry** | Spot-Bein 80–160 bp je Zyklus bei Tier 1 ≫ Funding-Ertrag (~10 % p. a. [A]) | D48 |
+| ~~Spot/Perp-Funding-Carry~~ **REVIDIERT (D53)** | ursprünglich „Spot-Bein 80–160 bp ≫ Funding-Ertrag“ — **Rechenfehler**: Break-even je nach Funding 29–146 Tage; bei langer Haltedauer nicht kostentot ⇒ als **H-A CARRY-HOLD** wieder Kandidat (§6) | D48→D53 |
 | **FUND_XS** (Perp-only, nach Funding sortiert, dollar-neutral, wöchentlich) | Streuung 5–6,4 %/Woche ⇒ MDE ≈ 100–118 bp/Woche ≫ erwartet 10–25 bp − Kosten | D49 |
 | **CS_MOM14 / RESREV** (Krypto-Querschnitt) | MDE ≈ 118 bp/Woche brutto | D42 |
 | Weitere Tages-Aktienkandidaten (Tauziehen Nacht/Tag, FINRA-Short-Volumen, S&P-500-Ereignisse) | erwartet ≈ 1 bp/Tag netto vs. MDE 2,4–4,8 bp/Tag | D29/D38 |
@@ -50,6 +50,9 @@ Eigenständiges kurzfristiges Handelssignal-System (CT109) für **US-Aktien** (B
 4. **Kalender-/Basis-Strukturen ohne Spot-Bein** (Kraken Fixed-Maturity-Futures vs. Perp): deterministische Konvergenz, aber Gebühren, Margin und Produktverfügbarkeit **ungeprüft**.
 5. **Diversifiziertes Forward-Paper-Bündel** aus schwachen Signalen (GS-C, AFTERSHOCK-Reste, Insider, STR/MOM): Diversifikation hebt die Sharpe; Beleg nur aus dem Betrieb, Kriterien vor Start hashen (Paper-Säulen A–D, Entwurf `RUNDE3_SPEC_v0.1_ENTWURF.md` §10).
 6. **Forward-Fenster Juli–Oktober 2026** (gesperrt, bereits vorhanden): Aktien, Kraken-Trades und Funding als unabhängiges Bestätigungsfenster für alles, was HINWEIS-positiv wird (Skript noch zu schreiben).
+
+7. **H-A CARRY-HOLD (Vorrang, D53):** Short PF_XBTUSD/PF_ETHUSD, gleicher Notional Spot als Sicherheit; Ein-/Ausstieg über 7-Tage-Funding mit Schwellen aus Binance 2019–2023 (Test 2024–2026H1 plus Kraken 54 Wochen); Spot-Bein einmal je Haltephase (80–160 bp). Erwartung 6–14 bp/Woche gegen MDE ≈ 4–6 bp/Woche (Binance-Proxy, 340 Wochen) bzw. ≈ 12 bp (nur Kraken) [Rechnung eines externen Prüfers, nachzurechnen]. Risiken: Funding-Zerfall seit 2024, Liquidation/Abschlag/ADL, Börsenrisiko, Steuer (DE) [A]. Live-Ertrag bei 600 USD ≈ 36 USD/Jahr; der Wert liegt im Beleg.
+8. **H-B TOM-7** (Turn-of-the-Month S&P 500: Long T−4 … T+3 gegen Placebo zufälliger 7-Tage-Fenster; Erwartung 33–65 bp, MDE ≈ 48 bp [A]; Tiingo-Altfenster 1993–2015 ungeöffnet); **H-C INSIDER-OPP-VS** (opportunistische Insider, vol-skaliert, 2006–2015; MDE ≈ 100–180 bp, wahrscheinlich HINWEIS); **H-D 13D-ERST** (SC 13D-Erstmeldungen, erst zählen); **8-K-Items** (Zählung läuft); **Gegenbeispiel H-E INTRADAY-MOM** (nachweisbar, aber kostentot).
 
 ## 7 Beobachtungsliste (ohne Geld, ohne α; Daten fehlen)
 Gamma-Pinning/GEX und 0DTE-Gamma (Optionen-Open-Interest je Strike fehlt), TDA/Orderbuch-Topologie und kritische Verlangsamung des Buchs (L3/L2-Tiefe fehlt, viele Freiheitsgrade), DeFi→CeFi/MEV-Lead-Lag (Mempool/Node), Wick-Catcher bei delisteten Token, Kraken-Listing-Lebenszyklus, Token-Unlocks, OI-Fade, Aktien-Perps bei Kraken (PF_AAPLXUSD u. a., nur gesehen, Zugang/Hebel ungeprüft).
@@ -74,6 +77,13 @@ Gamma-Pinning/GEX und 0DTE-Gamma (Optionen-Open-Interest je Strike fehlt), TDA/O
 5. **Mehrfachtest-Konto** (Bonferroni N = 20) könnte zu streng sein; Alternative: Online-FDR (α-Investing) mit Replikation im Vorwärtsfenster.
 6. **Datenfenster werden einmal geöffnet**; Entdeckung erfolgt oft auf Zählungen/Streuungen. Gibt es zusätzliche zulässige Informationen vor dem Freeze (z. B. Effektgrößen aus Literatur)?
 7. Kleiner Kapitalumfang: selbst belegte Kanten bringen bei D34-Grenzen nur wenige Euro im Monat; der Wert liegt im Beleg und im Betriebstest.
+
+## 9a Korrekturen und Prüfstand (nach zwei externen Prüfungen, 25.10. 21:30–22:10)
+- **Eigener Fehler (D48→D53):** Carry-Break-even um Faktor ≈ 10 zu lang gerechnet; Carry-Hold wieder Kandidat.
+- **Kalibrierung:** „Fehlpass ≤ 5 %“ ist 20× lockerer als α_i = 0,25 %; künftig zusätzlich sd(z) der Nullwelt-z-Werte (Aufblähung bei > 1,1) und ≥ 1 200 Nullwelten für direkten Beleg (`03` §8.19).
+- **Bündel:** √K-Diversifikation erhöht die Sharpe nur bei echten, unkorrelierten Kanten und erzeugt keinen Beleg (SR 0,9 < SR_MDE 1,3).
+- **Forward-Fenster Jul–Okt 2026:** 4 Monate ⇒ SR ≳ 5,8 nachweisbar; nur Replikation, kein α-Test.
+- **GS-Kosten live:** IBKR-Mindestprovision macht 4 Seiten × ≥ 4,7 bp ≈ 19 bp/Woche statt 6 bp ⇒ GS-C wäre live negativ.
 
 ## 10 Bitte an den Prüfer
 (a) Lücken in der Kandidatenliste (Familien mit hoher Sharpe, die wir übersehen), (b) statistische Fehler in §2/§9, (c) konkrete, mit Gratisdaten (EDGAR, Alpaca, Kraken, Binance) prüfbare Hypothesen mit Power-Zeile (erwartete Netto-Kante vs. MDE), (d) Einwände gegen die HINWEIS-Einstufungen in §5. **Antwortformat:** Markdown, je Vorschlag Mechanismus, Daten, Kosten, MDE-Schätzung, Evidenzstufe; keine Handelsempfehlungen, keine Annahmen als Fakten.

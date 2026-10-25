@@ -990,3 +990,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Korrektur 25.10. ≈ 21:40:** Die Richtung „Mikrostruktur/Maker auf L2“ (Stand ≈ 21:00) widerspricht D30 (Mikrostruktur trägt nicht; brutto 0,5–2 bp). Wiederaufnahme nur mit neuer Evidenz (Fill-Simulation Time & Sales). Priorität bleibt: 8-K-Zählung, Kalender-Basis prüfen, Forward-Paper-Bündel.
 
 **Stand 25.10. ≈ 21:50:** Phase 0 (a) 8-K-Zählung (Andi: `edgar_8k_count_v1.py download/count`), (b) Basis FM vs. Perp (Binance-Quartale, Kraken-Kontraktliste), Faktor-Residuen-Nullwelt in den Test-Werkzeugen ergänzen (Sektor-ETF-Residuum). Sympathie zurückgestellt.
+
+**Stand 25.10. ≈ 22:10 (D53):** Reihenfolge Phase 0: (1) **CARRY-HOLD** (Spec-Entwurf: Schwellen aus Binance 2019–2023, Test 2024–2026H1 + Kraken; Kraken-Kontoumfang für Short-Perp mit Spot-Sicherheit, Abschlag, Margin prüfen), (2) 8-K-Zählung (Andi), (3) TOM-7 (Tiingo-Altfenster nach Limit-Reset), (4) 13D-Zählung. Werkzeugpflege: sd(z) in alle Kalibrierungen, Vol-Gewichtung und firmen-gematchte Placebos als Option.

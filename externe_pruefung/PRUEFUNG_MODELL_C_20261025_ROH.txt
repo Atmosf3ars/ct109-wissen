@@ -1,0 +1,282 @@
+Ich gehe das als externer Prüfer durch. Vorher verifiziere ich ein paar Fakten, an denen Urteile hängen: Kosten, Datenzugang und eine Literaturstelle. Dann rechne ich die Power-Zahlen nach.
+
+# Prüfbericht CT109, Stand 25.10.2026
+
+**Legende:** [L2], [R] und [A] wie in der Übersicht. Ich ergänze drei Stufen:
+- **[R✓]**: heute online nachgeschlagen, Quellen am Ende.
+- **[R-G]**: Literatur aus meinem Gedächtnis, nicht nachgeschlagen, vor einem Freeze prüfen.
+- **[Rechnung]**: von mir aus den Zahlen der Übersicht nachgerechnet und reproduzierbar.
+
+Auf Repo, Register und Code hatte ich keinen Zugriff. Alles bezieht sich nur auf die Übersicht.
+
+## 0 Kurzfazit
+
+1. **Das α-Konto ist nicht der Engpass, die Streuung ist es.** Selbst ein unkorrigiertes α = 0,05 senkt die MDE nur um 35 %. Die echten Hebel sind:
+   - längere, noch *ungeöffnete* Aktienhistorie (2006–2015),
+   - varianzgewichtete Positionsgröße bei heterogenen Ereignissen,
+   - Strukturen mit kleinem σ, also Carry und Basis.
+2. **Das Kalibrierungsziel passt nicht zum α-Konto.** „Fehlpass ≤ 5 %“ prüft ein 20-mal lockereres Niveau als α_i = 0,25 %. Ein Ergebnis von 0/200 schließt nicht aus, dass die SE um 20 % unterschätzt ist. Dann läge der echte Fehlpass bei etwa 4 × α_i.
+3. **D48 (Carry) vergleicht ungleiche Größen.** Die Kosten werden je Einstieg gerechnet, der Ertrag je Jahr. Bei Haltedauern ab etwa 1–2,5 Monaten trägt das Funding das Spot-Bein auch zu Tier-1-Gebühren. Carry ist die einzige Familie im Dokument, deren erwartete Kante in der Größenordnung der MDE liegt.
+4. **Die Aktienkosten sind eher zu niedrig angesetzt.** Die IBKR-Mindestprovision ergibt bei 1 500-USD-Tickets mindestens 2,3 bp je Seite, noch vor Börsengebühren. Das stützt D29/D38 und erzwingt bei Aktien niedrigen Umsatz (höchstens wöchentlich).
+5. **Ehrliche Antwort auf §9.1:** Jenseits von Prämien mit Tail-Risiko, Infrastruktur-Kanten und Diversifikation sehe ich keine mit Gratisdaten prüfbare Einzelfamilie mit Netto-SR ≳ 1,3. Realistischer ist, die Wand zu senken (Abschnitte 1.3, 1.5 und 4).
+
+---
+
+## 1 Statistik (§2, §9)
+
+### 1.1 Kalibrierung gegen α_i statt gegen 5 %
+
+| SE um Faktor unterschätzt | echter Fehlpass | Vielfaches von α_i | P(0 Fehlpässe in 200 Nullwelten) |
+|---|---|---|---|
+| 1,1 | 0,54 % | 2,1× | 34 % |
+| 1,2 | 0,97 % | 3,9× | 14 % |
+| 1,5 | 3,1 % | 12× | 0,2 % |
+| 3,0 (wie INSIDER analytisch) | 17 % | 70× | ≈ 0 |
+
+[Rechnung]
+
+Das 5-%-Kriterium fängt nur grobe Fehler ab, etwa ab Faktor 1,5. Außerdem erlaubt „≤ 5 % je Test“ über 20 Tests rechnerisch eine FWER weit über 0,05.
+
+**Vorschläge:**
+- **(a) Zielwert:** α_i als Kalibrierungsziel festlegen.
+- **(b) Streuung statt Treffer zählen:** Die Standardabweichung der Nullwelt-z-Werte messen statt Pässe zu zählen. Bei 200 Nullwelten ist sd(z) auf etwa ±5 % genau [Rechnung]. Regel: Liegt sd(z) über 1,1, wird die SE um diesen Faktor aufgeblasen.
+- **(c) Direkter Beleg:** Um ≤ 0,25 % direkt zu belegen, braucht es etwa 1 200 Nullwelten ohne Fehlpass (95 % Konfidenz) [Rechnung].
+
+### 1.2 Wirksame Power der Gesamtregel
+
+**Gewählte Power dokumentieren.** SR_MDE = 3,34/√T entspricht 70 % Power (2,807 + 0,524). Bei 80 % Power wird daraus 3,65/√T, also 1,43 statt 1,31 bei 6,5 Jahren. Die Wahl sollte in `00` stehen.
+
+**Gates kosten Power.** Ich nehme an, die Gates sind als „Punktschätzer > 0 in jeder Teilmenge“ definiert. Liegt die Kante genau an der MDE, ergibt sich:
+- beide Zeithälften positiv: 98 %,
+- alle drei RV30-Terzile positiv: 92 %,
+- Gesamtpower damit grob 63 % statt 70 % [Rechnung, Gates als unabhängig gerechnet].
+
+**Power-Kalibrierung ergänzen.** Eine synthetische Kante in Höhe der MDE in die Nullwelten einspielen und die Bestehensquote der *Gesamtregel* messen. Erst dann ist die Power-Zeile ehrlich.
+
+### 1.3 Mehrfachtest-Konto (§9.5)
+
+| α_i | 0,0025 | 0,005 | 0,01 | 0,05 |
+|---|---|---|---|---|
+| MDE-Faktor (70 % Power) | 1,00 | 0,93 | 0,86 | 0,65 |
+
+[Rechnung]
+
+**Online-FDR bzw. α-Investing hilft hier wenig.** Gewinne entstehen dort erst durch Ablehnungen, und fast alle bisherigen Familien sind Null. Zudem wechselt die Garantie von FWER zu FDR.
+
+**Besser die vorhandene Gewichtung nutzen.** Das Restbudget beträgt 13 × 0,0025 = 0,0325. Ein oder zwei Kandidaten mit starkem Literaturprior bekommen α = 0,01, das kostet je 4 Slots. Das spart rund 27 % der nötigen Daten [Rechnung].
+
+**Für das Forward-Paper:** Ein e-Prozess („testing by betting“) erlaubt laufendes Beobachten ohne zusätzlichen α-Verbrauch (Ville-Ungleichung) [R-G]. Bei gleicher Sharpe ist er nicht schneller. Er erlaubt aber frühes Stoppen bei großen Kanten und löst das Problem „Fenster nur einmal öffnen“ im Live-Betrieb.
+
+### 1.4 Block-Bootstrap
+
+Wochenblöcke sind bei 28-Tage-Haltedauer (INSIDER) zu kurz. Überlappende Positionen korrelieren über etwa 4 Wochen, der Bootstrap wird dadurch antikonservativ. Die Blocklänge sollte mindestens der Haltedauer entsprechen; alternativ ein stationärer Bootstrap mit mittlerer Blocklänge ≥ 2 × Horizont. Bei Carry mit persistentem Funding braucht es noch längere Blöcke.
+
+### 1.5 Varianzgewichtete Positionsgröße (größter statistischer Hebel)
+
+Der gleichgewichtete Mittelwert hat die Varianz mean(σ_i²)/n, der inverse-varianzgewichtete nur 1/(n · mean(σ_i⁻²)). Die Effizienz steigt also um den Faktor mean(σ²) · mean(σ⁻²). Für lognormal verteilte ex-ante-σ mit Log-Streuung s:
+
+| s | 0,3 | 0,5 | 0,7 |
+|---|---|---|---|
+| SE-Faktor bei 1/σ²-Gewicht (Kante je Position gleich) | 1/1,2 | 1/1,65 | 1/2,7 |
+| SE-Faktor bei 1/σ-Gewicht (falls Kante ∝ σ) | 1/1,05 | 1/1,13 | 1/1,28 |
+
+[Rechnung]
+
+- **Handelsregel, kein Statistiktrick.** Das ist volatilitätsskalierte Positionsgröße mit σ aus z. B. 60-Tage-Volatilität vor dem Ereignis. Sie lässt sich vorregistrieren und verbessert nebenbei die Risikosteuerung.
+- **Vor dem Freeze zulässig (§9.6).** s lässt sich aus Volatilitäten vor dem Ereignis bestimmen, ohne Ergebnisdaten zu öffnen.
+- **Grenze:** Konzentriert sich die Kante in hoch-volatilen Small Caps, gilt die untere Zeile.
+
+### 1.6 Nullwelten (§9.2)
+
+Die effektive Stichprobe bei INSIDER beträgt n_eff = (1 658/80)² ≈ 430 von 3 752 Ereignissen [Rechnung]. Vor einer neuen Nullwelt sollte geklärt werden, woher der Faktor 3 kommt, denn jede Quelle braucht eine andere Abhilfe:
+
+| Quelle | Abhilfe |
+|---|---|
+| (i) gleiche Firma, überlappende 28-Tage-Fenster | Episoden je Firma zusammenführen |
+| (ii) Querschnittskorrelation am gleichen Datum (Sektor, Größe jenseits SPY/IWM, Wellen wie März 2020) | Kalenderzeit-Portfolio mit Faktor- bzw. Branchenresiduen, Inferenz auf der Portfolio-Zeitreihe |
+| (iii) Ausreißer in Small Caps | Vol-Skalierung (1.5) |
+
+**Placebo-Vorschlag:** Pseudo-Ereignisse in *derselben Firma* an Nicht-Ereignistagen ziehen, gematcht auf Rendite und Volatilität vor dem Ereignis. Das erhält die Firmenstruktur und zerstört nur das Timing. Das ist sauberer als ein globaler Zeitversatz.
+
+### 1.7 Zeitstempel bei EDGAR
+
+Der Einstieg darf erst nach `acceptanceDateTime` erfolgen, nicht nach dem Filing-Datum. Viele Form-4- und 8-K-Meldungen kommen nach 16:00 ET. Der Schlusskurs des Filing-Tags ist dann Look-ahead. Mit Alpaca-Minutenbars (siehe Abschnitt 2) gilt: erste Minute nach Acceptance in der regulären Handelszeit, sonst nächste Eröffnung.
+
+### 1.8 Survivorship und Ticker (§9.4)
+
+Das Form-4-XML enthält die Issuer-CIK und den Transaktionspreis. Daraus lässt sich ein vorregistrierter Identitätstest bauen: Weicht der Form-4-Preis um mehr als X % vom Alpaca-Schlusskurs am Transaktionstag ab (konsistent split-bereinigt), wird das Ereignis ausgeschlossen und gezählt. Das fängt Ticker-Wiederverwendung und Split-Fehler ab. Die rund 108 Ereignisse ohne Bars sollten nach Delisting-Grund berichtet werden, mit Worst-Case-Schranke. Performance-bedingte Delistings haben typischerweise negative Delisting-Renditen (Shumway 1997) [R-G].
+
+---
+
+## 2 Kosten (§3, §9.3), heute nachgeprüft
+
+| Punkt | Befund | Folge |
+|---|---|---|
+| **Kraken Spot Tier 1** | 0,40/0,80 bestätigt. Im Juli 2026 von 0,25/0,40 angehoben und auf eine gemeinsame Stufenleiter umgestellt: Spot-Volumen, Futures-Volumen oder Guthaben, das jeweils Günstigere zählt [R✓, u. a. Sekundärquellen] | Futures-Volumen senkt auch die Spot-Stufe. Ältere Rechnungen mit 0,25/0,40 wären zu optimistisch |
+| **USDG** | Eine Sekundärquelle nennt 0 %/0,01 % für USDG-quotierte Paare. Kraken selbst bestätigt nur: USDG/USD ohne Maker-Gebühr. Paare mit Stablecoin als Quote laufen über den normalen Spot-Plan [R✓] | **Nicht** als billiges Spot-Bein einplanen, solange Kraken BTC/USDG nicht ausdrücklich nennt |
+| **Futures-Gebühren-API** | Der Gebührenplan-Endpunkt ist seit 22.06.2026 veraltet. Maßgeblich ist jetzt GetTradeVolume mit Spot-Key [R✓] | Kostenabfrage im CT109-Code prüfen |
+| **Maker-Rabatte** | −0,02 % auf ausgewählte illiquide Spot-Paare [R✓] | Nur für die Maker-Idee relevant. Adverse Selektion dort vermutlich höher [A] |
+| **IBKR** | Tiered 0,0035 USD/Aktie, min. 0,35 USD/Order; Fixed 0,005 USD, min. 1,00 USD; Lite nur für US-Residenten [R✓] | Bei 1 500 USD: ≥ 2,3 bp/Seite (Tiered) bzw. 6,7 bp (Fixed). Bei 750 USD: 4,7 bzw. 13,3 bp. Jeweils plus Börse, Clearing, Regulatorik [Rechnung] |
+
+**Folgen:**
+
+- **Kostenannahme ETFs.** „Liquide ETFs ≈ 1–2 bp je Seite“ ist bei D34-Ticketgröße zu niedrig. Aktienstrategien mit täglichem Umsatz zahlen ≥ 5 bp je Rundreise vor Spread.
+- **GS.** Aus der Spiegelung GS-C/GS-R folgen implizit Kosten von ≈ 6,0 bp/Woche und brutto GS-C ≈ +12,3 bp/Woche, also 42 % der MDE [Rechnung]. Zu prüfen ist, ob 6 bp die IBKR-Mindestprovisionen bei tatsächlicher Beingröße und tatsächlichem Umsatz decken.
+- **K6 ist konsistent.** Implizite Kosten ≈ 27,6 bp, brutto C ≈ +3,2 bp [Rechnung]. Das bestätigt „brutto ≈ 0“.
+- **Messen statt annehmen:**
+  - **Alpaca Basic (gratis):** Historische SIP-Daten älter als 15 Minuten seit 2016, laut Forum-Auskunft identisch mit dem Bezahlplan, inklusive Quotes [R✓]. Damit lassen sich effektive Spreads von Small Caps zum Ereigniszeitpunkt messen.
+  - **Eigene L2-Aufzeichnung:** Walk-the-book-Kosten für 600 USD in Alts direkt berechnen.
+  - **Binance Vision:** `bookDepth` als historischer Tiefen-Proxy und `metrics` mit Open-Interest-Historie [R✓]. Das schließt auch die Lücke „OI-Historie unverifiziert“ in §7. Auflösung und Startdatum je Symbol prüfen.
+- **Steuer [A, keine Steuerberatung].** Spot-Bein und Perp-Bein fallen in Deutschland möglicherweise in verschiedene Einkunftsarten. Ein gehedgter Trade kann dann trotz Netto-Null Steuer auslösen. Vor jedem Carry-Echtgeld klären.
+
+---
+
+## 3 Einwände zu den HINWEIS-Einstufungen (§5)
+
+### D48 Spot/Perp-Carry: Einwand, Neubewertung empfohlen
+
+**Der Vergleich trägt nicht.** „80–160 bp je Zyklus“ gegen „~10 % p. a.“ gilt nur, wenn jeder Zyklus kurz ist. Gewinnschwelle als Haltedauer:
+
+| Spot-Rundreise | Funding 4 % p. a. | Funding 8 % p. a. |
+|---|---|---|
+| 80 bp (Tier 1 Maker) | 73 Tage | 37 Tage |
+| 160 bp (Tier 1 Taker) | 146 Tage | 73 Tage |
+
+[Rechnung]
+
+**Struktur.** Das Spot-Bein wird einmal je Haltephase gekauft und liegt als Sicherheit im Futures-Wallet. Kraken akzeptiert Krypto als Sicherheit mit Abschlägen [R✓]. Alternativ coin-margined inverse Perps (PI_) [R✓]. Ein- und Ausstieg mit Hysterese.
+
+**Literatur.**
+- BIS WP 1087: Carry im Mittel über 10 % p. a., zeitweise bis 60 %. Getrieben von gehebelter Nachfrage kleiner Anleger und knappem Arbitragekapital. Hoher Carry sagt Crashs voraus [R✓].
+- arXiv 2510.14435: Im Sample 08/2020–05/2025 etwa 8 % Mittel bei etwa 0,8 % Volatilität. Die Profitabilität ist **seit 2024 stark gesunken** [R✓].
+
+**Warum das für die Doktrin zählt.** Die Streuung des gehedgten Bestands ist klein, also ist die MDE klein (siehe H-A in Abschnitt 4).
+
+**Was die Sharpe verdeckt:**
+- Funding-Regimewechsel,
+- Börsen- und Gegenparteirisiko,
+- Liquidations- und Abschlagspfad,
+- Auto-Deleveraging.
+
+Stresstest auf 03/2020, 05/2021 und 11/2022 mit Binance-Funding.
+
+**Offen [A]:** Binance hat eine Zinskomponente im Funding. Ob Krakens Formel eine hat, weiß ich nicht, das sollte gemessen werden.
+
+### FUND_CROWD / WEEKEND (§8.6): Begründung trägt nicht, Ergebnis vermutlich trotzdem
+
+„Kraken-Funding nur ≈ 12 Monate“ bindet nicht. Binance-Funding 2019–2026 für alle 34 Pool-Coins liegt vor und ist auch live öffentlich abrufbar. Es taugt also als Signalquelle, Kraken-Preise als Renditequelle. Bindend ist die Klumpung in Boomphasen, die n_eff klein macht. Die Entscheidung sollte formal fallen, wahrscheinlich als HINWEIS wegen Klumpung, nicht wegen Daten.
+
+### D47 INSIDER-ALL: Einstufung für dieses Design richtig, für die Familie nicht
+
+Drei Hebel lassen sich vor dem Freeze rechnen:
+
+1. **Opportunistisch statt routiniert.** Cohen/Malloy/Pomorski 2012: Ein Portfolio nur aus opportunistischen Insider-Trades erzielt wertgewichtet ≈ 82 bp/Monat abnormale Rendite, routinierte Trades ≈ 0 [R✓]. Als routiniert gilt ein Insider, der in den drei Vorjahren im selben Kalendermonat gehandelt hat [R-G]. Die Form-4-Daten ab 2006 reichen für die Klassifikation ab etwa 2009.
+2. **Vol-Skalierung** wie in 1.5.
+3. **Ungeöffnetes Fenster 2006–2015**, mit Preisen über Tiingo. Survivorship muss beziffert werden [A].
+
+**Grob gerechnet:** Die MDE sinkt von ≈ 230–290 auf ≈ 100–180 bp je 28 Tage. Annahmen: n_eff verdoppelt, s ≈ 0,5 [Rechnung]. Erwartet sind nach einem Abschlag für Veröffentlichungseffekte vielleicht 30–100 bp [A]. Vermutlich bleibt die Familie unter der MDE. Die Power-Zeile sollte trotzdem neu gerechnet werden, bevor die Familie abgelegt wird.
+
+### D49, D42, D29/D38: einverstanden
+
+Die IBKR-Mindestprovision verschlechtert D29/D38 zusätzlich. Bei FUND_XS bleibt auch mit beta-neutraler, vol-skalierter Konstruktion ein Faktor 5–10 zur MDE.
+
+---
+
+## 4 Lücken und prüfbare Hypothesen mit Power-Zeile (a, c)
+
+| Kürzel | erwartete Kante | MDE (70 %, α_i) | Einschätzung |
+|---|---|---|---|
+| **H-A CARRY-HOLD** | 6–14 bp/Woche netto [A] | ≈ 4–6 bp/Woche (340 Wochen, Binance-Proxy); ≈ 12 bp/Woche (54 Wochen, nur Kraken) | erste Familie mit Erwartung ≈ MDE |
+| **H-B TOM-7** | 33–65 bp/Fenster [A] | ≈ 48 bp (≈ 41 bei α = 0,01) | Grenzfall, Kosten irrelevant |
+| **H-C INSIDER-OPP-VS** | 30–100 bp/28 Tage [A] | ≈ 100–180 bp | wahrscheinlich HINWEIS |
+| **H-D 13D-ERST** | ungeklärt | ≈ 100–200 bp/20 Tage | erst zählen |
+| **H-E INTRADAY-MOM** (Gegenbeispiel) | ≈ 3 bp brutto [A] | ≈ 2 bp | statistisch nachweisbar, an Kosten tot |
+
+### H-A CARRY-HOLD
+
+- **Mechanismus:** Convenience Yield aus gehebelter Long-Nachfrage bei knappem Arbitragekapital [R✓].
+- **Regel (zum Einfrieren):**
+  - Short PF_XBTUSD bzw. PF_ETHUSD, gleicher Notional Spot als Sicherheit.
+  - Einstieg, wenn das 7-Tage-Funding über e₁ liegt; Ausstieg unter e₂ < e₁.
+  - Schwellen nur aus Binance 2019–2023 festlegen.
+- **Daten:** Binance-Funding 2019–2026 als Proxy; Kraken-Funding 15.10.2025–30.06.2026 plus Forward Juli–Oktober (≈ 54 Wochen) [L2]; Kraken-Kurse für das Basisrauschen.
+- **Kosten:**
+  - Futures 2–5 bp je Seite.
+  - Spot 80–160 bp je Haltephase, weniger über die gemeinsame Stufenleiter.
+  - Sicherheitsabschlag und Steuer [A].
+- **Power:**
+  - Wochen-σ des gehedgten Bestands ≈ 11 bp, falls die 0,8 % p. a. aus arXiv übertragbar sind [A].
+  - Faktor 2–3 für persistentes Funding [A].
+  - Ergebnis: MDE ≈ 4–6 bp/Woche auf 340 Wochen, ≈ 12 bp/Woche nur auf Kraken [Rechnung].
+- **Erwartung:** Funding 4–8 % p. a. entspricht 7,7–15,4 bp/Woche brutto, abzüglich ≈ 1,5 bp Amortisation [A].
+- **Live:** 600 USD × 6 % ≈ 36 USD/Jahr [Rechnung]. Der Wert liegt im Beleg.
+
+### H-B TOM-7 (Monatswechsel S&P 500)
+
+- **Mechanismus:** Auszahlungsbedarf zum Monatsende und Fondsflüsse; Umkehr um T-3.
+- **Literatur:** Rinne/Suominen/Vaittinen: Wer den S&P 500 nur an etwa sieben Geschäftstagen je Monat hält, hätte seit 1926 fast die ganze Marktrendite bei rund 40 % weniger Volatilität erzielt [R✓, Zusammenfassung; Größen im Original prüfen].
+- **Regel:** Long SPY vom Schluss T-4 bis Schluss T+3. Gegen ein Placebo aus zufälligen 7-Tage-Fenstern in denselben Monaten, denn netto positiv ist hier wegen Marktprämie trivial.
+- **Daten:** SPY täglich ab 1993 über Tiingo, Abdeckung [A]. Der Zeitraum 1993–2015 ist ungeöffnet.
+- **Kosten:** eine Rundreise je Monat ≈ 5 bp plus Spread unter 1 bp. Die Kostenwand spielt keine Rolle.
+- **Power:**
+  - σ je Fenster ≈ 290 bp (1,1 % × √7) [A].
+  - n ≈ 400 Fenster → SE ≈ 14,5 bp → MDE ≈ 48 bp [Rechnung].
+- **Erwartung:** 65 bp, wenn der Effekt voll fortbesteht; ≈ 33 bp bei Halbierung [A].
+- **α-Kandidat:** guter Kandidat für α = 0,01 aus dem gewichteten Budget.
+
+### H-C INSIDER-OPP-VS
+
+Siehe Abschnitt 3 zu D47. Nur rechnen, wenn die Power-Zeile mit gemessenem s die MDE unter etwa 100 bp drückt.
+
+### H-D 13D-ERST
+
+- **Mechanismus:** SC 13D statt 13G signalisiert Kontrollabsicht. Ankündigungsrendite rund um Aktivisten-Filings ≈ 7 % im Fenster ±20 Tage (Brav/Jiang/Partnoy/Thomas 2008) [R-G]. Handelbar ist nur der Teil nach Acceptance.
+- **Daten:** EDGAR-Index, nur Erst-Filings „SC 13D“ ohne /A, mit Acceptance-Zeitstempel; Alpaca-Minutenbars.
+- **Power:**
+  - σ über 20 Handelstage 12–15 % [A].
+  - n_eff 600–1 500 → MDE ≈ 100–200 bp [Rechnung].
+- **Erster Schritt wie bei 8-K:** nur zählen (Anzahl, Überlappung, Uhrzeiten), dann Freeze oder HINWEIS.
+
+### H-E INTRADAY-MOM (Gegenbeispiel)
+
+- **Mechanismus:** Die Rendite der ersten halben Stunde sagt die der letzten halben Stunde voraus (Gao/Han/Li/Zhou 2018). Erklärung über Gamma-Hedging bei Baltussen u. a. 2021 [R-G].
+- **Daten:** Alpaca-SIP-Minutenbars gratis ab 2016 [R✓].
+- **Power:** ≈ 2 600 Tage, σ ≈ 30 bp [A] → MDE ≈ 2 bp brutto [Rechnung]. Erwartung ≈ 3 bp brutto [A].
+- **Kosten:** ≥ 4,7 bp je Rundreise bei 1 500 USD.
+- **Lehre:** Bei D34-Ticketgröße kommt bei Aktien mit täglichem Umsatz die Kostenwand vor der Statistikwand. Aktienkandidaten sollten höchstens wöchentlich drehen.
+
+### Weitere Lücken, kurz
+
+- **Merger-Arbitrage (Bar-Deals):** bekannte Risikoprämie (Mitchell/Pulvino 2001) [R-G], Daten über EDGAR (DEFM14A, SC TO-T). Hoher Aufwand bei der Extraktion der Deal-Bedingungen. D34 erlaubt nur etwa zwei gleichzeitige Tickets, also keine Live-Diversifikation. Höchstens ein HINWEIS-Paper.
+- **Volatilitätsprämie über VIX-Produkte:** historisch hohe Sharpe, aber Totalausfall-Risiko (Februar 2018). Die Sharpe ist hier irreführend, und die Idee liegt außerhalb des Projektziels.
+
+## 5 Anmerkungen zu §6
+
+- **6.3 Maker:** Ich teile die eigene Skepsis. Ohne Warteschlangenmodell ist eine Fill-Simulation optimistisch. Wenn überhaupt, dann nur die konservative Variante „Fill nur bei Durchhandeln“ als vorregistrierte Untergrenze.
+- **6.5 Bündel:** SR_Bündel = s·√K / √(1+(K−1)ρ̄). Bei s = 0,3 braucht es etwa 12 unkorrelierte Signale für SR ≈ 1,06 bei T = 10 [Rechnung]. Bei D34 geht das nur als Paper.
+- **6.6 Forward-Fenster Juli–Oktober:** Vier Monate weisen nur SR ≳ 5,8 nach [Rechnung]. Das Fenster taugt als Replikation (Vorzeichen, Konsistenz), nicht als eigenständiger α-Test.
+
+## 6 Grenzen dieser Prüfung
+
+- Grundlage ist nur die Übersicht, ohne Code, Register oder Rohdaten.
+- Alle [R-G]-Angaben vor einem Freeze nachschlagen.
+- Keine Handelsempfehlung; die Steuerhinweise sind keine Steuerberatung.
+
+**Quellen:**
+- [Kraken Fee Schedule](https://www.kraken.com/en-pl/features/fee-schedule)
+- [Kraken: Stablecoin/FX-Gebühren](https://support.kraken.com/fr/articles/360039299431-How-do-stablecoin-FX-fees-work-)
+- [Kraken API: Fee Schedules (deprecated)](https://docs.kraken.com/api-reference/fee-schedules/get-fee-schedules.md)
+- [PricingSaaS: Kraken-Gebührenänderung Juli 2026](https://pricingsaas.com/companies/kraken/diffs/2026W29)
+- [Datawallet: Kraken Fees](https://www.datawallet.com/crypto/kraken-fees-explained)
+- [Kraken: Krypto als Futures-Sicherheit](https://www.kraken.com/se/learn/crypto-collateral-futures-trading)
+- [NautilusTrader: Kraken-Produkte](https://nautilustrader.io/kraken/)
+- [IBKR Commissions Stocks](https://investors.interactivebrokers.com/en/pricing/commissions-stocks.php)
+- [IBKR Commissions Overview](https://investors.interactivebrokers.com/en/pricing/commissions-home.php?menu=B)
+- [Alpaca Market Data API](https://docs.alpaca.markets/docs/api-documentation/how-to/market-hours/)
+- [Alpaca-Forum: Basic-Plan und historische SIP-Daten](https://forum.alpaca.markets/t/market-historical-data-discrepancies/14059)
+- [BIS WP 1087 Crypto Carry](https://www.bis.org/publications/working-paper-1087-crypto-carry)
+- [arXiv 2510.14435](https://arxiv.org/pdf/2510.14435)
+- [binance-vision (PyPI)](https://pypi.org/project/binance-vision/)
+- [Binance public data, Issue #211](https://github.com/binance/binance-public-data/issues/211)
+- [NBER w16454 Decoding Inside Information](https://www.nber.org/papers/w16454)
+- [Hedge Fund Alpha: Monatsende-Liquidität](https://hedgefundalpha.com/strategies/stock-returns-month-end-liquidity-needs/)
