@@ -994,3 +994,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 25.10. ≈ 22:10 (D53):** Reihenfolge Phase 0: (1) **CARRY-HOLD** (Spec-Entwurf: Schwellen aus Binance 2019–2023, Test 2024–2026H1 + Kraken; Kraken-Kontoumfang für Short-Perp mit Spot-Sicherheit, Abschlag, Margin prüfen), (2) 8-K-Zählung (Andi), (3) TOM-7 (Tiingo-Altfenster nach Limit-Reset), (4) 13D-Zählung. Werkzeugpflege: sd(z) in alle Kalibrierungen, Vol-Gewichtung und firmen-gematchte Placebos als Option.
 
 **Stand 25.10. ≈ 22:30 (D54):** 8-K: v2-Zählung (Andi) abwarten, dann Power-Zeile je Item mit Episoden; EAR-DRIFT-Nullwelt-SE prüfen. Danach CARRY-HOLD-Spec (D53, Vorrang), TOM-7 (Limit-Reset November), 13D-Zählung.
+
+**Stand 25.10. ≈ 22:50 (D55):** 8-K erledigt (kein Lauf). Jetzt **CARRY-HOLD Phase 0:** Datenlage (Binance 2019–2026 vorhanden, Kraken-Spot-OHLCVT), Anzahl Wochen/Haltephasen, zentrierte Basis-σ, Kosten (Spot 0,40/0,80 % Tier 1 ⇒ Spot-Bein einmal je Phase), Kraken-Kontoumfang (Short-Perp mit Spot-Sicherheit, Margin). Danach TOM-7 (Limit-Reset November), 13D-Zählung.
