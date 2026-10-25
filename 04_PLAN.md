@@ -996,3 +996,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 25.10. ≈ 22:30 (D54):** 8-K: v2-Zählung (Andi) abwarten, dann Power-Zeile je Item mit Episoden; EAR-DRIFT-Nullwelt-SE prüfen. Danach CARRY-HOLD-Spec (D53, Vorrang), TOM-7 (Limit-Reset November), 13D-Zählung.
 
 **Stand 25.10. ≈ 22:50 (D55):** 8-K erledigt (kein Lauf). Jetzt **CARRY-HOLD Phase 0:** Datenlage (Binance 2019–2026 vorhanden, Kraken-Spot-OHLCVT), Anzahl Wochen/Haltephasen, zentrierte Basis-σ, Kosten (Spot 0,40/0,80 % Tier 1 ⇒ Spot-Bein einmal je Phase), Kraken-Kontoumfang (Short-Perp mit Spot-Sicherheit, Margin). Danach TOM-7 (Limit-Reset November), 13D-Zählung.
+
+**Stand 25.10. ≈ 23:05:** CARRY-HOLD Phase 0: Andi führt `basis_probe_v1.py` aus ⇒ σ(Basis-Änderung) und σ(Funding) je Fenster ⇒ Power-Zeile (MDE gegen Erwartung 6–14 bp/Woche). Schwellen für Ein-/Ausstieg erst in der Spec aus dem Trainingsfenster (Discovery), Testfenster bleibt ungeöffnet.
