@@ -1,5 +1,5 @@
 # alpaca_daily_v1.py - Tagesbars (SIP, adjustment=all) fuer die Symbole der Insider-Cluster-Liste; Daten bleiben auf dem PC.
-# Aufruf:  python alpaca_daily_v1.py <cluster-csv> <Ausgabe-Ordner> [--from 2016-01-01] [--kmin 3] [--minprice 2.0] [--rate 150]
+# Aufruf:  python alpaca_daily_v1.py <cluster-csv> <Ausgabe-Ordner> [--from 2016-01-01] [--kmin 3] [--minprice 2.0] [--rate 150] [--extra SPY,IWM]
 # Schluessel NUR aus Umgebungsvariablen (Namen werden ausgegeben, Werte nie): APCA_API_KEY_ID / APCA_API_SECRET_KEY
 # (alternativ ALPACA_API_KEY / ALPACA_API_SECRET oder ALPACA_KEY_ID / ALPACA_SECRET_KEY). Rate-Limit Basic 200/min: Standard 150/min.
 # Hartes Ende: keine Bars ab 2026-07-01 (Anfrage endet 2026-06-30, zusaetzlich beim Schreiben verworfen). Wiederaufnahme: vorhandene Dateien werden uebersprungen.
@@ -69,10 +69,11 @@ def symbols(csvp, since, kmin, minprice):
             syms.setdefault(s, []).append(r["cluster_date"])
     return syms
 
-def main(csvp, outd, since="2016-01-01", kmin=3, minprice=2.0, rate=150):
+def main(csvp, outd, since="2016-01-01", kmin=3, minprice=2.0, rate=150, extra=""):
     os.makedirs(outd, exist_ok=True)
     k, s = keys(); hdr = {"APCA-API-KEY-ID": k, "APCA-API-SECRET-KEY": s, "accept": "application/json"}
     syms = symbols(csvp, since, kmin, minprice)
+    for e in [x.strip().upper() for x in extra.split(",") if x.strip()]: syms.setdefault(e, [])
     print("Symbole mit Cluster (k>=%d, ab %s, Preis>=%.1f): %d; Cluster gesamt %d" % (kmin, since, minprice, len(syms), sum(len(v) for v in syms.values())), flush=True)
     thr = Throttle(rate); cnt = {"ok": 0, "leer": 0, "uebersprungen": 0}; err = {}; t0 = time.time(); alt = 0
     for i, sym in enumerate(sorted(syms), 1):
@@ -94,4 +95,4 @@ def main(csvp, outd, since="2016-01-01", kmin=3, minprice=2.0, rate=150):
 if __name__ == "__main__":
     a = sys.argv[1:]
     def opt(k, d, f=str): return f(a[a.index(k) + 1]) if k in a else d
-    main(a[0], a[1], opt("--from", "2016-01-01"), opt("--kmin", 3, int), opt("--minprice", 2.0, float), opt("--rate", 150, float))
+    main(a[0], a[1], opt("--from", "2016-01-01"), opt("--kmin", 3, int), opt("--minprice", 2.0, float), opt("--rate", 150, float), opt("--extra", ""))
