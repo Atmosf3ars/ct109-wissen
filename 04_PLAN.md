@@ -1024,3 +1024,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 26.10. ≈ 18:30 (D63):** ORB abgeschlossen (negativ in Entwicklung). Nächste Optionen: (a) SYMPATHY-REVERSION (Intraday-Daten/Universum jetzt vorhanden; Power-Zeile zuerst), (b) 13D-Auswertung, (c) lf1-Bilanz 02.11., Paper-Säulen A–D, Kapital-/Skalenfrage (offen bei Andi).
 
 **Stand 26.10. ≈ 19:30 (ORB-Freeze-Kandidat):** Wartet auf `GO FREEZE-ORB – 662a156f`. Danach: Registerzeile idx 16; Andi `run_orb_data.ps1` (≈ 2 h), `run_orb_final.ps1`; Ergebnis nur mit zweitem GO registrieren. D63 (Dev negativ) bleibt gültig; der Testlauf ist Andis Auftrag zur unabhängigen Bestätigung.
+
+**Stand 26.10. ≈ 17:30 (ORB gefroren):** Andi: `.\run_orb_data.ps1` (≈ 2 h, Schlüssel als Umgebungsvariablen), dann `.\run_orb_final.ps1`. Ich werte nach Rückmeldung aus; Ergebnisregistrierung nur mit zweitem GO.
