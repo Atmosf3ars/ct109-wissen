@@ -1008,3 +1008,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 26.10. ≈ 09:00 (D58):** CARRY-HOLD wartet auf GO (Andi). Parallel ohne GO: Kraken-Replikation vorbereiten (54 Wochen Kraken-Funding, Kraken-Kerzen), Gelegenheitszählung datierter Futures (D57), TOM-7 (Limit-Reset November), 13D-Zählung.
 
 **Stand 26.10. ≈ 08:45 (D59):** Perp-Carry abgeschlossen. Nächste Phase-0-Blöcke: (1) datierte Futures: Gelegenheitszählung (Binance-Lieferkontrakte) und Kraken-Kontraktliste/Laufzeiten, (2) TOM-7 (Tiingo-Altfenster 1993–2015, Limit-Reset November), (3) 13D-Zählung, (4) lf1-Bilanz 02.11. (5) Auswertung 8-K/EAR-DRIFT nur bei neuen Daten.
+
+**Stand 26.10. ≈ 09:05 (D60):** Carry-Thema (Perp D59, datiert D60) abgeschlossen. Offen: TOM-7 (Tiingo-Altfenster 1993–2015, Limit-Reset November), 13D-Zählung, lf1-Bilanz 02.11., D34-Bestätigung, Gesamtlage/Strategiefrage (siehe Antwort an Andi 26.10.).

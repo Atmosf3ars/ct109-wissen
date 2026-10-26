@@ -1,0 +1,69 @@
+PS D:\CT109-Data\kraken-trades\tools> cd D:\CT109-Data\kraken-trades\tools
+PS D:\CT109-Data\kraken-trades\tools> python -u fut_term_v1.py D:\CT109-Data\binance-delivery D:\CT109-Data\binance-klines | Out-File -Encoding utf8 fut_term_out.txt; type fut_term_out.txt
+== COIN-M BTCUSD ==
+Kontrakte mit Daten: 24 von 26
+Zyklen 24 | Einstieg | Verfall | Tage | Aufschlag bp | annualisiert %
+2020-06-26 | 2020-09-25 | 91 | 80 | 3.2
+2020-09-25 | 2020-12-25 | 91 | 151 | 6.1
+2020-12-25 | 2021-03-26 | 91 | 476 | 19.1
+2021-03-26 | 2021-06-25 | 91 | 554 | 22.2
+2021-06-25 | 2021-09-24 | 91 | 107 | 4.3
+2021-09-24 | 2021-12-31 | 98 | 156 | 5.8
+2021-12-31 | 2022-03-25 | 84 | 176 | 7.6
+2022-03-25 | 2022-06-24 | 91 | 114 | 4.6
+2022-06-24 | 2022-09-30 | 98 | 18 | 0.7
+2022-09-30 | 2022-12-30 | 91 | 38 | 1.5
+2022-12-30 | 2023-03-31 | 91 | -19 | -0.8
+2023-03-31 | 2023-06-30 | 91 | 133 | 5.3
+2023-06-30 | 2023-09-29 | 91 | 163 | 6.6
+2023-09-29 | 2023-12-29 | 91 | 112 | 4.5
+2023-12-29 | 2024-03-29 | 91 | 432 | 17.3
+2024-03-29 | 2024-06-28 | 91 | 679 | 27.2
+2024-06-28 | 2024-09-27 | 91 | 271 | 10.9
+2024-09-27 | 2024-12-27 | 91 | 194 | 7.8
+2024-12-27 | 2025-03-28 | 91 | 337 | 13.5
+2025-03-28 | 2025-06-27 | 91 | 115 | 4.6
+2025-06-27 | 2025-09-26 | 91 | 116 | 4.7
+2025-09-26 | 2025-12-26 | 91 | 169 | 6.8
+2025-12-26 | 2026-03-27 | 91 | 115 | 4.6
+2026-03-27 | 2026-06-26 | 91 | 49 | 2.0
+annualisiert %: min -0.8, q25 4.5, Median 5.6, q75 8.5, max 27.2; Zyklen mit Aufschlag > 84 bp (Einzelzyklus-Kosten): 19 von 24; mit annualisiert < 3 %: 4
+Verfallsjahr 2020: Zyklen 2, Summe Aufschlaege 231 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 139 bp
+Verfallsjahr 2021: Zyklen 4, Summe Aufschlaege 1294 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 1194 bp
+Verfallsjahr 2022: Zyklen 4, Summe Aufschlaege 346 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 246 bp
+Verfallsjahr 2023: Zyklen 4, Summe Aufschlaege 389 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 289 bp
+Verfallsjahr 2024: Zyklen 4, Summe Aufschlaege 1575 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 1475 bp
+Verfallsjahr 2025: Zyklen 4, Summe Aufschlaege 736 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 636 bp
+Verfallsjahr 2026: Zyklen 2, Summe Aufschlaege 164 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 72 bp
+== USDT-M BTCUSDT ==
+Kontrakte mit Daten: 22 von 26
+Zyklen 21 | Einstieg | Verfall | Tage | Aufschlag bp | annualisiert %
+2021-03-26 | 2021-06-25 | 91 | 546 | 21.9
+2021-06-25 | 2021-09-24 | 91 | 139 | 5.6
+2021-09-24 | 2021-12-31 | 98 | 171 | 6.4
+2021-12-31 | 2022-03-25 | 84 | 214 | 9.3
+2022-03-25 | 2022-06-24 | 91 | 142 | 5.7
+2022-06-24 | 2022-09-30 | 98 | 35 | 1.3
+2022-09-30 | 2022-12-30 | 91 | 48 | 1.9
+2022-12-30 | 2023-03-31 | 91 | 41 | 1.7
+2023-03-31 | 2023-06-30 | 91 | 124 | 5.0
+2023-06-30 | 2023-09-29 | 91 | 171 | 6.9
+2023-09-29 | 2023-12-29 | 91 | 122 | 4.9
+2023-12-29 | 2024-03-29 | 91 | 431 | 17.3
+2024-03-29 | 2024-06-28 | 91 | 631 | 25.3
+2024-06-28 | 2024-09-27 | 91 | 283 | 11.4
+2024-09-27 | 2024-12-27 | 91 | 199 | 8.0
+2024-12-27 | 2025-03-28 | 91 | 320 | 12.8
+2025-03-28 | 2025-06-27 | 91 | 114 | 4.6
+2025-06-27 | 2025-09-26 | 91 | 107 | 4.3
+2025-09-26 | 2025-12-26 | 91 | 165 | 6.6
+2025-12-26 | 2026-03-27 | 91 | 117 | 4.7
+2026-03-27 | 2026-06-26 | 91 | 49 | 2.0
+annualisiert %: min 1.3, q25 4.6, Median 5.7, q75 9.3, max 25.3; Zyklen mit Aufschlag > 84 bp (Einzelzyklus-Kosten): 17 von 21; mit annualisiert < 3 %: 4
+Verfallsjahr 2021: Zyklen 3, Summe Aufschlaege 856 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 760 bp
+Verfallsjahr 2022: Zyklen 4, Summe Aufschlaege 439 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 339 bp
+Verfallsjahr 2023: Zyklen 4, Summe Aufschlaege 460 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 360 bp
+Verfallsjahr 2024: Zyklen 4, Summe Aufschlaege 1544 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 1444 bp
+Verfallsjahr 2025: Zyklen 4, Summe Aufschlaege 705 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 605 bp
+Verfallsjahr 2026: Zyklen 2, Summe Aufschlaege 166 bp, abzueglich einmal 84 bp Spot-/Futures-Kosten und je Roll 4 bp: 74 bp
+PS D:\CT109-Data\kraken-trades\tools>
