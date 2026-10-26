@@ -1,0 +1,5 @@
+Skript-SHA256 5e0554a122d2d280; Modus final; Fenster 2024-01-01 .. 2026-06-28; SPEC-HASH 72a5c862d2268de6a71126481710179c33b9681b513f9cc8304878c52c256b37
+Wochen 130 | BTC: Phasen 4, Tage in Pos 427, netto 8.51 bp/Woche | ETH: Phasen 4, Tage in Pos 370, netto 8.39 bp/Woche
+Portfolio netto m = 8.45 bp/Woche (4.4 % p. a. auf Notional); sigma_Woche 18.6; Bootstrap-SE (Bloecke 8) 3.60; z_adj = m/(1.5*SE) = 1.56 (Kriterium >= 1.645)
+Haelften 16.39 / 0.50 | Zustand RV30 hoch 13.60 (n=20) / niedrig 7.51 (n=110) | Stresskosten m = 6.60 | immer-an m = 12.65 | Placebo (zufaellige Phasenlage gleicher Laengen): q97.5 5.92, Rang des Ergebnisses 1.00
+KATEGORIE: NICHT NACHWEISBAR (m <= 0 oder Kriterien verfehlt; bei Erwartung nahe der Aufloesung kein Nullbefund)

@@ -1006,3 +1006,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 26.10. ≈ 00:05:** (1) neue Fassungen `carry_test_v1.py`/`carry_null_v1.py` auf den PC bringen (Hash prüfen), (2) `freeze_carry_v1.py`, `run_carry_final.ps1`, Freeze-Paket, D58 schreiben, (3) GO-Satz von Andi (`GO FREEZE-CARRY – <Hash8>`), (4) Lauf genau einmal. HINWEIS-Klasse, kein α. Danach Kraken-Replikation, datierte Futures (D57), TOM-7 (Limit-Reset November), 13D-Zählung.
 
 **Stand 26.10. ≈ 09:00 (D58):** CARRY-HOLD wartet auf GO (Andi). Parallel ohne GO: Kraken-Replikation vorbereiten (54 Wochen Kraken-Funding, Kraken-Kerzen), Gelegenheitszählung datierter Futures (D57), TOM-7 (Limit-Reset November), 13D-Zählung.
+
+**Stand 26.10. ≈ 08:45 (D59):** Perp-Carry abgeschlossen. Nächste Phase-0-Blöcke: (1) datierte Futures: Gelegenheitszählung (Binance-Lieferkontrakte) und Kraken-Kontraktliste/Laufzeiten, (2) TOM-7 (Tiingo-Altfenster 1993–2015, Limit-Reset November), (3) 13D-Zählung, (4) lf1-Bilanz 02.11. (5) Auswertung 8-K/EAR-DRIFT nur bei neuen Daten.
