@@ -1,0 +1,14 @@
+CT109-FREEZE-CARRY-v1
+spec RUNDE3E_SPEC_v1_CARRYHOLD_FREEZEKANDIDAT.md 2f66dd8e2ba90823b9ca10b407e11431841f7ccf0e88d69fdaaa551a853dba69
+code code/tools/carry_test_v1.py 5e0554a122d2d280bb8b382262e4e362f09d0f1e9491003cf31ab035b7b10f84
+code code/tools/carry_null_v1.py 22f70a98849a204e5acd48ddbbbf50761fd39dacb593e893940fa00b7f64ad07
+code code/tools/carry_acf_v1.py 8df414f2e71a6faad697d5928c7f6a113cf555efd0bbcc2a45f79241122cb549
+code code/tools/carry_train_v1.py 5e7902abcd414634d3b7d725f7d5206932af11dc1df0b80ee488f9f3cc393d0d
+code code/tools/basis_probe_v1.py a34bae005d8b6fdeea479d281c2cfc1445e16f3d2a0855cef6eb3631486e453a
+data register/MANIFEST_CARRY_DATA_SHA256.txt 19bfc1948281c23a32be1b061ea75ed9451c74c7551575a3eaeec387b949a105
+param klasse HINWEIS kein alpha_konto; alpha_konto bleibt 7/20 (D37)
+param regel F7=mittel Tagesfunding d-7..d-1 annualisiert, einstieg F7>10%, ausstieg F7<3%, BTCUSDT+ETHUSDT je 50%, spot long perp short
+param kosten basis 90bp je phase (2x40 spot maker + 2x5 perp), stress 170bp, kollateralreibung 0.5bp je woche in position
+param fenster test 2024-01-01 .. 2026-06-28 (130 wochen), hartes ende ab 2026-07-01 gesperrt
+param bootstrap blocklaenge=8 ziehungen=10000 seed=20261025 zadj=m/(1.5*SE)>=1.645; zustand RV30 BTC hoch/niedrig beide>0 je >=10 wochen; stress>0
+param placebo zufallsplaene=2000 nur berichtet
