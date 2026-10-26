@@ -1,0 +1,5 @@
+﻿Schluessel aus Umgebungsvariablen: APCA_API_KEY_ID / APCA_API_SECRET_KEY (Werte nicht ausgegeben)
+Assets status=active: 14407
+Assets status=inactive: 19162
+Symbole gesamt (eindeutig): 33309 | ausgeschlossen OTC: 17433, Warrant/Right/Unit: 1372 | behalten: 14504 (aktiv 12344, inaktiv 2160)
+Boersen: NASDAQ 5796, NYSE 3399, ARCA 3167, BATS 1780, AMEX 352, TXSE 10

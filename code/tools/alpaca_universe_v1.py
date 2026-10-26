@@ -1,7 +1,7 @@
 # alpaca_universe_v1.py - volles US-Aktien-Universum fuer Tagesbars (inkl. inaktiver/gestrichener Titel, soweit Alpaca sie fuehrt). Daten bleiben auf dem PC.
 # Aufruf:
 #   python -u alpaca_universe_v1.py assets <Ausgabe-Ordner>                       -> schreibt <Ordner>\_assets_us.csv, druckt NUR Zaehlungen
-#   python -u alpaca_universe_v1.py bars   <Ausgabe-Ordner> [--have <alpaca-daily>] [--group 40] [--rate 150] [--limit N]
+#   python -u alpaca_universe_v1.py bars   <Ausgabe-Ordner> [--have <alpaca-daily>] [--group 40] [--rate 150] [--limit N] [--exch NASDAQ,NYSE,AMEX,TXSE]
 #        -> laedt Tagesbars (SIP, adjustment=all, ab 2016-01-01, Ende hart 2026-06-30) fuer alle Symbole aus _assets_us.csv, die weder im Ausgabe-Ordner
 #           noch im --have-Ordner (vorhandener Bestand) schon als <SYMBOL>.csv liegen; Wiederaufnahme: vorhandene Dateien/_nobars.txt werden uebersprungen.
 # Schluessel NUR aus Umgebungsvariablen (APCA_API_KEY_ID / APCA_API_SECRET_KEY o. ae., Werte werden nie ausgegeben). Trading-API-Basis (Assets):
@@ -80,11 +80,12 @@ def write_sym(outd, sym, rows):
     with open(os.path.join(outd, sym.replace("/", "_") + ".csv"), "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f); w.writerow(["date", "open", "high", "low", "close", "volume", "trade_count", "vwap"]); w.writerows(rows)
 
-def cmd_bars(outd, have="", group=40, rate=150.0, limit=0, getter=http_get, hdr=None):
+def cmd_bars(outd, have="", group=40, rate=150.0, limit=0, getter=http_get, hdr=None, exch=""):
     if hdr is None:
         k, s = keys(); hdr = {"APCA-API-KEY-ID": k, "APCA-API-SECRET-KEY": s, "accept": "application/json"}
     with open(os.path.join(outd, "_assets_us.csv"), newline="", encoding="utf-8") as f:
-        syms = [r["symbol"] for r in csv.DictReader(f)]
+        ex_ok = set(x.strip().upper() for x in exch.split(",") if x.strip())
+        syms = [r["symbol"] for r in csv.DictReader(f) if not ex_ok or r["exchange"].upper() in ex_ok]
     def have_set(p):
         return set(os.path.splitext(x)[0].upper() for x in os.listdir(p) if x.lower().endswith(".csv")) if p and os.path.isdir(p) else set()
     skip = have_set(outd) | have_set(have)
@@ -118,4 +119,4 @@ if __name__ == "__main__":
     if len(a) < 2 or a[0] not in ("assets", "bars"): sys.exit(__doc__)
     def opt(k, d, f=str): return f(a[a.index(k) + 1]) if k in a else d
     if a[0] == "assets": cmd_assets(a[1])
-    else: cmd_bars(a[1], opt("--have", ""), opt("--group", 40, int), opt("--rate", 150.0, float), opt("--limit", 0, int))
+    else: cmd_bars(a[1], opt("--have", ""), opt("--group", 40, int), opt("--rate", 150.0, float), opt("--limit", 0, int), exch=opt("--exch", ""))
