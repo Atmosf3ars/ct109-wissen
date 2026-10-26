@@ -1,0 +1,23 @@
+Schluessel aus Umgebungsvariablen: APCA_API_KEY_ID / APCA_API_SECRET_KEY (Werte nicht ausgegeben)
+Handelstage im Fenster 2016-01-04..2019-12-31: 991 | schon erledigt 0 | zu holen 991 | Eligible-Symbol-Tage gesamt 746362
+[  136 s] Tage 50/991 Bars 44075 ungueltige Symbole 0 Fehltage 0
+[  258 s] Tage 100/991 Bars 77256 ungueltige Symbole 0 Fehltage 0
+[  354 s] Tage 150/991 Bars 111117 ungueltige Symbole 0 Fehltage 0
+[  461 s] Tage 200/991 Bars 140980 ungueltige Symbole 0 Fehltage 0
+[  567 s] Tage 250/991 Bars 176985 ungueltige Symbole 0 Fehltage 0
+[  647 s] Tage 300/991 Bars 209683 ungueltige Symbole 0 Fehltage 0
+[  727 s] Tage 350/991 Bars 241116 ungueltige Symbole 0 Fehltage 0
+[  818 s] Tage 400/991 Bars 274246 ungueltige Symbole 0 Fehltage 0
+[  900 s] Tage 450/991 Bars 303803 ungueltige Symbole 0 Fehltage 0
+[  990 s] Tage 500/991 Bars 339874 ungueltige Symbole 0 Fehltage 0
+[ 1207 s] Tage 550/991 Bars 383168 ungueltige Symbole 0 Fehltage 0
+[ 1466 s] Tage 600/991 Bars 421780 ungueltige Symbole 0 Fehltage 0
+[ 1593 s] Tage 650/991 Bars 461120 ungueltige Symbole 0 Fehltage 0
+[ 1692 s] Tage 700/991 Bars 499341 ungueltige Symbole 0 Fehltage 0
+[ 1868 s] Tage 750/991 Bars 547380 ungueltige Symbole 0 Fehltage 0
+[ 1977 s] Tage 800/991 Bars 585671 ungueltige Symbole 0 Fehltage 0
+[ 2127 s] Tage 850/991 Bars 622764 ungueltige Symbole 0 Fehltage 0
+[ 2227 s] Tage 900/991 Bars 660318 ungueltige Symbole 0 Fehltage 0
+[ 2348 s] Tage 950/991 Bars 697336 ungueltige Symbole 0 Fehltage 0
+FERTIG: Tage geholt 991, Bars 727206, ungueltige Einzelsymbole 0, Fehltage (erneut starten) 0, Dauer 2451 s
+Bars je Jahr: 2016 169821, 2017 162467, 2018 204549, 2019 190369
