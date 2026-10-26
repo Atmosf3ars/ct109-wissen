@@ -1,0 +1,42 @@
+Skript: orb_dev_sim_v2.py | ausgewaehlte Symbol-Tage mit Ganztagsdaten: 57803 von 58860 | Tage 981 | Ticket 1500 USD | Fenster bis 2019-12-31
+
+[1] Primaer: Kerzenrichtung, Ziel 10 R, Zeitversatz 0, Top-K nach RV5 (brutto R, Tages-clustered SE):
+  K= 5: n=4799 mean +0.0673 R (SE 0.0251) | Ausgang Stop 52.3% / Ziel 0.9% / Schluss 46.8% | Kein-Trade-Anteil 0.2%
+  K=10: n=9592 mean +0.0648 R (SE 0.0190) | Ausgang Stop 52.6% / Ziel 0.9% / Schluss 46.5% | Kein-Trade-Anteil 0.3%
+  K=20: n=19207 mean +0.0562 R (SE 0.0143) | Ausgang Stop 53.6% / Ziel 0.9% / Schluss 45.5% | Kein-Trade-Anteil 0.3%
+  K=60: n=57519 mean +0.0678 R (SE 0.0105) | Ausgang Stop 57.1% / Ziel 1.2% / Schluss 41.8% | Kein-Trade-Anteil 0.5%
+
+[2] K=20, nach Jahr (brutto R):
+  2016: n=4455 mean +0.0774 R (SE 0.0300)
+  2017: n=4897 mean +0.0339 R (SE 0.0268)
+  2018: n=4913 mean +0.0494 R (SE 0.0277)
+  2019: n=4942 mean +0.0660 R (SE 0.0299)
+  Long (Kerze steigend): n=9841 mean +0.0545 R (SE 0.0222) | Short (Kerze fallend): n=9366 mean +0.0581 R (SE 0.0234)
+
+[3] Ziel-Variante (K=20, brutto R): 3 R: n=19207 mean +0.0491 R (SE 0.0112) | 10 R: n=19207 mean +0.0562 R (SE 0.0143) | ohne Ziel: n=19207 mean +0.0593 R (SE 0.0160)
+
+[4] Placebo Zufallsrichtung (K=20, Ziel 10 R, 300 Ziehungen): gleiche Stop-Geometrie, Richtung per Muenzwurf
+  Handelbar in beiden Richtungen: n=17764 | echte Kerzenrichtung +0.0605 R | Zufallsrichtung Mittel +0.0684 R (q2.5 +0.0436 / q97.5 +0.0949) | Differenz -0.0079 R
+  Immer Long: +0.0588 R | immer Short: +0.0796 R (gleiche Menge)
+
+[5] Placebo Zeitversatz (K=20, Ziel 10 R, Signalkerze spaeter, gleiche Auswahl):
+  Signalkerze + 0 Bars (09:30): n=19207 mean +0.0562 R (SE 0.0143)
+  Signalkerze +12 Bars (10:30): n=18510 mean +0.1130 R (SE 0.0229)
+  Signalkerze +36 Bars (12:30): n=17860 mean +0.0651 R (SE 0.0252)
+
+[6] Kosten (K=20, Ziel 10 R, Ticket 1500 USD): mittlere Provision in R 0.0698 | Netto-R nach Provision und Slippage je Seite:
+  s= 0 bp/Seite: n=19207 mean -0.0135 R (SE 0.0143)
+  s= 5 bp/Seite: n=19207 mean -0.1630 R (SE 0.0148)
+  s=10 bp/Seite: n=19207 mean -0.3125 R (SE 0.0157)
+  s=20 bp/Seite: n=19207 mean -0.6115 R (SE 0.0186)
+
+[7] Mindest-Risikospanne (Risiko/Entry) und K (Ziel 10 R), Netto-R bei s=5 bp je Seite:
+  K=10 | Risiko>=0.0%: n=9592 mean -0.1226 R (SE 0.0193) | Risiko>=0.5%: n=8215 mean -0.0663 R (SE 0.0169) | Risiko>=1.0%: n=6166 mean -0.0442 R (SE 0.0177) | Risiko>=2.0%: n=3131 mean -0.0103 R (SE 0.0213)
+  K=20 | Risiko>=0.0%: n=19207 mean -0.1630 R (SE 0.0148) | Risiko>=0.5%: n=15771 mean -0.0818 R (SE 0.0130) | Risiko>=1.0%: n=11057 mean -0.0455 R (SE 0.0139) | Risiko>=2.0%: n=5047 mean -0.0173 R (SE 0.0168)
+  K=60 | Risiko>=0.0%: n=57519 mean -0.2280 R (SE 0.0134) | Risiko>=0.5%: n=42416 mean -0.1039 R (SE 0.0099) | Risiko>=1.0%: n=25261 mean -0.0653 R (SE 0.0109) | Risiko>=2.0%: n=9028 mean -0.0339 R (SE 0.0136)
+
+[8] Diagnose ohne Stops: Rendite vom Open der Folgebar bis Schluss (basispunkte). Richtung = Kerzenrichtung; Zufall = Muenzwurf (K=20, Zeitversatz 0 bzw. 12 Bars):
+  Signal + 0 Bars: n=19271 | alle Vorzeichen (Drift) -1.8 bp (SE 3.7) | in Kerzenrichtung +4.5 bp (SE 2.4) | Zufallsrichtung Mittel +0.3 bp (q2.5 -3.8 / q97.5 +4.3)
+  Signal +12 Bars: n=18654 | alle Vorzeichen (Drift) +4.3 bp (SE 2.9) | in Kerzenrichtung -0.8 bp (SE 1.9) | Zufallsrichtung Mittel -0.0 bp (q2.5 -2.8 / q97.5 +2.9)
+
+Hinweis: Entwicklungsfenster, viele Varianten gesichtet (K, Ziel, Risiko-Filter, Slippage): jede Auswahl hier ist Exploration ohne alpha-Gewicht; der Test im Testfenster laeuft einmal mit vorab gehashten Parametern.
