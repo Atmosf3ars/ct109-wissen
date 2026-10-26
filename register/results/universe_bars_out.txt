@@ -1,0 +1,22 @@
+Schluessel aus Umgebungsvariablen: APCA_API_KEY_ID / APCA_API_SECRET_KEY (Werte nicht ausgegeben)
+Symbole in Liste 9557 | schon vorhanden/leer 1797 | zu laden 7760 | Gruppen a 40
+[  146 s] 400/7760 ok 173 leer 227 Einzel-Fallback-Gruppen 7
+[  273 s] 800/7760 ok 548 leer 252 Einzel-Fallback-Gruppen 11
+[  348 s] 1200/7760 ok 933 leer 267 Einzel-Fallback-Gruppen 12
+[  491 s] 1600/7760 ok 1310 leer 290 Einzel-Fallback-Gruppen 17
+[  677 s] 2000/7760 ok 1695 leer 305 Einzel-Fallback-Gruppen 24
+[  825 s] 2400/7760 ok 2083 leer 317 Einzel-Fallback-Gruppen 29
+[  919 s] 2800/7760 ok 2471 leer 329 Einzel-Fallback-Gruppen 31
+[ 1048 s] 3200/7760 ok 2849 leer 351 Einzel-Fallback-Gruppen 35
+[ 1141 s] 3600/7760 ok 3224 leer 376 Einzel-Fallback-Gruppen 37
+[ 1287 s] 4000/7760 ok 3602 leer 398 Einzel-Fallback-Gruppen 42
+[ 1449 s] 4400/7760 ok 3978 leer 422 Einzel-Fallback-Gruppen 48
+[ 1541 s] 4800/7760 ok 4355 leer 445 Einzel-Fallback-Gruppen 50
+[ 1652 s] 5200/7760 ok 4740 leer 460 Einzel-Fallback-Gruppen 53
+[ 1780 s] 5600/7760 ok 5123 leer 477 Einzel-Fallback-Gruppen 57
+[ 1853 s] 6000/7760 ok 5502 leer 498 Einzel-Fallback-Gruppen 58
+[ 1945 s] 6400/7760 ok 5880 leer 520 Einzel-Fallback-Gruppen 60
+[ 2034 s] 6800/7760 ok 6258 leer 542 Einzel-Fallback-Gruppen 62
+[ 2129 s] 7200/7760 ok 6637 leer 563 Einzel-Fallback-Gruppen 64
+[ 2259 s] 7600/7760 ok 7014 leer 586 Einzel-Fallback-Gruppen 68
+FERTIG: zu laden 7760, ok 7165, ohne Bars 595, Einzel-Fallback-Gruppen 68, Dauer 2278 s

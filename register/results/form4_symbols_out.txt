@@ -1,0 +1,7 @@
+Einreichungen (Form 3/4/5, 2015Q4..2026Q2): 2179029 | ohne verwertbaren Ticker: 25541 | verschiedene Ticker: 13849
+davon mit Bars in den angegebenen Ordnern: 7024 | ohne Bars (zu laden): 6825 (davon letzte Meldung vor 2026: 6093)
+fehlende Ticker nach Jahr der letzten Meldung: 2015: 157, 2016: 756, 2017: 640, 2018: 504, 2019: 385, 2020: 509, 2021: 674, 2022: 575, 2023: 700, 2024: 563, 2025: 630, 2026: 732
+
+real	0m3.891s
+user	0m3.692s
+sys	0m0.037s
