@@ -1014,3 +1014,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 26.10. ≈ 09:35 (D61):** (1) 13D-Zählung auswerten (Andi-Lauf), (2) lf1-Bilanz 02.11. vorbereiten, (3) Paper-Säulen A–D (Hash vor Paper-Start) und Kriterien für ein späteres Bündel schreiben, (4) Kapital-/Skalenfrage mit Andi klären (D34-Revision: was ist das Ziel bei 10 000 EUR?), (5) Beobachtungsliste: TOM-7, EAR-DRIFT, INSIDER-OPP-VS.
 
 **Stand 26.10. ≈ 11:45 (D62):** ORB Phase 0 erledigt, HINWEIS. Optional (Andis Entscheidung): Universum-Erweiterung (Alpaca-Assets active+inactive, Tagesbars) + Intraday-Bars + Spread-Stichprobe, danach Power-Zeile neu. Sonst unverändert: 13D-Auswertung, lf1-Bilanz 02.11., Paper-Säulen A–D, Kapital-/Skalenfrage.
+
+**Stand 26.10. ≈ 12:15 (ORB Schritt 0b):** (1) Andi: `alpaca_universe_v1.py assets` → Zählung; (2) `bars` (≈ 1 h) in `D:\CT109-Data\alpaca-daily-full`; (3) `orb_count_v2.py` auf beide Ordner → Power-Zeile neu; (4) danach Intraday-Tool (5-Min-Bars der Kandidatentage, relatives Volumen der ersten 5 Min, Spread-Stichprobe) und Entwicklungs-/Testfenster festlegen; erst danach Spec/Freeze (eigenes GO).
