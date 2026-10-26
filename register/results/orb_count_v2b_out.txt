@@ -1,0 +1,53 @@
+Skript: orb_count_v2.py | Bars-Dateien mit >= 17 Tagen: 13402 | Tagesbars gesamt: 18893450 | Symbole mit Endbar vor 2026-06-15: 5339 | Symbole mit erster Bar nach 2016-03-01: 7331
+Filter: Vortagesschluss>=5.0, ATR14>=0.50 USD, Vol14>=1000000 Stk | Eligible Symbol-Tage: 2509541
+
+[A] Eligible Symbole je Handelstag (Alpaca-Bestand, NICHT das volle US-Universum):
+  Handelstage mit >=1 Eligible: 2622 | Tage mit >=60: 2622, >=20: 2622, >=10: 2622, >=5: 2622, >=2: 2622
+  2016: Tage 237 | Eligible/Tag p10=590 p50=693 p90=932
+  2017: Tage 251 | Eligible/Tag p10=564 p50=664 p90=757
+  2018: Tage 251 | Eligible/Tag p10=683 p50=834 p90=1.02e+03
+  2019: Tage 252 | Eligible/Tag p10=681 p50=776 p90=857
+  2020: Tage 253 | Eligible/Tag p10=800 p50=1.06e+03 p90=1.3e+03
+  2021: Tage 252 | Eligible/Tag p10=891 p50=1.08e+03 p90=1.32e+03
+  2022: Tage 251 | Eligible/Tag p10=921 p50=1.08e+03 p90=1.26e+03
+  2023: Tage 250 | Eligible/Tag p10=798 p50=896 p90=992
+  2024: Tage 252 | Eligible/Tag p10=843 p50=936 p90=1.09e+03
+  2025: Tage 250 | Eligible/Tag p10=1.1e+03 p50=1.22e+03 p90=1.39e+03
+  2026: Tage 123 | Eligible/Tag p10=1.32e+03 p50=1.48e+03 p90=1.55e+03
+
+[B] Funnel nach Proxy S1 (|Luecke| in ATR-Einheiten); Symbol-Tage / Handelstage / Symbole / Anteil Endbar-vor-2026-06-15-Symbole:
+  K=60: Symbol-Tage  157320 | Tage 2622 | verschiedene Symbole 4443 | Anteil beendeter Symbole 14.0%
+  K=20: Symbol-Tage   52440 | Tage 2622 | verschiedene Symbole 3719 | Anteil beendeter Symbole 15.6%
+  K=10: Symbol-Tage   26220 | Tage 2622 | verschiedene Symbole 3170 | Anteil beendeter Symbole 17.3%
+  K= 5: Symbol-Tage   13110 | Tage 2622 | verschiedene Symbole 2580 | Anteil beendeter Symbole 19.2%
+  K= 2: Symbol-Tage    5244 | Tage 2622 | verschiedene Symbole 1820 | Anteil beendeter Symbole 21.1%
+
+[C] Eigenschaften der K=20-Kandidaten (Betraege):
+  |Luecke| (Anteil): p10=0.0145 p50=0.0406 p90=0.145 p99=0.413
+  S1 (Luecke in ATR): p10=0.731 p50=1.28 p90=3.21 p99=7.43
+  ATR14 in % des Kurses: p10=1.45 p50=2.89 p90=7.29
+  Vortagesschluss USD: p10=14.9 p50=43.7 p90=140
+  Dollarvolumen14 (Mio USD): p10=32.9 p50=126 p90=704
+  Je Jahr K=20:  2016: 4740 | 2017: 5020 | 2018: 5020 | 2019: 5040 | 2020: 5060 | 2021: 5040 | 2022: 5020 | 2023: 5000 | 2024: 5040 | 2025: 5000 | 2026: 2460
+[D] Konzentration K=20: Top-10-Symbole 5.9% der Symbol-Tage, Top-100 24.4%, Top-300 45.5%
+    haeufigste 5 Symbole (Tage): BUD 403, MCHI 387, GLD 368, RIO 347, TTE 307
+
+[E] Kosten (Rechnung): Provision 2 Orders x 0,35 USD je Round-Trip in Einheiten R = Risiko je Trade = Ticket x Stopabstand
+  Ticket USD | Stopabstand 0,5%% / 1%% / 2%% -> Provision in R | Provision je Seite in bp des Tickets
+    750 | 0.187 R / 0.093 R / 0.047 R | 4.7 bp
+   1500 | 0.093 R / 0.047 R / 0.023 R | 2.3 bp
+   3000 | 0.047 R / 0.023 R / 0.012 R | 1.2 bp
+
+[F] Power-Zeile je Trade in R (ANNAHMEN, nichts gemessen): MDE_p = (2,807 + z_p) * sigma / sqrt(n_eff), n_eff = n / (1 + (m-1) * rho_Tag)
+  K=20 n=52440 (20.0/Tag) sigma 1.5 R | rho 0.05: n_eff  26892 MDE70 0.031 R / MDE80 0.033 R | rho 0.10: n_eff  18083 MDE70 0.037 R / MDE80 0.041 R | rho 0.20: n_eff  10925 MDE70 0.048 R / MDE80 0.052 R
+  K=20 n=52440 (20.0/Tag) sigma 2.0 R | rho 0.05: n_eff  26892 MDE70 0.041 R / MDE80 0.045 R | rho 0.10: n_eff  18083 MDE70 0.050 R / MDE80 0.054 R | rho 0.20: n_eff  10925 MDE70 0.064 R / MDE80 0.070 R
+  K=20 n=52440 (20.0/Tag) sigma 2.5 R | rho 0.05: n_eff  26892 MDE70 0.051 R / MDE80 0.056 R | rho 0.10: n_eff  18083 MDE70 0.062 R / MDE80 0.068 R | rho 0.20: n_eff  10925 MDE70 0.080 R / MDE80 0.087 R
+  K=10 n=26220 (10.0/Tag) sigma 1.5 R | rho 0.05: n_eff  18083 MDE70 0.037 R / MDE80 0.041 R | rho 0.10: n_eff  13800 MDE70 0.043 R / MDE80 0.047 R | rho 0.20: n_eff   9364 MDE70 0.052 R / MDE80 0.057 R
+  K=10 n=26220 (10.0/Tag) sigma 2.0 R | rho 0.05: n_eff  18083 MDE70 0.050 R / MDE80 0.054 R | rho 0.10: n_eff  13800 MDE70 0.057 R / MDE80 0.062 R | rho 0.20: n_eff   9364 MDE70 0.069 R / MDE80 0.075 R
+  K=10 n=26220 (10.0/Tag) sigma 2.5 R | rho 0.05: n_eff  18083 MDE70 0.062 R / MDE80 0.068 R | rho 0.10: n_eff  13800 MDE70 0.071 R / MDE80 0.078 R | rho 0.20: n_eff   9364 MDE70 0.086 R / MDE80 0.094 R
+
+[G] Intraday-Bedarf (5-Min-Bars, 78 je Symbol-Tag; Alpaca Mehrsymbol-Abruf, <= 10 000 Punkte je Seite, 150 Aufrufe/min):
+  K=60: 2622 Tage ~ 2622 Aufrufe (17 min), 4680 Punkte je Tag-Aufruf (ok)
+  K=20: 2622 Tage ~ 2622 Aufrufe (17 min), 1560 Punkte je Tag-Aufruf (ok)
+
+Hinweis: Universum = Symbole aus den angegebenen Ordnern (2 Ordner, 13520 Dateien).
