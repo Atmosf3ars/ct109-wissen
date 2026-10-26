@@ -1,0 +1,24 @@
+CT109-FREEZE-ORB-v1
+spec RUNDE3F_SPEC_v1_ORB_FREEZEKANDIDAT.md 4a042398b689d5516c036f9d322d1fae13705210e8b7ff22e66561bdc40b75ca
+code code/tools/orb_test_v1.py 13ca0ccdad9c298f8ba321ea9dd5c45c8cde8aeb0834fe0cb89ca356f228b0d8
+code code/tools/orb_select_v2.py d5ae2b7201345ebd6140104afdf46b76527a4f7f641931f7b6243789f6ccb994
+code code/tools/alpaca_intraday_v1.py 97ffec6535a4fddd761e994e06d1382132cdfd308304cab04b69d24b63981647
+code code/tools/alpaca_day5_v1.py 0d1e64c4402de81bc56d184b9c278450f7ff5f5e74b9246db424100c469f007f
+code code/tools/alpaca_daily_v1.py 143a43a382bba8b451233597ec4519b8ca091dd4cb8caeddac80165c8e00ca0b
+code code/tools/orb_dev_sim_v1.py 746a808c3dcd5aa784b3d0d2867fa5326fafaa4326488c5bd0822e576177c559
+code code/tools/orb_dev_sim_v2.py 49f4c0e4da4a857c05b3e875c37d0504061dfc7daadf87b29e52807cba5b71c9
+code code/tools/orb_select_v1.py 0743a968a0e8461844c90e2fadee8b062b2baa617e0a9309cf8b42b5e40cc723
+code code/tools/orb_first5_count_v1.py 979fb880a3d5e8b90ff3055704221651629eb6731aab6ec6cb983337904b1c67
+code code/tools/orb_count_v2.py bc311f410d2542fce6e21008b660a43f4fce26a9262e497b020330e702f87fa6
+code code/tools/alpaca_universe_v1.py 32594cf0453b7687c42ff84fc54d7c85cd77dda9907a11f983a3c8c5c7a212e6
+code code/tools/form4_symbols_v1.py dbe1a4e94988d5fe6da514300cdc22e2d106944dd1d9acc815ab4d2b0109b663
+data register/results/orb_dev_sim_v1_out.txt f568034db24087470066b0534a69eb29d3998d3730c0e9b48355eb3018e3e0f4
+data register/results/orb_dev_sim_v2_out.txt 2139a1a8c80f5735f36e55f637c3c6404775283501bb3e07f065e07a245fec7b
+data register/results/orb_first5_out.txt f8541bd40f496fa26f936f9f9bf1525c9ac0f6ff10e45aed34b179d80e7529b1
+data register/results/orb_count_v2b_out.txt e51500be2a05081497591688f2de5aed4c44f2c05653b4926f6811541de38e77
+param klasse HINWEIS kein alpha_konto; alpha_konto bleibt 7/20 (D37)
+param regel top20 je tag nach RV5 (erste kerze / mittel 14 vortage, >=10), signal 09:30 kerzenrichtung, einstieg open naechste bar, stop gegenende, ziel 10R, schluss letzte bar
+param kosten provision 0.70 USD je round-trip ticket 1500 USD, slippage 5bp je seite primaer, 0 und 10 berichtet
+param fenster test 2020-01-02 .. 2026-06-30, hartes ende ab 2026-07-01 gesperrt, halften A 2020-2022 B 2023-2026H1
+param bootstrap tagesbloecke L=5 zirkulaer ziehungen=10000 seed=20261026 zadj=m/(1.3*SE)>=1.645; n>=20000; richtungswert>0 zadj>=1.645; beide halften netto>0
+param kategorien HINWEIS-POSITIV | NICHT NACHWEISBAR | INSUFFICIENT, kein BESTAETIGT

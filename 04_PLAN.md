@@ -1022,3 +1022,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 26.10. ≈ 15:45 (ORB 0c):** Andi: `alpaca_day5_v1.py` auf die Auswahl `_orb_sel_dev_k60.csv` (≈ 981 Abrufe ≈ 10 min); danach Entwicklungs-Simulation (Brutto-R, Placebos, Kosten) → Regelfestlegung → Spec/Power/Nullwelten → Freeze (GO). Testfenster 2020–2026H1 bleibt gesperrt.
 
 **Stand 26.10. ≈ 18:30 (D63):** ORB abgeschlossen (negativ in Entwicklung). Nächste Optionen: (a) SYMPATHY-REVERSION (Intraday-Daten/Universum jetzt vorhanden; Power-Zeile zuerst), (b) 13D-Auswertung, (c) lf1-Bilanz 02.11., Paper-Säulen A–D, Kapital-/Skalenfrage (offen bei Andi).
+
+**Stand 26.10. ≈ 19:30 (ORB-Freeze-Kandidat):** Wartet auf `GO FREEZE-ORB – 662a156f`. Danach: Registerzeile idx 16; Andi `run_orb_data.ps1` (≈ 2 h), `run_orb_final.ps1`; Ergebnis nur mit zweitem GO registrieren. D63 (Dev negativ) bleibt gültig; der Testlauf ist Andis Auftrag zur unabhängigen Bestätigung.
