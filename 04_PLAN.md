@@ -1012,3 +1012,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 26.10. ≈ 09:05 (D60):** Carry-Thema (Perp D59, datiert D60) abgeschlossen. Offen: TOM-7 (Tiingo-Altfenster 1993–2015, Limit-Reset November), 13D-Zählung, lf1-Bilanz 02.11., D34-Bestätigung, Gesamtlage/Strategiefrage (siehe Antwort an Andi 26.10.).
 
 **Stand 26.10. ≈ 09:35 (D61):** (1) 13D-Zählung auswerten (Andi-Lauf), (2) lf1-Bilanz 02.11. vorbereiten, (3) Paper-Säulen A–D (Hash vor Paper-Start) und Kriterien für ein späteres Bündel schreiben, (4) Kapital-/Skalenfrage mit Andi klären (D34-Revision: was ist das Ziel bei 10 000 EUR?), (5) Beobachtungsliste: TOM-7, EAR-DRIFT, INSIDER-OPP-VS.
+
+**Stand 26.10. ≈ 11:45 (D62):** ORB Phase 0 erledigt, HINWEIS. Optional (Andis Entscheidung): Universum-Erweiterung (Alpaca-Assets active+inactive, Tagesbars) + Intraday-Bars + Spread-Stichprobe, danach Power-Zeile neu. Sonst unverändert: 13D-Auswertung, lf1-Bilanz 02.11., Paper-Säulen A–D, Kapital-/Skalenfrage.
