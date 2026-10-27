@@ -1,0 +1,60 @@
+PS D:\CT109-Data\kraken-trades\tools> .\run_orb_data.ps1
+ok alpaca_intraday_v1.py
+ok orb_select_v2.py
+ok orb_test_v1.py
+ok alpaca_daily_v1.py
+ok alpaca_day5_v1.py
+Schluessel aus Umgebungsvariablen: APCA_API_KEY_ID / APCA_API_SECRET_KEY (Werte nicht ausgegeben)
+Handelstage im Fenster 2020-01-02..2026-06-30: 1631 | schon erledigt 1027 | zu holen 604 | Eligible-Symbol-Tage gesamt 1763179
+[  816 s] Tage 50/604 Bars 46952 ungueltige Symbole 0 Fehltage 0
+[ 1534 s] Tage 100/604 Bars 91579 ungueltige Symbole 0 Fehltage 0
+[ 2204 s] Tage 150/604 Bars 139486 ungueltige Symbole 0 Fehltage 0
+[ 2958 s] Tage 200/604 Bars 185266 ungueltige Symbole 0 Fehltage 0
+[ 3738 s] Tage 250/604 Bars 238437 ungueltige Symbole 0 Fehltage 0
+[ 4703 s] Tage 300/604 Bars 299356 ungueltige Symbole 0 Fehltage 0
+[ 5380 s] Tage 350/604 Bars 359950 ungueltige Symbole 0 Fehltage 0
+[ 6218 s] Tage 400/604 Bars 420106 ungueltige Symbole 0 Fehltage 0
+[ 6995 s] Tage 450/604 Bars 484954 ungueltige Symbole 0 Fehltage 0
+[ 7710 s] Tage 500/604 Bars 548893 ungueltige Symbole 0 Fehltage 0
+[ 8474 s] Tage 550/604 Bars 623332 ungueltige Symbole 0 Fehltage 0
+[ 9276 s] Tage 600/604 Bars 696211 ungueltige Symbole 0 Fehltage 0
+FERTIG: Tage geholt 604, Bars 702719, ungueltige Einzelsymbole 0, Fehltage (erneut starten) 0, Dauer 9352 s
+Bars je Jahr: 2024 218770, 2025 306680, 2026 177269
+Auswahl K=20 2020-01-02..2026-06-30: Symbol-Tage 32620 | Tage 1631 | verschiedene Symbole 2593 | Datei D:\CT109-Data\alpaca-first5\_orb_sel_test_k20.csv
+Schluessel aus Umgebungsvariablen: APCA_API_KEY_ID / APCA_API_SECRET_KEY (Werte nicht ausgegeben)
+Tage in Auswahl 1631 | erledigt 0 | zu holen 1631 | Symbol-Tage 32620
+[   52 s] Tage 50/1631 Bars 76952 ungueltige Symbole 0 Fehltage 0
+[  104 s] Tage 100/1631 Bars 152947 ungueltige Symbole 0 Fehltage 0
+[  160 s] Tage 150/1631 Bars 228806 ungueltige Symbole 0 Fehltage 0
+[  232 s] Tage 200/1631 Bars 305131 ungueltige Symbole 0 Fehltage 0
+[  285 s] Tage 250/1631 Bars 380513 ungueltige Symbole 0 Fehltage 0
+[  337 s] Tage 300/1631 Bars 456069 ungueltige Symbole 0 Fehltage 0
+[  384 s] Tage 350/1631 Bars 532023 ungueltige Symbole 0 Fehltage 0
+[  432 s] Tage 400/1631 Bars 607816 ungueltige Symbole 0 Fehltage 0
+[  494 s] Tage 450/1631 Bars 684551 ungueltige Symbole 0 Fehltage 0
+[  564 s] Tage 500/1631 Bars 760663 ungueltige Symbole 0 Fehltage 0
+[  619 s] Tage 550/1631 Bars 836575 ungueltige Symbole 0 Fehltage 0
+[  670 s] Tage 600/1631 Bars 913292 ungueltige Symbole 0 Fehltage 0
+[  719 s] Tage 650/1631 Bars 990643 ungueltige Symbole 0 Fehltage 0
+[  764 s] Tage 700/1631 Bars 1066988 ungueltige Symbole 0 Fehltage 0
+[  829 s] Tage 750/1631 Bars 1143129 ungueltige Symbole 0 Fehltage 0
+[  879 s] Tage 800/1631 Bars 1220319 ungueltige Symbole 0 Fehltage 0
+[  929 s] Tage 850/1631 Bars 1297014 ungueltige Symbole 0 Fehltage 0
+[  976 s] Tage 900/1631 Bars 1374028 ungueltige Symbole 0 Fehltage 0
+[ 1021 s] Tage 950/1631 Bars 1451315 ungueltige Symbole 0 Fehltage 0
+[ 1064 s] Tage 1000/1631 Bars 1527893 ungueltige Symbole 0 Fehltage 0
+[ 1120 s] Tage 1050/1631 Bars 1604695 ungueltige Symbole 0 Fehltage 0
+[ 1169 s] Tage 1100/1631 Bars 1681964 ungueltige Symbole 0 Fehltage 0
+[ 1214 s] Tage 1150/1631 Bars 1758658 ungueltige Symbole 0 Fehltage 0
+[ 1258 s] Tage 1200/1631 Bars 1835927 ungueltige Symbole 0 Fehltage 0
+[ 1300 s] Tage 1250/1631 Bars 1912286 ungueltige Symbole 0 Fehltage 0
+[ 1342 s] Tage 1300/1631 Bars 1989152 ungueltige Symbole 0 Fehltage 0
+[ 1401 s] Tage 1350/1631 Bars 2066410 ungueltige Symbole 0 Fehltage 0
+[ 1475 s] Tage 1400/1631 Bars 2143341 ungueltige Symbole 0 Fehltage 0
+[ 1534 s] Tage 1450/1631 Bars 2220786 ungueltige Symbole 0 Fehltage 0
+[ 1584 s] Tage 1500/1631 Bars 2297964 ungueltige Symbole 0 Fehltage 0
+[ 1628 s] Tage 1550/1631 Bars 2374947 ungueltige Symbole 0 Fehltage 0
+[ 1669 s] Tage 1600/1631 Bars 2452649 ungueltige Symbole 0 Fehltage 0
+FERTIG: Tage geholt 1631, Bars 2500687, ungueltige Einzelsymbole 0, Fehltage (erneut starten) 0, Dauer 1701 s
+Bars je Jahr: 2020 385114, 2021 383183, 2022 384036, 2023 384834, 2024 387052, 2025 385469, 2026 190999
+Datenlauf beendet. Wenn alle drei Schlusszeilen 'Fehltage 0' zeigen: run_orb_final.ps1 starten.

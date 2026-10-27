@@ -1026,3 +1026,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 26.10. ≈ 19:30 (ORB-Freeze-Kandidat):** Wartet auf `GO FREEZE-ORB – 662a156f`. Danach: Registerzeile idx 16; Andi `run_orb_data.ps1` (≈ 2 h), `run_orb_final.ps1`; Ergebnis nur mit zweitem GO registrieren. D63 (Dev negativ) bleibt gültig; der Testlauf ist Andis Auftrag zur unabhängigen Bestätigung.
 
 **Stand 26.10. ≈ 17:30 (ORB gefroren):** Andi: `.\run_orb_data.ps1` (≈ 2 h, Schlüssel als Umgebungsvariablen), dann `.\run_orb_final.ps1`. Ich werte nach Rückmeldung aus; Ergebnisregistrierung nur mit zweitem GO.
+
+**Stand 27.10. ≈ 22:10:** Daten für ORB-Testfenster vollständig. Andi: `.\run_orb_final.ps1` (Minuten). Danach Auswertung und zweites GO für die Ergebnisregistrierung.
