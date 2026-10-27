@@ -1,0 +1,38 @@
+Freeze-Hash: 662a156fce8a3c432676a21967d8bb9712597daf4cafb2e6db7b70ec576b336d
+Skript: orb_test_v1.py | Modus final | Fenster 2020-01-01..2026-06-30 | Auswahl-Symbol-Tage 32620 | mit Ganztagsdaten 32156 | Handelstage 1631
+
+[Primaer] Kerzenrichtung, K=20, Ziel 10 R, Ticket 1500 USD
+  Brutto: n=32065 mean +0.0591 R (SE 0.0104, z_adj +4.39)
+  Netto s=0 bp/Seite: n=32065 mean +0.0095 R (SE 0.0104, z_adj +0.70)
+  Netto s=5 bp/Seite: n=32065 mean -0.0969 R (SE 0.0108, z_adj -6.89)
+  Netto s=10 bp/Seite: n=32065 mean -0.2032 R (SE 0.0116, z_adj -13.48)
+  mittlere Provision in R: 0.0496 | Kein-Trade-Anteil: 0.28%
+
+[Richtungswert] Kerzenrichtung minus Mittel beider Richtungen (brutto, gleiche Stop-Geometrie):
+  Differenz: n=29982 mean +0.0035 R (SE 0.0109, z_adj +0.25)
+  Immer Long +0.0597 R | immer Short +0.0572 R | echte Richtung +0.0620 R (gleiche 29982 Trades)
+
+[Haelften] Netto-R (s=5): A -0.1078 R (n=14777, z -5.08) | B -0.0875 R (n=17288, z -4.63)
+
+[Nur berichtet]
+  Jahr 2020: brutto: n=4931 mean +0.0296 R (SE 0.0257, z_adj +0.89)
+  Jahr 2021: brutto: n=4915 mean +0.0952 R (SE 0.0278, z_adj +2.63)
+  Jahr 2022: brutto: n=4931 mean +0.0166 R (SE 0.0264, z_adj +0.48)
+  Jahr 2023: brutto: n=4934 mean +0.0701 R (SE 0.0274, z_adj +1.97)
+  Jahr 2024: brutto: n=4973 mean +0.0522 R (SE 0.0232, z_adj +1.73)
+  Jahr 2025: brutto: n=4941 mean +0.0625 R (SE 0.0281, z_adj +1.71)
+  Jahr 2026: brutto: n=2440 mean +0.1174 R (SE 0.0333, z_adj +2.71)
+  Long (Kerze steigend) brutto: n=16236 mean +0.0686 R (SE 0.0163, z_adj +3.24)
+  Short (Kerze fallend) brutto: n=15829 mean +0.0495 R (SE 0.0168, z_adj +2.26)
+  K=5 Netto s=5: n=8005 mean -0.0724 R (SE 0.0199, z_adj -2.80)
+  K=10 Netto s=5: n=16020 mean -0.0837 R (SE 0.0146, z_adj -4.40)
+  Zeitversatz-Placebo 10:30 brutto: n=31239 mean +0.0636 R (SE 0.0170, z_adj +2.88)
+  Diagnose ohne Stops (Open 2. Bar bis Schluss), Kerzenrichtung: n=32156 +8.5 bp (SE 2.7)
+
+[Kriterien]
+  n >= 20000                                           JA
+  Netto-R(s=5) > 0 und z_adj >= 1.645                  NEIN
+  Richtungswert > 0 und z_adj >= 1.645                 NEIN
+  beide Haelften Netto-R > 0                           NEIN
+
+KATEGORIE: NICHT NACHWEISBAR (HINWEIS-Klasse, kein alpha; Modus final)

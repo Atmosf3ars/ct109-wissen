@@ -1028,3 +1028,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 26.10. ≈ 17:30 (ORB gefroren):** Andi: `.\run_orb_data.ps1` (≈ 2 h, Schlüssel als Umgebungsvariablen), dann `.\run_orb_final.ps1`. Ich werte nach Rückmeldung aus; Ergebnisregistrierung nur mit zweitem GO.
 
 **Stand 27.10. ≈ 22:10:** Daten für ORB-Testfenster vollständig. Andi: `.\run_orb_final.ps1` (Minuten). Danach Auswertung und zweites GO für die Ergebnisregistrierung.
+
+**Stand 27.10. ≈ 22:20 (D65):** ORB beendet. Wartet auf `GO REG-ORB – 1f6d8916`. Danach offen: 13D-Auswertung (Andis Output fehlt), SYMPATHY-REVERSION (Power-Zeile), lf1-Bilanz 02.11., Paper-Säulen A–D, Kapital-/Skalenfrage (Andi).
