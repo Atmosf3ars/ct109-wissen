@@ -1032,3 +1032,5 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 27.10. ≈ 22:20 (D65):** ORB beendet. Wartet auf `GO REG-ORB – 1f6d8916`. Danach offen: 13D-Auswertung (Andis Output fehlt), SYMPATHY-REVERSION (Power-Zeile), lf1-Bilanz 02.11., Paper-Säulen A–D, Kapital-/Skalenfrage (Andi).
 
 **Stand 27.10. ≈ 22:35:** ORB registriert (idx 17, Kette intakt), Familie abgeschlossen. Offen: 13D-Auswertung (Andis `edgar_13d_out.txt` fehlt), SYMPATHY-REVERSION (Power-Zeile), lf1-Bilanz 02.11., Paper-Säulen A–D, Kapital-/Skalenfrage (D34-Revision nur durch Andi).
+
+**Stand 28.10. ≈ 19:10:** SYMPATHY-Phase-0-Werkzeuge fertig (Dev-Fenster 2016–2019). Andi: Befehlsblock aus dem Chat; danach Power-Zeile → entscheiden: HINWEIS oder prüfbar. Freeze Runde 3 weiterhin nur für die Kandidaten mit Power-Zeile.
