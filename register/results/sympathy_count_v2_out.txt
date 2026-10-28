@@ -1,0 +1,21 @@
+Skript: sympathy_count_v2.py | Tage 991 | Symbole 78 | Fenster bis 2019-12-31 | k=4.0 calm=0.50 sigdays=40 start-Slot=8 (Sprungbar >= 10:10 ET)
+
+[A] Ereignisse (Leader-Tage mit Sprung): 405 von 14865 Leader-Tagen (2.72%); Fenster je Leader-Tag ~63 (bei Gauss 4 sigma zweiseitig ~0,006% je Fenster => ~0.40% je Leader-Tag erwartet)
+[B] Unabhaengige Episoden: Sektor-Tage 374 | verschiedene Handelstage 293 (untere Schranke) | Mitlaeufer je Ereignis Median 12
+[C] Je Jahr (Sektor-Tage): 2016: 68 | 2017: 100 | 2018: 119 | 2019: 87
+[D] Je Sektor (Sektor-Tage): SMH: 91 | XLF: 58 | XLE: 54 | XLV: 94 | XLK: 77
+[E] Zeitpunkt (Sprungbar, ET): 09:30-10:30: 41 | 10:30-11:30: 76 | 11:30-13:00: 113 | 13:00-14:30: 119 | 14:30-16:00: 56
+[F] Zustand (ETF-sigma der Vortage >= Median): hoch 180 | niedrig 225 Ereignisse; Sektor-Tage hoch 169 | niedrig 205
+    Sensitivitaet k=3.0: Ereignisse 1498, Sektor-Tage 1260
+    Sensitivitaet k=5.0: Ereignisse 148, Sektor-Tage 142
+    Sensitivitaet start-Slot 2: Ereignisse 430, Sektor-Tage 395
+    Sensitivitaet start-Slot 14: Ereignisse 374, Sektor-Tage 344
+
+[G] Power-Zeile (ANNAHMEN sigma des Mitlaeufer-Rueckkehr-Ertrags 60/80/100 bp je Ereignis; MDE70 = 3,34*sigma/sqrt(n_eff)):
+  Entwicklung, Sektor-Tage                     n_eff    374 | sigma  60 bp: MDE70  10.4 bp | sigma  80 bp: MDE70  13.8 bp | sigma 100 bp: MDE70  17.3 bp
+  Entwicklung, nur verschiedene Tage           n_eff    293 | sigma  60 bp: MDE70  11.7 bp | sigma  80 bp: MDE70  15.6 bp | sigma 100 bp: MDE70  19.5 bp
+  Test hochgerechnet (x1.65), Sektor-Tage      n_eff    616 | sigma  60 bp: MDE70   8.1 bp | sigma  80 bp: MDE70  10.8 bp | sigma 100 bp: MDE70  13.5 bp
+  Test hochgerechnet, verschiedene Tage        n_eff    483 | sigma  60 bp: MDE70   9.1 bp | sigma  80 bp: MDE70  12.2 bp | sigma 100 bp: MDE70  15.2 bp
+[H] Kosten (Ticket 1500 USD): Provision 4,7 bp Round-Trip; Slippage 2/3/5 bp je Seite => Hurdle brutto 8,7 / 10,7 / 14,7 bp. Autor-Erwartung netto +15 bp (ungeprueft).
+
+Hinweis: Nachrichten-/Ergebnistage nicht gefiltert; Universum feste Ueberlebenden-Auswahl (ANNAHME). Gleichzeitig verschiedene Handelstage = Anteil an allen 991 Tagen: 30%.

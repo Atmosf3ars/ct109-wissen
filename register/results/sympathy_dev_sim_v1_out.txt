@@ -1,0 +1,21 @@
+Skript: sympathy_dev_sim_v1.py | Tage 991 | Ereignisse (Leader-Tage) 407 | Fenster bis 2019-12-31
+
+[1] Mitlaeufer ENTGEGEN dem Leader-Sprung, Einstieg Open s+1, Ausstieg nach H Bars (bp; Mittel je Ereignis, Tages-Cluster-SE; Placebo = zufaellige Nicht-Ereignistage gleicher Richtung):
+  H= 6 Bars: n=403 | brutto  -0.91 bp (SE 1.48) | sektorneutral  -0.43 bp | Placebo  -0.04 bp (q2.5  -2.31 / q97.5  +2.18) | Differenz  -0.87 bp
+  H=12 Bars: n=402 | brutto  +2.37 bp (SE 2.05) | sektorneutral  +0.07 bp | Placebo  -0.06 bp (q2.5  -3.05 / q97.5  +3.01) | Differenz  +2.44 bp
+  H=36 Bars: n=403 | brutto  +3.10 bp (SE 2.92) | sektorneutral  -1.22 bp | Placebo  -0.03 bp (q2.5  -4.28 / q97.5  +4.83) | Differenz  +3.13 bp
+      Kosten-Hurdle: Provision 4,7 bp + 2*s: s=2 -> 8,7 | s=3 -> 10,7 | s=5 -> 14,7 bp => Netto-Mittel (s=2/3/5): -5.60 / -7.60 / -11.60 bp
+      Jahr 2016: n=71,  +6.98 bp
+      Jahr 2017: n=104,  +4.55 bp
+      Jahr 2018: n=132,  +3.64 bp
+      Jahr 2019: n=96,  -2.07 bp
+      Zustand ETF-sigma hoch: n=200  +0.70 bp | niedrig: n=203  +5.47 bp
+      Sektor SMH: n=97,  +1.15 bp
+      Sektor XLF: n=65,  -9.16 bp
+      Sektor XLE: n=57, +12.09 bp
+      Sektor XLV: n=105,  +9.58 bp
+      Sektor XLK: n=79,  +0.50 bp
+      Verteilung Ereignis-Ertrag (je Ereignis, bp): p10 -58.8 p50 1.8 p90 58.5 | Anteil positiv 52.9%
+  H=80 Bars (=Tagesende): n=403 | brutto  +0.10 bp (SE 3.17) | sektorneutral  -1.98 bp | Placebo  -0.08 bp (q2.5  -5.21 / q97.5  +4.84) | Differenz  +0.18 bp
+
+Hinweis: Entwicklungsfenster, mehrere Haltedauern/Splits gesichtet: alles Exploration ohne alpha. Ein Freeze-Kandidat braucht vorab festes H (Draft: 36 Bars), Ereignisregel und Kosten; Test einmal im Testfenster.

@@ -1037,6 +1037,8 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 
 **Stand 28.10. ≈ 21:20 (D66):** IBKR beendet; Paper für Aktien später über Alpaca-Paper (Pillar-Plan anpassen, falls je eine Aktien-Hypothese besteht). Keine IBKR-Rate-Limit-/Level-2-Arbeit mehr geplant.
 
+**Stand 28.10. ≈ 23:55 (D67):** SYMPATHY beendet (Dev negativ). Verbleibende Runde-3-Kandidaten: INSIDER-CLUSTER (Form 4), 8-K, 13D (Andis Output fehlt), Krypto FUND_CROWD/WEEKEND. Aktien-Lage: 0 von 5 geprüften Familien tragen Kosten (lf2, GS, ORB, SYMPATHY); IBKR beendet (D66). Nächste Schritte nach Reihenfolge: lf1-Bilanz 02.11. und `ct109-paper-*` lesend prüfen, dann nächste Hypothese mit Power-Zeile; Alpaca-Schlüssel rotieren (Andi).
+
 ### 5j. GO IBKR-STOP (ENTWURF 28.10. ≈ 21:35 Berlin; Folge von D66)
 **Ergebnis 28.10. 20:25 UTC: OK** (siehe `01`/`02`). Danach offen: `ct109-paper-*` lesend prüfen (lf1-Bilanz 02.11.), IBKR-Secrets auf CT109 (ibkr.env, IBC) – Entfernen nur mit eigenem GO, IBKR-Marktdaten-Abos/Konto bei Andi.
 Skript `code/ops/ibkr_stop_v1.sh`, SHA256 6c30a297a1c31f6382c7d3e245d6f178e70dfcb87e34e728e9eeb6521a040215. Zweck: IBKR-Collector, Watch-Timer und Gateway stoppen und am Boot-Start hindern. Risiken: Einheitennamen aus Dokumenten abgeleitet (nicht vorhanden ⇒ übersprungen); mögliche Alarme anderer Watcher wegen fehlender IBKR-Daten [A]; Gateway-Login beim Wiederstart nötig. Rollback: `systemctl enable --now ibgateway.service signal-ibkr.service signal-ibkr-watch.timer` (Login/Zweitfaktor ggf. nötig). Abbruch: `signal-kraken`/Ingestion/Compactor nicht mehr active, Kraken-Lücken. Daten und Siegel unberührt; Secrets (ibkr.env, IBC-Konfig) bleiben liegen, Entfernen = eigenes Thema/GO. GO-Satz: `GO IBKR-STOP – 6c30a297`.

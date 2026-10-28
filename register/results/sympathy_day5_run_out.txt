@@ -1,0 +1,22 @@
+Tage in Auswahl 991 | erledigt 0 | zu holen 991 | Symbol-Tage 77298
+[  334 s] Tage 50/991 Bars 303885 ungueltige Symbole 0 Fehltage 0
+[  632 s] Tage 100/991 Bars 608076 ungueltige Symbole 0 Fehltage 0
+[  964 s] Tage 150/991 Bars 912229 ungueltige Symbole 0 Fehltage 0
+[ 1290 s] Tage 200/991 Bars 1216423 ungueltige Symbole 0 Fehltage 0
+[ 1625 s] Tage 250/991 Bars 1518329 ungueltige Symbole 0 Fehltage 0
+[ 1952 s] Tage 300/991 Bars 1822523 ungueltige Symbole 0 Fehltage 0
+[ 3710 s] Tage 350/991 Bars 2126716 ungueltige Symbole 0 Fehltage 0
+[ 3986 s] Tage 400/991 Bars 2428677 ungueltige Symbole 0 Fehltage 0
+[ 4240 s] Tage 450/991 Bars 2732868 ungueltige Symbole 0 Fehltage 0
+[ 4478 s] Tage 500/991 Bars 3034627 ungueltige Symbole 0 Fehltage 0
+[ 4709 s] Tage 550/991 Bars 3338816 ungueltige Symbole 0 Fehltage 0
+[ 4914 s] Tage 600/991 Bars 3642996 ungueltige Symbole 0 Fehltage 0
+[ 5114 s] Tage 650/991 Bars 3945033 ungueltige Symbole 0 Fehltage 0
+[ 5314 s] Tage 700/991 Bars 4249231 ungueltige Symbole 0 Fehltage 0
+[ 5526 s] Tage 750/991 Bars 4549118 ungueltige Symbole 0 Fehltage 0
+[ 5741 s] Tage 800/991 Bars 4853317 ungueltige Symbole 0 Fehltage 0
+[ 5946 s] Tage 850/991 Bars 5157507 ungueltige Symbole 0 Fehltage 0
+[ 6132 s] Tage 900/991 Bars 5458512 ungueltige Symbole 0 Fehltage 0
+[ 6305 s] Tage 950/991 Bars 5758631 ungueltige Symbole 0 Fehltage 0
+FERTIG: Tage geholt 991, Bars 5998111, ungueltige Einzelsymbole 0, Fehltage (erneut starten) 0, Dauer 6434 s
+Bars je Jahr: 2016 1439237, 2017 1522382, 2018 1520575, 2019 1515917

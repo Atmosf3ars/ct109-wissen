@@ -1,0 +1,20 @@
+Skript: sympathy_count_v1.py | Tage 991 | Symbole mit Daten 78 | ohne Daten 0 (-) | Fenster bis 2019-12-31 | k=4.0 calm=0.50 sigdays=20
+
+[A] Ereignisse (Leader-Tage mit Sprung): 670 von 14865 Leader-Tagen (4.51%); Gauss-Erwartung 4 sigma zweiseitig ~0,006% je Fenster (Schwanzlastigkeit erwartet)
+[B] Unabhaengige Episoden: Sektor-Tage 595 | verschiedene Handelstage 454 (untere Schranke) | Mitlaeufer je Ereignis: Median 12
+[C] Je Jahr (Sektor-Tage): 2016: 135 | 2017: 148 | 2018: 170 | 2019: 142
+[D] Je Sektor (Sektor-Tage): SMH: 125 | XLF: 102 | XLE: 97 | XLV: 128 | XLK: 143
+[E] Zeitpunkt: Sprung endet bis 10:30 ET: 593 Ereignisse (89%) | spaeter: 77
+[F] Zustand (ETF-sigma der Vortage >= Median): hoch 320 | niedrig 350 Ereignisse; Sektor-Tage hoch 281 | niedrig 314
+    Sensitivitaet k=3.0: Ereignisse 1901, Sektor-Tage 1524
+    Sensitivitaet k=5.0: Ereignisse 293, Sektor-Tage 270
+
+[G] Power-Zeile (ANNAHMEN: sigma des Mitlaeufer-Rueckkehr-Ertrags 60/80/100 bp je Ereignis; MDE70 = 3,34*sigma/sqrt(n_eff)):
+  Entwicklung, Sektor-Tage                             n_eff    595 | sigma  60 bp: MDE70   8.2 bp | sigma  80 bp: MDE70  11.0 bp | sigma 100 bp: MDE70  13.7 bp
+  Entwicklung, nur verschiedene Tage                   n_eff    454 | sigma  60 bp: MDE70   9.4 bp | sigma  80 bp: MDE70  12.5 bp | sigma 100 bp: MDE70  15.7 bp
+  Test 2020-2026H1 hochgerechnet (x1.65), Sektor-Tage  n_eff    980 | sigma  60 bp: MDE70   6.4 bp | sigma  80 bp: MDE70   8.5 bp | sigma 100 bp: MDE70  10.7 bp
+  Test hochgerechnet, verschiedene Tage                n_eff    748 | sigma  60 bp: MDE70   7.3 bp | sigma  80 bp: MDE70   9.8 bp | sigma 100 bp: MDE70  12.2 bp
+[H] Kosten (Ticket 1500 USD, Round-Trip): Provision 0,70 USD = 4.7 bp; Slippage 2/3/5 bp je Seite => Hurdle brutto 8.7 / 10.7 / 14.7 bp
+[I] Autor-Annahme (Quelle ungeprueft): netto +15 bp. Vergleich mit MDE70 oben entscheidet: Erwartung < MDE70 => HINWEIS-Klasse (kein alpha).
+
+Hinweis: Ereignisse enthalten Nachrichten-/Ergebnistage (Fortsetzung statt Rueckkehr moeglich); Universum ist eine feste Ueberlebenden-Auswahl (ANNAHME).
