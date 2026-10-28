@@ -1036,3 +1036,6 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 28.10. ≈ 19:10:** SYMPATHY-Phase-0-Werkzeuge fertig (Dev-Fenster 2016–2019). Andi: Befehlsblock aus dem Chat; danach Power-Zeile → entscheiden: HINWEIS oder prüfbar. Freeze Runde 3 weiterhin nur für die Kandidaten mit Power-Zeile.
 
 **Stand 28.10. ≈ 21:20 (D66):** IBKR beendet; Paper für Aktien später über Alpaca-Paper (Pillar-Plan anpassen, falls je eine Aktien-Hypothese besteht). Keine IBKR-Rate-Limit-/Level-2-Arbeit mehr geplant.
+
+### 5j. GO IBKR-STOP (ENTWURF 28.10. ≈ 21:35 Berlin; Folge von D66)
+Skript `code/ops/ibkr_stop_v1.sh`, SHA256 6c30a297a1c31f6382c7d3e245d6f178e70dfcb87e34e728e9eeb6521a040215. Zweck: IBKR-Collector, Watch-Timer und Gateway stoppen und am Boot-Start hindern. Risiken: Einheitennamen aus Dokumenten abgeleitet (nicht vorhanden ⇒ übersprungen); mögliche Alarme anderer Watcher wegen fehlender IBKR-Daten [A]; Gateway-Login beim Wiederstart nötig. Rollback: `systemctl enable --now ibgateway.service signal-ibkr.service signal-ibkr-watch.timer` (Login/Zweitfaktor ggf. nötig). Abbruch: `signal-kraken`/Ingestion/Compactor nicht mehr active, Kraken-Lücken. Daten und Siegel unberührt; Secrets (ibkr.env, IBC-Konfig) bleiben liegen, Entfernen = eigenes Thema/GO. GO-Satz: `GO IBKR-STOP – 6c30a297`.
