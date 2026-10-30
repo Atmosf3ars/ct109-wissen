@@ -1041,7 +1041,7 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 
 ### 5k. GO IBKR-ALARM (ENTWURF 30.10. ≈ 14:20 Berlin; Folge von D66)
 **Ergebnis 30.10. 13:12 UTC: OK.** Repo-Nachzug: PR #13 (new-signal-system). Danach Host-Angleich mit GO; anschließend Kraken-Meldungen (kraken_x/kraken_futures, Totmann) vor lf1-Bilanz 02.11. sichten.
-**PR #13 gemergt (Andi, 13:43 UTC).** Host-Angleich: Skript , SHA256 656179b32429eefed288143ca5e7a3487deae6afe7f837a381cc5110f5c85942; Zweck:  auf CT109 durch den gemergten Repo-Stand ersetzen (Hotfix-Abweichung beenden). Risiken: zieht nur PR #13 (Abbruch bei ≠ 3 Commits);  startet kurz neu. Rollback im Skript-Ausgang. GO-Satz .
+**PR #13 gemergt (Andi, 13:43 UTC).** Host-Angleich: Skript `code/ops/ibkr_host_sync_v1.sh`, SHA256 656179b32429eefed288143ca5e7a3487deae6afe7f837a381cc5110f5c85942; Zweck: `monitor.py` auf CT109 durch den gemergten Repo-Stand ersetzen (Hotfix-Abweichung beenden). Risiken: zieht nur PR #13 (Abbruch bei ≠ 3 Commits); `signal-alerting` startet kurz neu. Rollback im Skript-Ausgang. GO-Satz `GO IBKR-SYNC – 656179b3`.
 Skript `code/ops/ibkr_alert_off_v1.sh`, SHA256 a8cc5ba0908c1d65ef2c311e1b5dbe9fadde2fc00fb1b5bad964d8a39a9d7de4. Zweck: Telegram-Alarme „Feed ibkr down“ beenden. Risiken: Host-Datei weicht vom Git-Stand ab (Backup `/root/monitor.py.bak-ibkr-alert-20261030`), einmalige „wieder OK“-Meldung möglich, Test `test_alerting.py` zieht im Repo nach. Rollback im Skript-Ausgang. Abbruch: Zeile nicht genau einmal vorhanden, Import-Fehler (Auto-Rollback), `signal-alerting` nicht active. Repo-PR (SUPPRESSED_FEEDS + Test) danach auf Andis Weg.
 
 ### 5j. GO IBKR-STOP (ENTWURF 28.10. ≈ 21:35 Berlin; Folge von D66)
