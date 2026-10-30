@@ -1040,6 +1040,7 @@ foreach ($s in "PF_XBTUSD","PF_BTCUSD","PF_ETHUSD","PF_SOLUSD") {
 **Stand 28.10. ≈ 23:55 (D67):** SYMPATHY beendet (Dev negativ). Verbleibende Runde-3-Kandidaten: INSIDER-CLUSTER (Form 4), 8-K, 13D (Andis Output fehlt), Krypto FUND_CROWD/WEEKEND. Aktien-Lage: 0 von 5 geprüften Familien tragen Kosten (lf2, GS, ORB, SYMPATHY); IBKR beendet (D66). Nächste Schritte nach Reihenfolge: lf1-Bilanz 02.11. und `ct109-paper-*` lesend prüfen, dann nächste Hypothese mit Power-Zeile; Alpaca-Schlüssel rotieren (Andi).
 
 ### 5k. GO IBKR-ALARM (ENTWURF 30.10. ≈ 14:20 Berlin; Folge von D66)
+**Ergebnis 30.10. 13:12 UTC: OK.** Repo-Nachzug: PR #13 (new-signal-system). Danach Host-Angleich mit GO; anschließend Kraken-Meldungen (kraken_x/kraken_futures, Totmann) vor lf1-Bilanz 02.11. sichten.
 Skript `code/ops/ibkr_alert_off_v1.sh`, SHA256 a8cc5ba0908c1d65ef2c311e1b5dbe9fadde2fc00fb1b5bad964d8a39a9d7de4. Zweck: Telegram-Alarme „Feed ibkr down“ beenden. Risiken: Host-Datei weicht vom Git-Stand ab (Backup `/root/monitor.py.bak-ibkr-alert-20261030`), einmalige „wieder OK“-Meldung möglich, Test `test_alerting.py` zieht im Repo nach. Rollback im Skript-Ausgang. Abbruch: Zeile nicht genau einmal vorhanden, Import-Fehler (Auto-Rollback), `signal-alerting` nicht active. Repo-PR (SUPPRESSED_FEEDS + Test) danach auf Andis Weg.
 
 ### 5j. GO IBKR-STOP (ENTWURF 28.10. ≈ 21:35 Berlin; Folge von D66)
