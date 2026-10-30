@@ -1,5 +1,5 @@
 #!/bin/bash
-# ibkr_host_sync_v1.sh - gleicht /opt/new-signal-system mit main nach PR #13 ab (Hotfix-Zeile in monitor.py wird durch den Repo-Stand ersetzt). Nur fast-forward, nur wenn genau PR #13 (2 Commits + Merge) hereinkommt.
+# ibkr_host_sync_v1.sh - gleicht /opt/new-signal-system mit main nach PR #13 ab (Hotfix-Zeile in monitor.py wird durch den Repo-Stand ersetzt). Nur fast-forward, nur wenn genau 6 Commits mit genau diesen 7 Dateien hereinkommen (PR #13 + zwei Doku-Commits SOL-O1 + Merge #12).
 # Loescht nichts, liest keine Secrets. Danach nur signal-alerting neu starten.
 set -u
 R=${REPO:-/opt/new-signal-system}; F=src/alerting/monitor.py; B=${BACKUP:-/root/monitor.py.bak-sync-20261030}
@@ -8,7 +8,11 @@ git -C "$R" fetch -q origin main || { echo "ABBRUCH: fetch fehlgeschlagen, nicht
 if ! git -C "$R" merge-base --is-ancestor HEAD origin/main; then echo "ABBRUCH: HEAD ist kein Vorfahre von origin/main, nichts geaendert"; exit 1; fi
 n=$(git -C "$R" rev-list --count HEAD..origin/main)
 echo "-- kommt herein ($n Commits) --"; git -C "$R" log --oneline HEAD..origin/main
-if [ "$n" != "3" ]; then echo "ABBRUCH: erwartet genau 3 Commits (PR #13: 2 + Merge), nichts geaendert"; exit 1; fi
+if [ "$n" != "6" ]; then echo "ABBRUCH: erwartet genau 6 Commits, nichts geaendert"; exit 1; fi
+exp="PREREGISTRATION.md docs/CT109_SOL_PREREG_DRAFT_2026-10-21.md src/alerting/ibkr_watch.py src/alerting/monitor.py tests/conftest.py tests/test_alerting.py tests/test_alerting_suppress.py"
+got=$(git -C "$R" diff --name-only HEAD origin/main | sort | tr '\n' ' ' | sed 's/ $//')
+want=$(echo $exp | tr ' ' '\n' | sort | tr '\n' ' ' | sed 's/ $//')
+if [ "$got" != "$want" ]; then echo "ABBRUCH: unerwartete Dateien: $got"; exit 1; fi
 others=$(git -C "$R" status --porcelain --untracked-files=no | grep -v " $F\$" | wc -l)
 if [ "$others" != "0" ]; then echo "ABBRUCH: weitere lokale Aenderungen ausser $F, nichts geaendert"; exit 1; fi
 cp -p "$R/$F" "$B" || { echo "ABBRUCH: Backup fehlgeschlagen"; exit 1; }
